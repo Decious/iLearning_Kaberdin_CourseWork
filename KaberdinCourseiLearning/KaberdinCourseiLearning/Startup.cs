@@ -33,13 +33,13 @@ namespace KaberdinCourseiLearning
             services.AddRazorPages();
             services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = Configuration["Auth:FacebookID"];
-                options.AppSecret = Configuration["Auth:FacebookSecret"];
+                options.AppId = Configuration["AuthFacebookID"];
+                options.AppSecret = Configuration["AuthFacebookSecret"];
             });
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = Configuration["Auth:GoogleID"];
-                options.ClientSecret = Configuration["Auth:GoogleSecret"];
+                options.ClientId = Configuration["AuthGoogleID"];
+                options.ClientSecret = Configuration["AuthGoogleSecret"];
             });
         }
 
