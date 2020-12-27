@@ -36,6 +36,11 @@ namespace KaberdinCourseiLearning
                 options.AppId = Configuration["Auth:FacebookID"];
                 options.AppSecret = Configuration["Auth:FacebookSecret"];
             });
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = Configuration["Auth:GoogleID"];
+                options.ClientSecret = Configuration["Auth:GoogleSecret"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

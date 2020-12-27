@@ -46,7 +46,7 @@
               "target": "Package",
               "version": "[3.1.10, )"
             },
-            "Microsoft.AspNetCore.Authentication.Twitter": {
+            "Microsoft.AspNetCore.Authentication.Google": {
               "target": "Package",
               "version": "[3.1.10, )"
             },
