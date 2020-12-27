@@ -31,6 +31,11 @@ namespace KaberdinCourseiLearning
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = Configuration["Auth:FacebookID"];
+                options.AppSecret = Configuration["Auth:FacebookSecret"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,9 +55,7 @@ namespace KaberdinCourseiLearning
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "BzjstGVvJx9Zqb5uoIkycnOLx4qzw5WuME5cEPguftQYU2vvetaYSSLpnQCAuqPtrorz4t+DGEioq0OPA/2ihQ==",
+  "dgSpecHash": "Fw1iFvufmTaM5Z5SN5kbjIccqb5M0VUG/mDeCUt6v2tMnVeoGrUmkOTv+jaYjWHsxrOhtcYN0LCFRkGU2nz55A==",
   "success": true,
   "projectFilePath": "D:\\ITransition\\CourseWork\\KaberdinCourseiLearning\\KaberdinCourseiLearning\\KaberdinCourseiLearning.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Andre\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\3.1.10\\microsoft.aspnetcore.authentication.facebook.3.1.10.nupkg.sha512",
+    "C:\\Users\\Andre\\.nuget\\packages\\microsoft.aspnetcore.authentication.twitter\\3.1.10\\microsoft.aspnetcore.authentication.twitter.3.1.10.nupkg.sha512",
     "C:\\Users\\Andre\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.6\\microsoft.aspnetcore.cryptography.internal.3.1.6.nupkg.sha512",
     "C:\\Users\\Andre\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.6\\microsoft.aspnetcore.cryptography.keyderivation.3.1.6.nupkg.sha512",
     "C:\\Users\\Andre\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\3.1.6\\microsoft.aspnetcore.diagnostics.entityframeworkcore.3.1.6.nupkg.sha512",
