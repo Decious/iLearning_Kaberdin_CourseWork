@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@5.15.1",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "signalr.js@2.4.1",
+      "destination": "wwwroot/lib/signalr.js/"
+    },
+    {
+      "library": "tagify@3.22.0",
+      "destination": "wwwroot/lib/tagify/"
+    },
+    {
+      "library": "markdown-it@12.0.4",
+      "destination": "wwwroot/lib/markdown-it/"
+    }
+  ]
+}
