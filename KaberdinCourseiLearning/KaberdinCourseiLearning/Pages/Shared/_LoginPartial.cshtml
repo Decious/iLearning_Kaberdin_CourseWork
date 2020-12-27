@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using KaberdinCourseiLearning.Areas.Identity
+@inject SignInManager<CustomIdentity> SignInManager
+@inject UserManager<CustomIdentity> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
