@@ -25,7 +25,7 @@ namespace KaberdinCourseiLearning
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<CustomIdentity>(options => {
+            services.AddDefaultIdentity<IdentityUser>(options => {
                 options.Password.RequireNonAlphanumeric = false;
                 options.User.RequireUniqueEmail = true;
             })

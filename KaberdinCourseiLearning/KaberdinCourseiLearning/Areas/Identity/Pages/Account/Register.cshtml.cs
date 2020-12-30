@@ -13,12 +13,12 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<CustomIdentity> _signInManager;
-        private readonly UserManager<CustomIdentity> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public RegisterModel(
-            UserManager<CustomIdentity> userManager,
-            SignInManager<CustomIdentity> signInManager)
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -66,7 +66,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new CustomIdentity { UserName = Input.UserName, Email = Input.Email, Permission = PermissionLevel.USER };
+                var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

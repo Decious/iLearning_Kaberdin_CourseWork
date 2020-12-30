@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KaberdinCourseiLearning.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<CustomIdentity>
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

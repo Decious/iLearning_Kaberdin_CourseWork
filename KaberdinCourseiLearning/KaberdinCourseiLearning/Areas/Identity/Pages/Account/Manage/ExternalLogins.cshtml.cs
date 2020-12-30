@@ -12,12 +12,12 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<CustomIdentity> _userManager;
-        private readonly SignInManager<CustomIdentity> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         public ExternalLoginsModel(
-            UserManager<CustomIdentity> userManager,
-            SignInManager<CustomIdentity> signInManager)
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

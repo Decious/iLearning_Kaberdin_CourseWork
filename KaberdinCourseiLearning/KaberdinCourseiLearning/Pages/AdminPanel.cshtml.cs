@@ -11,9 +11,9 @@ namespace KaberdinCourseiLearning.Pages
     [Authorize(Roles = "Administrator")]
     public class AdminPanelModel : PageModel
     {
-        private SignInManager<CustomIdentity> signInManager;
-        private UserManager<CustomIdentity> userManager;
-        public AdminPanelModel(SignInManager<CustomIdentity> signInManager, UserManager<CustomIdentity> userManager)
+        private SignInManager<IdentityUser> signInManager;
+        private UserManager<IdentityUser> userManager;
+        public AdminPanelModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -31,7 +31,7 @@ namespace KaberdinCourseiLearning.Pages
             await SignOut();
             return RedirectToPage("Login");
         }
-        private async Task<bool> isUserBannedOrRemovedAsync(CustomIdentity user)
+        private async Task<bool> isUserBannedOrRemovedAsync(IdentityUser user)
         {
             return (user == null || await userManager.IsLockedOutAsync(user));
         }
