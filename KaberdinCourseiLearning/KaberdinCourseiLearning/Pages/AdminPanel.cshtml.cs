@@ -1,5 +1,6 @@
 ﻿using KaberdinCourseiLearning.Areas.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Pages
 {
+    [Authorize(Roles = "Administrator")]
     public class AdminPanelModel : PageModel
     {
         private SignInManager<CustomIdentity> signInManager;

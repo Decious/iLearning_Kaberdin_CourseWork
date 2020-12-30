@@ -29,6 +29,7 @@ namespace KaberdinCourseiLearning
                 options.Password.RequireNonAlphanumeric = false;
                 options.User.RequireUniqueEmail = true;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddAuthentication().AddFacebook(options =>
