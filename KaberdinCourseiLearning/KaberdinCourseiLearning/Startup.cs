@@ -32,6 +32,11 @@ namespace KaberdinCourseiLearning
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
+                    policy.RequireRole("Administrator"));
+            });
             services.AddAuthentication().AddFacebook(options =>
             {
                 options.AppId = Configuration["AuthFacebookID"];

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Pages
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Policy = "Admin")]
     public class AdminPanelModel : PageModel
     {
         private SignInManager<IdentityUser> signInManager;
