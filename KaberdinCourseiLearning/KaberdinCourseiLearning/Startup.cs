@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using KaberdinCourseiLearning.Areas.Identity;
+using System;
 
 namespace KaberdinCourseiLearning
 {
@@ -23,7 +24,7 @@ namespace KaberdinCourseiLearning
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+                options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => {
                 options.Password.RequireNonAlphanumeric = false;
@@ -39,13 +40,13 @@ namespace KaberdinCourseiLearning
             });
             services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = Configuration["AuthFacebookID"];
-                options.AppSecret = Configuration["AuthFacebookSecret"];
+                options.AppId = Environment.GetEnvironmentVariable("AuthFacebookID");
+                options.AppSecret = Environment.GetEnvironmentVariable("AuthFacebookSecret");
             });
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = Configuration["AuthGoogleID"];
-                options.ClientSecret = Configuration["AuthGoogleSecret"];
+                options.ClientId = Environment.GetEnvironmentVariable("AuthGoogleID");
+                options.ClientSecret = Environment.GetEnvironmentVariable("AuthGoogleSecret");
             });
         }
 
@@ -63,7 +64,11 @@ namespace KaberdinCourseiLearning
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.Use((context, next) =>
+            {
+                context.Request.Scheme = "https";
+                return next();
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -75,5 +80,6 @@ namespace KaberdinCourseiLearning
                 endpoints.MapRazorPages();
             });
         }
+
     }
 }

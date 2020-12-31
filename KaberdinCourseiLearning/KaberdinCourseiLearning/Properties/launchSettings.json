@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -18,10 +18,20 @@
     "KaberdinCourseiLearning": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "DATABASE_URL": "    postgres://ygtmdkintkgggk:7bcc2cbfb3887e1d42634e27468cbbbc4a7918ca8cb25527356a6670ad24e1fc@ec2-46-137-79-235.eu-west-1.compute.amazonaws.com:5432/da0jvk6jak1458"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }
