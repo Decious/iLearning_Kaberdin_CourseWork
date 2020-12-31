@@ -47,12 +47,14 @@ namespace KaberdinCourseiLearning.Pages
                 switch (FormAction)
                 {
                     case "Block":
-                        _ = userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
+                        await userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
+                        await userManager.UpdateAsync(user);
                         break;
                     case "Unblock":
                         if (await userManager.GetLockoutEndDateAsync(user) > DateTime.Now)
                         {
-                            _ = userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+                            await userManager.SetLockoutEndDateAsync(user, null);
+                            await userManager.UpdateAsync(user);
                         }
                         break;
                     case "Delete":

@@ -46,12 +46,12 @@
                     <td class="align-middle text-center"><input type="checkbox" name="Selected" value="@user.Id" /></td>
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
-                    @if(user.LockoutEnd < DateTime.Now)
-                    {
-                        <td>Active</td>
-                    } else
+                    @if(user.LockoutEnd > DateTime.Now)
                     {
                         <td>Banned</td>
+                    } else
+                    {
+                        <td>Active</td>
                     }
                 </tr>
             }
