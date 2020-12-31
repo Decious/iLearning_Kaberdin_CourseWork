@@ -4,18 +4,19 @@
 @inject UserManager<IdentityUser> UserManager
 
     <ul class="navbar-nav">
-        @if (SignInManager.IsSignedIn(User))
+        @{IdentityUser currentUser = await UserManager.GetUserAsync(User);}
+        @if (SignInManager.IsSignedIn(User) && currentUser != null)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
             </li>
             <li class="nav-item">
-                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout">Logout</a>
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout">Logout</a>
             </li>
-            if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User),"Administrator"))
+            if (await UserManager.IsInRoleAsync(currentUser, "Administrator"))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-page="AdminPanel" title="Manage">Admin-panel</a>
+                    <a class="nav-link text-dark" asp-page="AdminPanel">Admin-panel</a>
                 </li>
             }
         }

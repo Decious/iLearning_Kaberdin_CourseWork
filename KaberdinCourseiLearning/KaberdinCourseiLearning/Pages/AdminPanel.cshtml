@@ -4,5 +4,76 @@
     ViewData["Title"] = "AdminPanel";
 }
 
-<h1>AdminPanel</h1>
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+
+<form name="formTable" method="post">
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="container">
+            <div style="margin-bottom:16px" class="row justify-content-around">
+                <input id="FormActionInput" type="hidden" asp-for="FormAction" />
+                <button type="submit" class="btn btn-outline-primary col-3" onclick="formActionClick(this)" value="Block">
+                    <i style="margin-right:5px" class="fa fa-ban"></i>Block
+                </button>
+                <button type="submit" class="btn btn-outline-primary col-3" onclick="formActionClick(this)" value="Unblock">
+                    <i style="margin-right:5px" class="fa fa-user-check"></i>Unblock
+                </button>
+                <button type="submit" class="btn btn-outline-primary col-3" onclick="formActionClick(this)" value="Delete">
+                    <i style="margin-right:5px" class="fa fa-user-slash"></i>Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    <table class="table table-sm table-responsive table-hover">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th scope="col"><button class="btn-primary font-weight-bold rounded" OnClick="return ToggleClick()">Toggle</button></th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in UserManager.Users)
+            {
+                var Style = Html.Raw("");
+                if (user.Id == UserManager.GetUserId(User))
+                {
+                    Style = Html.Raw("font-weight-bold");
+                }
+                <tr class="@Style">
+                    <td class="align-middle text-center"><input type="checkbox" name="Selected" value="@user.Id" /></td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    @if(user.LockoutEnd < DateTime.Now)
+                    {
+                        <td>Active</td>
+                    } else
+                    {
+                        <td>Banned</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<script>
+    var toggle = true;
+    function ToggleClick() {
+        var checkboxes = document.getElementsByName("Selected");
+        checkboxes.forEach(e => {
+            e.checked = toggle;
+        })
+        toggle = !toggle;
+        return false
+    }
+    function formActionClick(e) {
+        var hiddenFormAction = document.getElementById("FormActionInput");
+        hiddenFormAction.value = e.value;
+    }
+</script>
+
+
 

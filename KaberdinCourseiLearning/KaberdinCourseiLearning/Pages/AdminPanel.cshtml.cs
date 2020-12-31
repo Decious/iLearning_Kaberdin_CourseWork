@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Pages
@@ -18,18 +19,12 @@ namespace KaberdinCourseiLearning.Pages
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
-        public async Task<IActionResult> OnGet()
+
+        [BindProperty]
+        public String FormAction { get; set; }
+
+        public void OnGet()
         {
-            if (signInManager.IsSignedIn(User))
-            {
-                var currentUser = await userManager.GetUserAsync(User);
-                if (!await isUserBannedOrRemovedAsync(currentUser))
-                {
-                    return Page();
-                }
-            }
-            await SignOut();
-            return RedirectToPage("Login");
         }
         private async Task<bool> isUserBannedOrRemovedAsync(IdentityUser user)
         {
@@ -39,6 +34,33 @@ namespace KaberdinCourseiLearning.Pages
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             await signInManager.SignOutAsync();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+            if (await isUserBannedOrRemovedAsync(currentUser)) return Redirect("~/Index");
+            var ids = Request.Form["Selected"];
+            foreach (String id in ids)
+            {
+                var user = await userManager.FindByIdAsync(id);
+                switch (FormAction)
+                {
+                    case "Block":
+                        _ = userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
+                        break;
+                    case "Unblock":
+                        if (await userManager.GetLockoutEndDateAsync(user) > DateTime.Now)
+                        {
+                            _ = userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+                        }
+                        break;
+                    case "Delete":
+                        _ = userManager.DeleteAsync(user);
+                        break;
+                }
+            }
+            return RedirectToPage();
         }
 
     }
