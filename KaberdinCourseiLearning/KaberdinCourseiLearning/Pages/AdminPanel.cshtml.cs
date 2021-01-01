@@ -1,4 +1,5 @@
 ﻿using KaberdinCourseiLearning.Areas.Identity;
+using KaberdinCourseiLearning.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Pages
 {
-    [Authorize(Policy = "Admin")]
+    [Authorize(Policy = PolicyNames.POLICY_ADMIN)]
     public class AdminPanelModel : PageModel
     {
         private SignInManager<IdentityUser> signInManager;
@@ -46,18 +47,18 @@ namespace KaberdinCourseiLearning.Pages
                 var user = await userManager.FindByIdAsync(id);
                 switch (FormAction)
                 {
-                    case "Block":
+                    case PanelActions.ACTION_BLOCK:
                         await userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
                         await userManager.UpdateAsync(user);
                         break;
-                    case "Unblock":
+                    case PanelActions.ACTION_UNBLOCK:
                         if (await userManager.GetLockoutEndDateAsync(user) > DateTime.Now)
                         {
                             await userManager.SetLockoutEndDateAsync(user, null);
                             await userManager.UpdateAsync(user);
                         }
                         break;
-                    case "Delete":
+                    case PanelActions.ACTION_DELETE:
                         _ = userManager.DeleteAsync(user);
                         break;
                 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using KaberdinCourseiLearning.Areas.Identity;
 using System;
+using KaberdinCourseiLearning.Data.Models;
 
 namespace KaberdinCourseiLearning
 {
@@ -35,8 +36,8 @@ namespace KaberdinCourseiLearning
             services.AddRazorPages();
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Admin", policy =>
-                    policy.RequireRole("Administrator"));
+                options.AddPolicy(PolicyNames.POLICY_ADMIN, policy =>
+                    policy.RequireRole(RoleNames.ROLE_ADMINISTRATOR));
             });
             services.AddAuthentication().AddFacebook(options =>
             {
