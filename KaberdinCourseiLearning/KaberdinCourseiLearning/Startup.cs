@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using KaberdinCourseiLearning.Areas.Identity;
 using System;
 using KaberdinCourseiLearning.Data.Models;
+using KaberdinCourseiLearning.Helpers;
 
 namespace KaberdinCourseiLearning
 {
@@ -29,6 +30,9 @@ namespace KaberdinCourseiLearning
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => {
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
                 options.User.RequireUniqueEmail = true;
             })
                 .AddRoles<IdentityRole>()
@@ -52,7 +56,7 @@ namespace KaberdinCourseiLearning
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -74,6 +78,7 @@ namespace KaberdinCourseiLearning
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
+            IdentityInitializer.SeedData(userManager, roleManager);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
