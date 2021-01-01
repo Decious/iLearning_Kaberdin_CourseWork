@@ -116,8 +116,8 @@ namespace KaberdinCourseiLearning.Pages
         private async Task<bool> isUserValid()
         {
             var currentUser = await userManager.GetUserAsync(User);
-            var isNotNullOrBanned = await isUserBannedOrRemovedAsync(currentUser);
-            if (isNotNullOrBanned)
+            var isNullOrBanned = await isUserBannedOrRemovedAsync(currentUser);
+            if (!isNullOrBanned)
             {
                 var currentRoles = await userManager.GetRolesAsync(currentUser);
                 if (!currentRoles.Contains(RoleNames.ROLE_ADMINISTRATOR))
