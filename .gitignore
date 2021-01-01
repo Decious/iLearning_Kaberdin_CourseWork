@@ -343,3 +343,5 @@ appsettings.json
 Startup.cs
 
 Migrations/
+
+obj/
