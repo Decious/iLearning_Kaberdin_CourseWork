@@ -17,6 +17,7 @@ namespace KaberdinCourseiLearning.Pages
         private SignInManager<IdentityUser> signInManager;
         private UserManager<IdentityUser> userManager;
         private RoleManager<IdentityRole> roleManager;
+        private string errorMessage;
         public AdminPanelModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,RoleManager<IdentityRole> roleManager)
         {
             this.signInManager = signInManager;
@@ -72,6 +73,7 @@ namespace KaberdinCourseiLearning.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var resultIsSuccess = false;
             var valid = await isUserValid();
             if (!valid) return Redirect("~/Index");
             var ids = Request.Form["Selected"];
@@ -81,37 +83,64 @@ namespace KaberdinCourseiLearning.Pages
                 switch (FormAction)
                 {
                     case PanelActions.ACTION_BLOCK:
-                        await SetLockout(user, DateTime.MaxValue);
+                        resultIsSuccess = await SetLockout(user, DateTime.MaxValue);
                         break;
                     case PanelActions.ACTION_UNBLOCK:
                         if (await userManager.GetLockoutEndDateAsync(user) > DateTime.Now)
                         {
-                            await SetLockout(user, null);
+                            resultIsSuccess = await SetLockout(user, null);
                         }
                         break;
                     case PanelActions.ACTION_DELETE:
-                            await userManager.DeleteAsync(user);
+                            resultIsSuccess = HandleErrors(await userManager.DeleteAsync(user));
                         break;
                     case PanelActions.ACTION_ROLECHANGE:
-                            await ChangeRole(user);
+                            resultIsSuccess = await ChangeRole(user);
                         break;
                 }
             }
             valid = await isUserValid();
-            if (valid) return RedirectToPage();
+            if (valid) return RedirectToPage(new { resultIsSuccess, errorMessage});
             return Redirect("~/Index");
         }
-        private async Task SetLockout(IdentityUser user, DateTime? time)
+        private async Task<bool> SetLockout(IdentityUser user, DateTime? time)
         {
-            await userManager.SetLockoutEndDateAsync(user, time);
-            await userManager.UpdateAsync(user);
+            var res = await userManager.SetLockoutEndDateAsync(user, time);
+            if (res.Succeeded)
+            {
+                var res2 = await userManager.UpdateAsync(user);
+                if (!res2.Succeeded)
+                {
+                    return HandleErrors(res2);
+                }
+            } else
+            {
+                return HandleErrors(res);
+            }
+            return true;
         }
-        private async Task ChangeRole(IdentityUser user)
+        private bool HandleErrors(IdentityResult result)
+        {
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors;
+                foreach (var error in errors)
+                {
+                    errorMessage += error.Code + "." + error.Description;
+                }
+            }
+            return result.Succeeded;
+        }
+        private async Task<bool> ChangeRole(IdentityUser user)
         {
             var currentRoles = await userManager.GetRolesAsync(user);
-            await userManager.RemoveFromRolesAsync(user, currentRoles);
-            if (NewRole != "User")
-                await userManager.AddToRoleAsync(user, NewRole);
+            if(HandleErrors(await userManager.RemoveFromRolesAsync(user, currentRoles)))
+            {
+                if (NewRole != "User")
+                    return HandleErrors(await userManager.AddToRoleAsync(user, NewRole));
+                return true;
+            }
+            return false;
         }
         private async Task<bool> isUserValid()
         {
