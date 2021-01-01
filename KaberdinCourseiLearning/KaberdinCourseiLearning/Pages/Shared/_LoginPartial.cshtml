@@ -16,7 +16,7 @@
             if (await UserManager.IsInRoleAsync(currentUser, "Administrator"))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-page="AdminPanel">Admin-panel</a>
+                    <a class="nav-link text-dark" asp-area="" asp-page="/AdminPanel">Admin-panel</a>
                 </li>
             }
         }

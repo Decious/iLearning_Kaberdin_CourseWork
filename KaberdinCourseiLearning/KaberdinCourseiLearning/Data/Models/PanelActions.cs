@@ -10,5 +10,6 @@ namespace KaberdinCourseiLearning.Data.Models
         public const string ACTION_BLOCK = "Block";
         public const string ACTION_UNBLOCK = "Unblock";
         public const string ACTION_DELETE = "Delete";
+        public const string ACTION_ROLECHANGE = "Role";
     }
 }
