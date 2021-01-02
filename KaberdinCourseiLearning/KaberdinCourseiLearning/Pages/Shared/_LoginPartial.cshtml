@@ -30,3 +30,11 @@
             </li>
         }
     </ul>
+    <ul class="navbar-nav flex-grow-1">
+        @if (SignInManager.IsSignedIn(User) && currentUser != null)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="User" asp-page="/Profile" asp-route-id="@currentUser.UserName">Home</a>
+            </li>
+        }
+    </ul>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KaberdinCourseiLearning", "KaberdinCourseiLearning\KaberdinCourseiLearning.csproj", "{161C5E19-0B89-499F-92CB-4087296D71BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KaberdinCourseiLearning", "KaberdinCourseiLearning\KaberdinCourseiLearning.csproj", "{161C5E19-0B89-499F-92CB-4087296D71BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
