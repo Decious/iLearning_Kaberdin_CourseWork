@@ -345,3 +345,5 @@ Startup.cs
 Migrations/
 
 obj/
+
+**/wwwroot/images/
