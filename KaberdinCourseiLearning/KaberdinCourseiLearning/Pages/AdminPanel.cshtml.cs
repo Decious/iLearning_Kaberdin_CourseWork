@@ -15,11 +15,11 @@ namespace KaberdinCourseiLearning.Pages
     [Authorize(Policy = PolicyNames.POLICY_ADMIN)]
     public class AdminPanelModel : PageModel
     {
-        private SignInManager<IdentityUser> signInManager;
-        private UserManager<IdentityUser> userManager;
+        private SignInManager<CustomUser> signInManager;
+        private UserManager<CustomUser> userManager;
         private RoleManager<IdentityRole> roleManager;
         private string errorMessage;
-        public AdminPanelModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,RoleManager<IdentityRole> roleManager)
+        public AdminPanelModel(SignInManager<CustomUser> signInManager, UserManager<CustomUser> userManager,RoleManager<IdentityRole> roleManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -30,7 +30,7 @@ namespace KaberdinCourseiLearning.Pages
         public String FormAction { get; set; }
         [BindProperty]
         public String NewRole { get; set; }
-        public IdentityUser[] Users { get; set; }
+        public CustomUser[] Users { get; set; }
         public IdentityRole[] Roles { get; set; }
         public IdentityUser CurrentUser { get; set; }
 
@@ -46,7 +46,7 @@ namespace KaberdinCourseiLearning.Pages
         }
         private void PopulateUsers()
         {
-            var usersList = new List<IdentityUser>();
+            var usersList = new List<CustomUser>();
             foreach (var user in userManager.Users)
             {
                 usersList.Add(user);
@@ -61,10 +61,6 @@ namespace KaberdinCourseiLearning.Pages
                 rolesList.Add(role);
             }
             Roles = rolesList.ToArray();
-        }
-        private async Task<bool> isUserBannedOrRemovedAsync(IdentityUser user)
-        {
-            return (user == null || await userManager.IsLockedOutAsync(user));
         }
         private async Task SignOut()
         {
@@ -104,7 +100,7 @@ namespace KaberdinCourseiLearning.Pages
             if (valid) return RedirectToPage(new { resultIsSuccess, errorMessage});
             return Redirect("~/Index");
         }
-        private async Task<bool> SetLockout(IdentityUser user, DateTime? time)
+        private async Task<bool> SetLockout(CustomUser user, DateTime? time)
         {
             var res = await userManager.SetLockoutEndDateAsync(user, time);
             if (res.Succeeded)
@@ -132,7 +128,7 @@ namespace KaberdinCourseiLearning.Pages
             }
             return result.Succeeded;
         }
-        private async Task<bool> ChangeRole(IdentityUser user)
+        private async Task<bool> ChangeRole(CustomUser user)
         {
             var currentRoles = await userManager.GetRolesAsync(user);
             if(HandleErrors(await userManager.RemoveFromRolesAsync(user, currentRoles)))

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,11 +13,11 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
 {
     public class ProfileModel : PageModel
     {
-        private UserManager<IdentityUser> userManager;
+        private UserManager<CustomUser> userManager;
         private IWebHostEnvironment webHostEnvironment;
         public string AvatarPath { get; set; }
         public bool PermittedToChange { get; set; }
-        public ProfileModel(UserManager<IdentityUser> userManager, IWebHostEnvironment webHostEnvironment)
+        public ProfileModel(UserManager<CustomUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             this.userManager = userManager;
             this.webHostEnvironment = webHostEnvironment;

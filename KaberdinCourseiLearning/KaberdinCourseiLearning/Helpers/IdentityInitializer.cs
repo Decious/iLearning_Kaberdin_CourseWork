@@ -9,7 +9,7 @@ namespace KaberdinCourseiLearning.Helpers
 {
     public static class IdentityInitializer
     {
-        public static void SeedData(UserManager<IdentityUser> userManager,RoleManager<IdentityRole> roleManager)
+        public static void SeedData(UserManager<CustomUser> userManager,RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
@@ -22,12 +22,12 @@ namespace KaberdinCourseiLearning.Helpers
                 var r = roleManager.CreateAsync(role).Result;
             }
         }
-        public static void SeedUsers(UserManager<IdentityUser> userManager)
+        public static void SeedUsers(UserManager<CustomUser> userManager)
         {
             var users = userManager.GetUsersInRoleAsync(RoleNames.ROLE_ADMINISTRATOR).Result;
             if (users.Count < 1)
             {
-                var defaultUser = new IdentityUser("adminroot");
+                var defaultUser = new CustomUser("adminroot");
                 defaultUser.Email = "iLearn@Secret.root";
                 var res = userManager.CreateAsync(defaultUser, "adminroot").Result;
                 if (res.Succeeded)

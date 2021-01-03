@@ -9,17 +9,17 @@ namespace KaberdinCourseiLearning.Helpers
 {
     public class UserValidator
     {
-        private UserManager<IdentityUser> userManager;
-        public UserValidator(UserManager<IdentityUser> userManager)
+        private UserManager<CustomUser> userManager;
+        public UserValidator(UserManager<CustomUser> userManager)
         {
             this.userManager = userManager;
         }
-        public async Task<bool> isUserValidAsync(IdentityUser user)
+        public async Task<bool> isUserValidAsync(CustomUser user)
         {
             return user != null && !await userManager.IsLockedOutAsync(user);
         }
 
-        public async Task<bool> isUserOwnerOrAdminAsync(IdentityUser user,string ownerName)
+        public async Task<bool> isUserOwnerOrAdminAsync(CustomUser user,string ownerName)
         {
             if(await isUserValidAsync(user))
             {

@@ -5,8 +5,9 @@
 }
 
 @using Microsoft.AspNetCore.Identity;
-@inject UserManager<IdentityUser> UserManager
-@inject SignInManager<IdentityUser> SignInManager
+@using KaberdinCourseiLearning.Data.Models;
+@inject UserManager<CustomUser> UserManager
+@inject SignInManager<CustomUser> SignInManager
 @inject RoleManager<IdentityRole> RoleManager
 
 <form name="formTable" method="post">
