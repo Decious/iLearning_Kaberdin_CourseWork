@@ -9,7 +9,11 @@
 @inject UserManager<CustomUser> UserManager
 @inject SignInManager<CustomUser> SignInManager
 @inject RoleManager<IdentityRole> RoleManager
-
+<style>
+    td{
+        vertical-align:middle !important;
+    }
+</style>
 <form name="formTable" method="post">
     <div id="AlertMessage" role="alert">
         
@@ -56,7 +60,7 @@
                 var userRoles = await UserManager.GetRolesAsync(user);
                 <tr class="@Style text-center">
                     <td class="align-middle text-center"><input type="checkbox" name="Selected" value="@user.Id" /></td>
-                    <td>@user.UserName</td>
+                    <td><a class="nav-link text-dark" asp-area="User" asp-page="/Profile" asp-route-name="@user.UserName">@user.UserName</a></td>
                     <td>@user.Email</td>
                     <td>
                         <select class="form-control" name="SelectedRole" id="@user.Id" onchange="return roleChanged(this)">
