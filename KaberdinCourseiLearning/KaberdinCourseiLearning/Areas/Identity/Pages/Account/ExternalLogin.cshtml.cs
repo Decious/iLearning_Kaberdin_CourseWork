@@ -42,6 +42,8 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+            [Required]
+            [Display(Prompt ="User name")]
             public string Name { get; set; }
         }
 
@@ -114,7 +116,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new CustomUser { UserName = Input.Email, Email = Input.Email };
+                var user = new CustomUser { UserName = Input.Name, Email = Input.Email };
 
                 var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -129,7 +131,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (userManager.Options.SignIn.RequireConfirmedAccount)
                         {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email, Name=Input.Name });
+                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
                         }
 
                         await signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
