@@ -19,61 +19,63 @@
                 <div class="card m-auto" style="width:18rem;">
                     <h4 id="UserName" class="m-auto">@Model.PageUser.UserName</h4>
                     <div id="ProfilePicture">
-                        <img src="~/images/thumb_user_default.png" class="img-thumbnail" alt="...">
-                        <button type="button" id="AvatarChange" class="btn bg-transparent position-absolute" style="display:none;" data-toggle="modal" data-target="#AvatarModal">
-                            <i class="far fa-edit"></i>
-                        </button>
+                        @if (System.IO.File.Exists(Model.AvatarPath))
+                        {
+                            var image = Model.PageUser.Id + ".png";
+                            <img src="~/images/User/Avatar/@image" class="img-thumbnail" alt="..." style="width:205px;">
+                        }
+                        else
+                        {
+                            <img src="~/images/thumb_user_default.png" class="img-thumbnail" alt="..." style="width:205px;">
+                        }
+                        @if (Model.PermittedToChange)
+                        {
+                            <button type="button" id="AvatarChange" class="btn bg-transparent position-absolute" style="display:none;" data-toggle="modal" data-target="#AvatarModal">
+                                <i class="far fa-edit"></i>
+                            </button>
+                        }
                     </div>
-                    <div class="card-footer">
-                        <div class="card-text">
-                            <pre class="text-break text-wrap text-truncate" style="max-height: 80px;">
-                            Magician was walking over the earth.
-                            And he tried to save those who were in need.
-                        </pre>
+                    <div class="card-footer" id="ProfileDescription" style="position:relative;">
+                        <div class="card-text" id="DescriptionContent">
+                            <p class="text-break text-wrap text-truncate" style="max-height: 80px;">Magician was walking over the earth.And he tried to save those who were in need.</p>
                         </div>
+                        @if (Model.PermittedToChange)
+                        {
+                            <button type="button" id="DescChange" class="btn bg-transparent position-absolute" style="display:none; top:0; right:0;">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button type="button" id="DescAccept" class="btn bg-transparent position-absolute" style="display:none; top:0; right:0;">
+                                <i class="far fa-check-square"></i>
+                            </button>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="AvatarModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">Upload your new avatar</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="dropzone" id="AvatarDropzone" method="post"  asp-page-handler="UploadAvatar"></form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    @if (Model.PermittedToChange)
+    {
+        <div class="modal fade" id="AvatarModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">Upload your new avatar</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="dropzone" id="AvatarDropzone" method="post" asp-page-handler="UploadAvatar"></form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 <script src="~/lib/dropzone/min/dropzone.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
-    $("#ProfilePicture").mouseenter(function () {
-        $("#AvatarChange").show(0.5);
-    })
-    $("#ProfilePicture").mouseleave(function () {
-        $("#AvatarChange").hide(0.5);
-    })
-    Dropzone.options.AvatarDropzone = {
-        maxFilesize: 4,
-        maxFiles: 1,
-        acceptedFiles: "image/*",
-        init: function () {
-            this.on("success", function (event) { location.reload(); });
-            this.on("sending", function (file, xhr, formData) {
-                formData.append("name", $("#UserName").text());
-            });
-        }
-    }
-</script>
+<script src="~/js/Profile.js"></script>
