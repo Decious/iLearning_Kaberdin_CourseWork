@@ -10,9 +10,13 @@ namespace KaberdinCourseiLearning.Data.Models
     {
         public CustomUser() : base()
         {
+            HomePage = new UserPage() { Description = "I'm a default user!" };
+            ItemCollections = new List<ProductCollection>();
         }
         public CustomUser(string userName) : base(userName)
         {
+            HomePage = new UserPage() { Description = "I'm a default user!" };
+            ItemCollections = new List<ProductCollection>();
         }
 
         public UserPage HomePage { get; set; }

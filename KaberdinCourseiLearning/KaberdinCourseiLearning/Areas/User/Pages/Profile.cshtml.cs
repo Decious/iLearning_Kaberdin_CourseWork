@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
 using Microsoft.AspNetCore.Hosting;
@@ -15,14 +16,16 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
     {
         private UserManager<CustomUser> userManager;
         private IWebHostEnvironment webHostEnvironment;
+        private ApplicationDbContext context;
         public string AvatarPath { get; set; }
         public bool PermittedToChange { get; set; }
-        public ProfileModel(UserManager<CustomUser> userManager, IWebHostEnvironment webHostEnvironment)
+        public ProfileModel(UserManager<CustomUser> userManager, IWebHostEnvironment webHostEnvironment,ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.webHostEnvironment = webHostEnvironment;
+            this.context = context;
         }
-        public IdentityUser PageUser { get; set; }
+        public CustomUser PageUser { get; set; }
         public async Task<IActionResult> OnGetAsync(string name)
         {
             if(name != null)
@@ -34,7 +37,12 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
                     AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar", PageUser.Id + ".png");
                     var guest = await userManager.GetUserAsync(User);
                     PermittedToChange = await new UserValidator(userManager).isUserOwnerOrAdminAsync(guest, name);
-                    return Page();
+                    if (PageUser.HomePage != null && PageUser.ItemCollections != null)
+                    {
+                        return Page();
+                    }
+                    else
+                        return Redirect("~/Index");
                 }
             }
             return Redirect("~/Index");

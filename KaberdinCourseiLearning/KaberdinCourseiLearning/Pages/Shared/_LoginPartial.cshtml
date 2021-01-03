@@ -1,10 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using KaberdinCourseiLearning.Areas.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using KaberdinCourseiLearning.Data.Models;
+@inject SignInManager<CustomUser> SignInManager
+@inject UserManager<CustomUser> UserManager
 
     <ul class="navbar-nav">
-        @{IdentityUser currentUser = await UserManager.GetUserAsync(User);}
+        @{CustomUser currentUser = await UserManager.GetUserAsync(User);}
         @if (SignInManager.IsSignedIn(User) && currentUser != null)
         {
             <li class="nav-item">

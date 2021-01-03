@@ -6,7 +6,6 @@ using KaberdinCourseiLearning.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using KaberdinCourseiLearning.Areas.Identity;
 using System;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
