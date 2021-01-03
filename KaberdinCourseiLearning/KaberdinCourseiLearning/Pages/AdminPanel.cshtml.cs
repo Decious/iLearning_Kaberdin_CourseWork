@@ -1,5 +1,6 @@
 ﻿using KaberdinCourseiLearning.Areas.Identity;
 using KaberdinCourseiLearning.Data.Models;
+using KaberdinCourseiLearning.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -74,7 +75,7 @@ namespace KaberdinCourseiLearning.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             var resultIsSuccess = false;
-            var valid = await isUserValid();
+            var valid = await isUserAdmin();
             if (!valid) return Redirect("~/Index");
             var ids = Request.Form["Selected"];
             foreach (String id in ids)
@@ -99,7 +100,7 @@ namespace KaberdinCourseiLearning.Pages
                         break;
                 }
             }
-            valid = await isUserValid();
+            valid = await isUserAdmin();
             if (valid) return RedirectToPage(new { resultIsSuccess, errorMessage});
             return Redirect("~/Index");
         }
@@ -142,23 +143,19 @@ namespace KaberdinCourseiLearning.Pages
             }
             return false;
         }
-        private async Task<bool> isUserValid()
+        private async Task<bool> isUserAdmin()
         {
             var currentUser = await userManager.GetUserAsync(User);
-            var isNullOrBanned = await isUserBannedOrRemovedAsync(currentUser);
-            if (!isNullOrBanned)
+            var validator = new UserValidator(userManager);
+            var isValid = await validator.isUserValidAsync(currentUser);
+            if (isValid)
             {
-                var currentRoles = await userManager.GetRolesAsync(currentUser);
-                if (!currentRoles.Contains(RoleNames.ROLE_ADMINISTRATOR))
-                {
-                    return false;
-                }
+                return await userManager.IsInRoleAsync(currentUser, RoleNames.ROLE_ADMINISTRATOR);
             } else
             {
                 await SignOut();
                 return false;
             }
-            return true;
         }
 
     }
