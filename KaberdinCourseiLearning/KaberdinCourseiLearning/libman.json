@@ -17,6 +17,10 @@
     {
       "library": "markdown-it@12.0.4",
       "destination": "wwwroot/lib/markdown-it/"
+    },
+    {
+      "library": "dropzone@5.7.2",
+      "destination": "wwwroot/lib/dropzone/"
     }
   ]
 }
