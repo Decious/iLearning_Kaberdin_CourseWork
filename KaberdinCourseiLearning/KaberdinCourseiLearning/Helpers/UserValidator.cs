@@ -1,4 +1,5 @@
-﻿using KaberdinCourseiLearning.Data.Models;
+﻿using KaberdinCourseiLearning.Data;
+using KaberdinCourseiLearning.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

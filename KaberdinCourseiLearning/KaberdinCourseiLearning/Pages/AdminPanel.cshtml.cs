@@ -1,4 +1,5 @@
 ﻿using KaberdinCourseiLearning.Areas.Identity;
+using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
 using Microsoft.AspNetCore.Authentication;
