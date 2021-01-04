@@ -9,6 +9,11 @@ namespace KaberdinCourseiLearning.Data.Models
 {
     public class ProductCollection
     {
+        public ProductCollection()
+        {
+            Products = new List<Product>();
+            CreationDate = DateTime.UtcNow;
+        }
         [Key]
         public int CollectionID { get; set; }
         [ForeignKey("User")]
@@ -17,6 +22,7 @@ namespace KaberdinCourseiLearning.Data.Models
         public string Name { get; set; }
         public string Theme { get; set; }
         public string? Description { get; set; }
+        public DateTime CreationDate { get; set; }
         public ICollection<Product> Products { get; set; }
     }
 }
