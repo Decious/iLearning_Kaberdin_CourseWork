@@ -16,9 +16,9 @@ namespace KaberdinCourseiLearning.Pages
     [Authorize(Policy = PolicyNames.POLICY_ADMIN)]
     public class AdminPanelModel : PageModel
     {
-        private SignInManager<CustomUser> signInManager;
-        private UserManager<CustomUser> userManager;
-        private RoleManager<IdentityRole> roleManager;
+        private readonly SignInManager<CustomUser> signInManager;
+        private readonly UserManager<CustomUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private string errorMessage;
         public AdminPanelModel(SignInManager<CustomUser> signInManager, UserManager<CustomUser> userManager,RoleManager<IdentityRole> roleManager)
         {
@@ -72,7 +72,7 @@ namespace KaberdinCourseiLearning.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             var resultIsSuccess = false;
-            var valid = await isUserAdmin();
+            var valid = await IsUserAdmin();
             if (!valid) return Redirect("~/Index");
             var ids = Request.Form["Selected"];
             foreach (String id in ids)
@@ -97,7 +97,7 @@ namespace KaberdinCourseiLearning.Pages
                         break;
                 }
             }
-            valid = await isUserAdmin();
+            valid = await IsUserAdmin();
             if (valid) return RedirectToPage(new { resultIsSuccess, errorMessage});
             return Redirect("~/Index");
         }
@@ -140,11 +140,11 @@ namespace KaberdinCourseiLearning.Pages
             }
             return false;
         }
-        private async Task<bool> isUserAdmin()
+        private async Task<bool> IsUserAdmin()
         {
             var currentUser = await userManager.GetUserAsync(User);
             var validator = new UserValidator(userManager);
-            var isValid = await validator.isUserValidAsync(currentUser);
+            var isValid = await validator.IsUserValidAsync(currentUser);
             if (isValid)
             {
                 return await userManager.IsInRoleAsync(currentUser, RoleNames.ROLE_ADMINISTRATOR);

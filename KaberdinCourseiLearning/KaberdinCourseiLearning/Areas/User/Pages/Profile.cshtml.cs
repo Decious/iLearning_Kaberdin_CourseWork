@@ -48,7 +48,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             var result = (PageUser != null && guestUser != null);
             if (result)
             {
-                PermittedToChange = await new UserValidator(userManager).isUserOwnerOrAdminAsync(guestUser, pageUserName);
+                PermittedToChange = await new UserValidator(userManager).IsUserOwnerOrAdminAsync(guestUser, pageUserName);
             }
             return result;
         }
