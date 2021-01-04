@@ -42,8 +42,8 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         }
         private async Task<bool> TryLoadProperties(string pageUserName)
         {
-            AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar", PageUser.Id + ".png");
             PageUser = await userManager.FindByNameAsync(pageUserName);
+            AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar", PageUser.Id + ".png");
             guestUser = await userManager.GetUserAsync(User);
             var result = (PageUser != null && guestUser != null);
             if (result)
