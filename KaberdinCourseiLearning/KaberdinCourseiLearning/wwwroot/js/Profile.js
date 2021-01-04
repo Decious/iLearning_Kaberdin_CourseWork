@@ -55,17 +55,23 @@ function unBindMouseEvents(element) {
 
 function prepareEditAccept() {
     buttonAccept.on('click', function () {
-        let newText = description.children("textarea").val();
-        setDescText(newText);
-        prepareMouseEvents(invoker, buttonEdit);
-        buttonAccept.hide();
+        acceptDescription();
     })
 }
 function acceptDescription() {
     let newText = description.children("textarea").val();
+    sendDescToServer(newText);
     setDescText(newText);
     prepareMouseEvents(invoker, buttonEdit);
     buttonAccept.hide();
+}
+function sendDescToServer(newText) {
+    $.ajax({
+        type: "POST",
+        url: '/User/Profile?handler=AcceptDescription',
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+        data: { newText: newText, name: $("#UserName").text()}
+    });
 }
 function setDescText(newText) {
     description.html("<p style='max-height: 80px' class='text-break text-wrap text-truncate' >" + newText + "</p>");
