@@ -19,6 +19,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private ApplicationDbContext context;
         private CustomUser guestUser;
         public string AvatarPath { get; set; }
+        public string BGPath { get; set; }
         public bool PermittedToChange { get; set; }
         public CustomUser PageUser { get; set; }
         public ProfileModel(UserManager<CustomUser> userManager, IWebHostEnvironment webHostEnvironment, ApplicationDbContext context)
@@ -34,7 +35,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
                 var loaded = await TryLoadProperties(name);
                 if (loaded)
                 {
-                    await LoadProfileReferences();
+                    await LoadCustomUserReferences();
                     return Page();
                 }
             }
@@ -44,6 +45,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             PageUser = await userManager.FindByNameAsync(pageUserName);
             AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar");
+            BGPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "collection", "background");
             guestUser = await userManager.GetUserAsync(User);
             var result = (PageUser != null && guestUser != null);
             if (result)
@@ -52,7 +54,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             }
             return result;
         }
-        private async Task LoadProfileReferences()
+        private async Task LoadCustomUserReferences()
         {
             await context.Entry(PageUser).Reference(i => i.HomePage).LoadAsync();
             await context.Entry(PageUser).Collection(i => i.ItemCollections).LoadAsync();

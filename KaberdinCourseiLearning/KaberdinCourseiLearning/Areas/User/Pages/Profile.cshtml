@@ -14,61 +14,67 @@
             </div>
             @if (Model.PermittedToChange)
             {
-                <button name="AddCollectionBtn" asp-area="User" asp-page="NewCollection" class="row btn btn-primary"><i class="fa fa-plus-square"></i> Add collection</button>
+                <button name="AddCollectionBtn" asp-area="Collection" asp-page="Create" class="row btn btn-primary"><i class="fa fa-plus-square"></i> Add collection</button>
             }
-            <div class="row">
-                @{
-                    if (Model.PageUser.ItemCollections.Count == 0)
+        <div class="row">
+            @{
+                if (Model.PageUser.ItemCollections.Count == 0)
+                {
+                    <h2>No collections to show.</h2>
+                }
+                else
+                {
+                    foreach (var collection in Model.PageUser.ItemCollections)
                     {
-                        <h2>No collections to show.</h2>
-                    }
-                    else
-                    {
-                        foreach (var collection in Model.PageUser.ItemCollections)
+                        var bgImage = $"../images/collection_default.png";
+                        @if (System.IO.File.Exists($"{Model.BGPath}\\{collection.CollectionID}.png"))
                         {
-                            <div class="container position-relative d-flex flex-column" name="Collection" id="CollectionID">
-                                <div class="row bg-info" name="CollectionAuthor">
-                                    <div class="col-2 m-h-100" name="CollectionAuthorAvatar">
-                                        @if (System.IO.File.Exists($"{Model.AvatarPath}\\{collection.UserID}.png"))
-                                        {
-                                            var image = collection.UserID + ".png";
-                                            <img src="~/images/User/Avatar/@image" class="img-thumbnail m-h-100" alt="...">
-                                        }
-                                        else
-                                        {
-                                            <img src="~/images/thumb_user_default.png" class="img-thumbnail m-h-100" alt="...">
-                                        }
-                                    </div>
-                                    <div class="col-9" name="CollectionAuthorName">
-                                        <a name="CollectionAuthor" asp-area="User" asp-page="/Profile" asp-route-name="@Model.PageUser.UserName" class="text-break font-weight-bold text-light text-left">@Model.PageUser.UserName</a>
-                                    </div>
-                                </div>
-                                <div class="row Blk-Trslcnt-Bg" name="HeaderData">
-                                    <div class="col-6">
-                                        <p name="CollectionName" class="font-weight-bold text-light">@collection.Name</p>
-                                    </div>
-                                    <div class="col-6">
-                                        <p name="CollectionTheme" class="font-weight-bold text-light text-right">@collection.Theme</p>
-                                    </div>
-                                </div>
-                                <div class="row Blk-Trslcnt-Bg flex-grow-1 overflow-hidden text-light" name="Description">
-                                    @collection.Description
-                                </div>
-                                <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
-                                    <button class="btn btn-light position-absolute" name="ShowDetail"><i class="fa fa-arrow-down"></i></button>
-                                    @if (Model.PermittedToChange)
+                            bgImage = $"../images/collection/background/{collection.CollectionID}.png";
+                        }
+                        var css = $"background-image: url({bgImage});";
+                        <div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="CollectionID">
+                            <div class="row bg-info" name="CollectionAuthor">
+                                <div class="col-2 m-h-100" name="CollectionAuthorAvatar">
+                                    @if (System.IO.File.Exists($"{Model.AvatarPath}\\{collection.UserID}.png"))
                                     {
-                                        <div class="position-absolute" name="buttonGroup">
-                                            <button class="btn btn-light" name="Delete"><i class="fa fa-trash"></i></button>
-                                            <button class="btn btn-light" name="Edit"><i class="fa fa-edit"></i></button>
-                                        </div>
+                                        var image = collection.UserID + ".png";
+                                        <img src="~/images/User/Avatar/@image" class="img-thumbnail m-h-100" alt="...">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/thumb_user_default.png" class="img-thumbnail m-h-100" alt="...">
                                     }
                                 </div>
+                                <div class="col-9" name="CollectionAuthorName">
+                                    <a name="CollectionAuthor" asp-area="User" asp-page="/Profile" asp-route-name="@Model.PageUser.UserName" class="text-break font-weight-bold text-light text-left">@Model.PageUser.UserName</a>
+                                </div>
                             </div>
-                        }
+                            <div class="row Blk-Trslcnt-Bg" name="HeaderData">
+                                <div class="col-6">
+                                    <p name="CollectionName" class="font-weight-bold text-light">@collection.Name</p>
+                                </div>
+                                <div class="col-6">
+                                    <p name="CollectionTheme" class="font-weight-bold text-light text-right">@collection.Theme</p>
+                                </div>
+                            </div>
+                            <div class="row Blk-Trslcnt-Bg flex-grow-1 overflow-hidden text-light" name="Description">
+                                @collection.Description
+                            </div>
+                            <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
+                                <button class="btn btn-light position-absolute" name="ShowDetail"><i class="fa fa-arrow-down"></i></button>
+                                @if (Model.PermittedToChange)
+                                {
+                                    <div class="position-absolute" name="buttonGroup">
+                                        <button class="btn btn-light" name="Delete"><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-light" name="Edit"><i class="fa fa-edit"></i></button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     }
                 }
-            </div>
+            }
+        </div>
         </div>
         <div id="ProfileInfo" class="col-md-3 order-first order-md-0 text-center">
             <div class="row">
