@@ -43,7 +43,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private async Task<bool> TryLoadProperties(string pageUserName)
         {
             PageUser = await userManager.FindByNameAsync(pageUserName);
-            AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar", PageUser.Id + ".png");
+            AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar");
             guestUser = await userManager.GetUserAsync(User);
             var result = (PageUser != null && guestUser != null);
             if (result)
@@ -55,6 +55,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private async Task LoadProfileReferences()
         {
             await context.Entry(PageUser).Reference(i => i.HomePage).LoadAsync();
+            await context.Entry(PageUser).Collection(i => i.ItemCollections).LoadAsync();
         }
         public async Task<IActionResult> OnPostUploadAvatar(IFormFile file, string name)
         {
@@ -63,7 +64,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             {
                 if (PermittedToChange)
                 {
-                    await TrySaveFormFile(AvatarPath, file);
+                    await TrySaveFormFile($"{AvatarPath}\\{PageUser.Id}.png", file);
                     return new OkResult();
                 }
             }
@@ -101,7 +102,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
 
         private async Task ChangeDescription(string newText)
         {
-            await LoadProfileReferences();
+            await context.Entry(PageUser).Reference(i => i.HomePage).LoadAsync();
             PageUser.HomePage.Description = newText;
             await userManager.UpdateAsync(PageUser);
         }

@@ -74,7 +74,7 @@ function sendDescToServer(newText) {
     });
 }
 function setDescText(newText) {
-    description.html("<p style='max-height: 80px' class='text-break text-wrap text-truncate' >" + newText + "</p>");
+    description.html("<p class='text-break text-wrap text-truncate' >" + newText + "</p>");
 }
 function prepareDropzone() {
     Dropzone.options.AvatarDropzone = {

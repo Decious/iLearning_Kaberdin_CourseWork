@@ -1,0 +1,50 @@
+﻿button[name="ShowDetail"]{
+    Bottom: 0;
+    margin: auto;
+    Left: 0;
+    Right: 0;
+}
+div[name="buttonGroup"] {
+    Bottom: 5px;
+    Right: 15px;
+}
+div[name="ProfileCard"] {
+    width: 18rem;
+}
+div[name="Collection"] {
+    margin-right: 3rem;
+    margin-bottom: 15px;
+    background-image: url(../images/collection_default.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:240px;
+}
+div[name="CollectionControls"] {
+    min-height: 45px;
+}
+div[name="CollectionAuthor"]{
+    height:40px;
+    max-height:40px;
+}
+.m-h-100{
+    max-height:100%;
+}
+#ProfilePicture > img {
+    width: 205px;
+}
+#ProfileDescription{
+    position:relative;
+    height:140px;
+}
+#ProfileDescription > button {
+    display: none;
+    top: 0;
+    right: 0;
+}
+#DescriptionContent {
+    max-height: 115px;
+}
+.Blk-Trslcnt-Bg {
+    background: rgba(0,0,0,0.3);
+}
+
