@@ -1,0 +1,70 @@
+﻿@page
+@model KaberdinCourseiLearning.Areas.Collection.Pages.CreateModel
+@{
+}
+@Html.AntiForgeryToken()
+<link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
+<h2>Collection creation</h2>
+
+<div>
+    <h4>Create your collection</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_CreatePlan" />
+        </div>
+        <div class="col-md-9">
+            <form id="CollectionForm" method="post">
+                <div class="row" name="PlanItem">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Input.Name"></label>
+                            <input asp-for="Input.Name" id="Name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Theme"></label>
+                            <select asp-for="Input.Theme" id="Theme" class="form-control">
+                                <option>Books</option>
+                                <option>Alcohol</option>
+                                <option>Pens</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Description"></label>
+                            <textarea asp-for="Input.Description" id="Description" class="form-control" style="resize:none;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Background Image</label>
+                            <div id="backgroundImageDz" class="dropzone">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-none" name="PlanItem">
+                    <div class="col-md-6">
+                        <h4>Add fields to items in this collection.</h4>
+                        <h5 class="col-5 p-0 d-inline-block text-center font-weight-bold">Name</h5>
+                        <h5 class="col-6 p-0 d-inline-block text-center font-weight-bold">Type</h5>
+                        <div id="Items">
+                        </div>
+                        <button id="ItemAdd" onclick="return onItemAdd()" class="btn btn-primary m-2"><i class="fa fa-plus-square"></i> Add item field</button>
+                    </div>
+                </div>
+                <div class="row d-none" name="PlanItem">
+                    <div class="col-md-6">
+                        <h4>Here is how your collection looks right now:</h4>
+                        <ul id="PublishInfo">
+                        </ul>
+                    </div>
+                </div>
+                <button id="Previous" onclick="return onPrev()" class="btn btn-primary disabled">Previous</button>
+                <button id="Next" onclick="return onNext()" class="btn btn-primary">Next</button>
+                <button id="SubmitBtn" type="submit" class="btn btn-primary d-none">Publish!</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/CreatePlanNavigation.js"></script>
+<script src="~/lib/dropzone/min/dropzone.min.js"></script>
+<script src="~/js/Create.js"></script>
