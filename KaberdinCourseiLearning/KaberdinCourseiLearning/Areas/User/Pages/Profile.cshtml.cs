@@ -32,20 +32,20 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (name != null)
             {
-                var loaded = await TryLoadProperties(name);
+                var loaded = await TryLoadPropertiesAsync(name);
                 if (loaded)
                 {
-                    await LoadCustomUserReferences();
+                    await LoadCustomUserReferencesAsync();
                     return Page();
                 }
             }
             return Redirect("~/Index");
         }
-        private async Task<bool> TryLoadProperties(string pageUserName)
+        private async Task<bool> TryLoadPropertiesAsync(string pageUserName)
         {
             PageUser = await userManager.FindByNameAsync(pageUserName);
             AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar");
-            BGPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "collection", "background");
+            BGPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "Collection", "Background");
             guestUser = await userManager.GetUserAsync(User);
             var result = (PageUser != null && guestUser != null);
             if (result)
@@ -54,25 +54,25 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             }
             return result;
         }
-        private async Task LoadCustomUserReferences()
+        private async Task LoadCustomUserReferencesAsync()
         {
             await context.Entry(PageUser).Reference(i => i.HomePage).LoadAsync();
             await context.Entry(PageUser).Collection(i => i.ItemCollections).LoadAsync();
         }
         public async Task<IActionResult> OnPostUploadAvatar(IFormFile file, string name)
         {
-            var loaded = await TryLoadProperties(name);
+            var loaded = await TryLoadPropertiesAsync(name);
             if (loaded)
             {
                 if (PermittedToChange)
                 {
-                    await TrySaveFormFile($"{AvatarPath}\\{PageUser.Id}.png", file);
+                    await TrySaveFormFileAsync($"{AvatarPath}\\{PageUser.Id}.png", file);
                     return new OkResult();
                 }
             }
             return Forbid();
         }
-        private async Task TrySaveFormFile(string path, IFormFile file)
+        private async Task TrySaveFormFileAsync(string path, IFormFile file)
         {
             try {
                 if (file.Length > 0)
@@ -90,19 +90,19 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         }
         public async Task<IActionResult> OnPostAcceptDescription(string newText, string name)
         {
-            var loaded = await TryLoadProperties(name);
+            var loaded = await TryLoadPropertiesAsync(name);
             if (loaded)
             {
                 if (PermittedToChange)
                 {
-                    await ChangeDescription(newText);
+                    await ChangeDescriptionAsync(newText);
                     return new OkResult();
                 }
             }
             return Forbid();
         }
 
-        private async Task ChangeDescription(string newText)
+        private async Task ChangeDescriptionAsync(string newText)
         {
             await context.Entry(PageUser).Reference(i => i.HomePage).LoadAsync();
             PageUser.HomePage.Description = newText;
