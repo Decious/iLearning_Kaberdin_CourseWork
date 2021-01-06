@@ -25,8 +25,11 @@ div[name="CollectionAuthor"]{
     height:40px;
     max-height:40px;
 }
-.m-h-100{
-    max-height:100%;
+div[name="Description"] *{
+    color: inherit !important;
+}
+.m-h-100 {
+    max-height: 100%;
 }
 #ProfilePicture > img {
     width: 205px;
