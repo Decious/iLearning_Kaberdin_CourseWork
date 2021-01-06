@@ -15,6 +15,7 @@
         </div>
         <div class="col-md-9">
             <form id="CollectionForm" method="post">
+                <input type="hidden" asp-for="Input.PageUserName" value="@Model.PageUser.UserName"/>
                 <div class="row" name="PlanItem">
                     <div class="col-md-6">
                         <div class="form-group">

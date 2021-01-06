@@ -18,18 +18,14 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
     {
         private UserManager<CustomUser> userManager;
         private ApplicationDbContext context;
-        private SignInManager<CustomUser> signInManager;
-        private CustomUser PageUser;
         private IWebHostEnvironment webHostEnvironment;
-        public CreateModel(UserManager<CustomUser> userManager, ApplicationDbContext context,SignInManager<CustomUser> signInManager, IWebHostEnvironment webHostEnvironment)
+        public CreateModel(UserManager<CustomUser> userManager, ApplicationDbContext context,IWebHostEnvironment webHostEnvironment)
         {
             this.userManager = userManager;
             this.context = context;
-            this.signInManager = signInManager;
             this.webHostEnvironment = webHostEnvironment;
         }
-        [TempData]
-        public string StatusMessage { get; set; }
+        public CustomUser PageUser { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -43,23 +39,25 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             public string Description { get; set; }
             public string[] ColumnNames { get; set; }
             public string[] ColumnTypes { get; set; }
+            public string PageUserName { get; set; }
         }
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string name)
         {
-            if(signInManager.IsSignedIn(User))
+            if (name != null)
             {
-                if (await isPermitted())
+                if (await isPermitted(name))
                 {
                     await LoadReferences();
                     return Page();
                 }
+                return Forbid();
             }
-            return Forbid();
+            return Redirect("~/Index");
         }
 
-        private async Task<bool> isPermitted()
+        private async Task<bool> isPermitted(string name)
         {
-            PageUser = await userManager.GetUserAsync(User);
+            PageUser = await userManager.FindByNameAsync(name);
             var validator = new UserValidator(userManager);
             return await validator.IsUserValidAsync(PageUser);
         }
@@ -69,38 +67,26 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         }
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
-            if (signInManager.IsSignedIn(User))
+            if (await isPermitted(Input.PageUserName) && !String.IsNullOrWhiteSpace(Input.Name))
             {
-                if (await isPermitted() && !String.IsNullOrWhiteSpace(Input.Name))
-                {
-                    var CollectionId = await CreateCollectionAsync(file);
-                    if (file != null) return new OkObjectResult(CollectionId);
-                    return RedirectToPage("/Index", new { id = CollectionId });
-                }
+                var CollectionId = await CreateCollectionAsync(file);
+                if (file != null) return new OkObjectResult(CollectionId);
+                return RedirectToPage("/Index", new { id = CollectionId });
             }
             return Forbid();
         }
         private async Task<int> CreateCollectionAsync(IFormFile backgroundImage)
         {
-            var bgPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "Collection", "Background");
-            var collection = await SaveCollectionData();
-            var columns = GetCollectionColumns(collection.CollectionID);
-            if(columns != null)
-            {
-                context.AddRange(columns);
-                await context.SaveChangesAsync();
-            }
-            await TrySaveFormFileAsync($"{bgPath}\\{collection.CollectionID}.png", backgroundImage);
-            return collection.CollectionID;
-        }
-        private async Task<ProductCollection> SaveCollectionData()
-        {
+            var collectionHelper = new CollectionHelper(webHostEnvironment, context);
             var newCollection = new ProductCollection() { Description = Input.Description, Name = Input.Name, Theme = Input.Theme, UserID = PageUser.Id };
-            context.Add(newCollection);
-            await context.SaveChangesAsync();
-            return newCollection;
+            var collectionID = await collectionHelper.CreateCollectionAsync(newCollection);
+            var columns = GetCollectionColumns(collectionID);
+            if(columns != null)
+                await collectionHelper.AddCollectionColumnsAsync(columns);
+            await collectionHelper.UpdateBackgroundAsync(collectionID,backgroundImage);
+            return collectionID;
         }
-        private List<ProductCollectionColumn> GetCollectionColumns(int CollectionID)
+        private ProductCollectionColumn[] GetCollectionColumns(int CollectionID)
         {
             if (Input.ColumnNames == null) return null;
             var columns = new List<ProductCollectionColumn>();
@@ -114,25 +100,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
                 };
                 columns.Add(column);
             }
-            return columns;
-        }
-        private async Task TrySaveFormFileAsync(string path, IFormFile file)
-        {
-            if (file == null) return;
-            try
-            {
-                if (file.Length > 0)
-                {
-                    using (var stream = System.IO.File.Create(path))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[COLLECTION]Exception during file upload.\n {e.Message}");
-            }
+            return columns.ToArray();
         }
     }
 }

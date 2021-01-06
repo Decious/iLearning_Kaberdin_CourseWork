@@ -14,7 +14,7 @@
             </div>
             @if (Model.PermittedToChange)
             {
-                <a name="AddCollectionBtn" asp-area="Collection" asp-page="Create" class="row btn btn-primary"><i class="fa fa-plus-square"></i> Add collection</a>
+                <a name="AddCollectionBtn" asp-area="Collection" asp-page="Create" asp-route-name="@Model.PageUser.UserName" class="row btn btn-primary"><i class="fa fa-plus-square"></i> Add collection</a>
             }
             <div class="row">
                 @{
@@ -29,10 +29,10 @@
                             var bgImage = $"../images/collection_default.png";
                             @if (System.IO.File.Exists($"{Model.BGPath}\\{collection.CollectionID}.png"))
                             {
-                                bgImage = $"../images/collection/background/{collection.CollectionID}.png";
+                                bgImage = $"{Model.BGPath}/{collection.CollectionID}.png";
                             }
                             var css = $"background-image: url({bgImage});";
-                            <div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="CollectionID">
+                            <div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="@collection.CollectionID">
                                 <div class="row bg-info" name="CollectionAuthor">
                                     <div class="col-2 m-h-100" name="CollectionAuthorAvatar">
                                         @if (System.IO.File.Exists($"{Model.AvatarPath}\\{collection.UserID}.png"))
@@ -65,7 +65,7 @@
                                     @if (Model.PermittedToChange)
                                     {
                                         <div class="position-absolute" name="buttonGroup">
-                                            <button class="btn btn-light" name="Delete"><i class="fa fa-trash"></i></button>
+                                            <button class="btn btn-light" name="Delete" onclick="onDelete(this)"><i class="fa fa-trash"></i></button>
                                             <button class="btn btn-light" name="Edit"><i class="fa fa-edit"></i></button>
                                         </div>
                                     }
@@ -142,3 +142,4 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/markdown-it/markdown-it.js"></script>
 <script src="~/js/Profile.js"></script>
+<script src="~/js/ProfileCollections.js"></script>

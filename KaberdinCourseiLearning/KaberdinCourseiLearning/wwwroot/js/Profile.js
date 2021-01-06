@@ -1,12 +1,4 @@
-﻿let descriptions = $("[name='Description']");
-let markdown = window.markdownit();
-descriptions.each(function (i, e) {
-    e = $(e);
-    let markdownText = e.html();
-    let markdownHTML = markdown.render(markdownText);
-    e.html(markdownHTML);
-});
-if (isPermitted()) {
+﻿if (isPermitted()) {
     var buttonEdit = $("#DescChange");
     var buttonAccept = $("#DescAccept");
     var description = $("#DescriptionContent");

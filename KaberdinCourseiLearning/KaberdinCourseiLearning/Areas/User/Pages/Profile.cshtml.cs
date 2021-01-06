@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
@@ -61,52 +62,38 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         }
         public async Task<IActionResult> OnPostUploadAvatar(IFormFile file, string name)
         {
-            var loaded = await TryLoadPropertiesAsync(name);
-            if (loaded)
+            if (await isLoadedAndPermittedToChange(name))
             {
-                if (PermittedToChange)
-                {
-                    await TrySaveFormFileAsync($"{AvatarPath}\\{PageUser.Id}.png", file);
-                    return new OkResult();
-                }
+                var profileHelper = new ProfileHelper(webHostEnvironment, context);
+                await profileHelper.UpdateAvatarAsync(file, PageUser.Id);
+                return new OkResult();
             }
             return Forbid();
         }
-        private async Task TrySaveFormFileAsync(string path, IFormFile file)
+        private async Task<bool> isLoadedAndPermittedToChange(string name)
         {
-            try {
-                if (file.Length > 0)
-                {
-                    using (var stream = System.IO.File.Create(path))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[AVATAR]Exception during file upload.\n {e.Message}");
-            }
+            var loaded = await TryLoadPropertiesAsync(name);
+            return loaded && PermittedToChange;
         }
         public async Task<IActionResult> OnPostAcceptDescription(string newText, string name)
         {
-            var loaded = await TryLoadPropertiesAsync(name);
-            if (loaded)
+            if (await isLoadedAndPermittedToChange(name))
             {
-                if (PermittedToChange)
-                {
-                    await ChangeDescriptionAsync(newText);
-                    return new OkResult();
-                }
+                var profileHelper = new ProfileHelper(webHostEnvironment, context);
+                await profileHelper.ChangeDescriptionAsync(newText,PageUser.Id);
+                return new OkResult();
             }
             return Forbid();
         }
-
-        private async Task ChangeDescriptionAsync(string newText)
+        public async Task<IActionResult> OnPostDeleteCollection(int collectionID, string name)
         {
-            await context.Entry(PageUser).Reference(i => i.HomePage).LoadAsync();
-            PageUser.HomePage.Description = newText;
-            await userManager.UpdateAsync(PageUser);
+            if (await isLoadedAndPermittedToChange(name))
+            {
+                var collectionHelper = new CollectionHelper(webHostEnvironment, context);
+                await collectionHelper.DeleteCollectionAsync(collectionID);
+                return new OkResult();
+            }
+            return Forbid();
         }
     }
 }
