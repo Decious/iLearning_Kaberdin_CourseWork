@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
+using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,11 +20,13 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         private UserManager<CustomUser> userManager;
         private ApplicationDbContext context;
         private ImageManager imageManager;
-        public CreateModel(UserManager<CustomUser> userManager, ApplicationDbContext context,ImageManager imageManager)
+        private CollectionManager collectionManager;
+        public CreateModel(UserManager<CustomUser> userManager, ApplicationDbContext context,ImageManager imageManager, CollectionManager collectionManager)
         {
             this.userManager = userManager;
             this.context = context;
             this.imageManager = imageManager;
+            this.collectionManager = collectionManager;
         }
         public CustomUser PageUser { get; set; }
         [BindProperty]
@@ -77,12 +80,11 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         }
         private async Task<int> CreateCollectionAsync(IFormFile backgroundImage)
         {
-            var collectionHelper = new CollectionHelper(context);
             var newCollection = new ProductCollection() { Description = Input.Description, Name = Input.Name, Theme = Input.Theme, UserID = PageUser.Id };
-            var collectionID = await collectionHelper.CreateCollectionAsync(newCollection);
+            var collectionID = await collectionManager.CreateCollectionAsync(newCollection);
             var columns = GetCollectionColumns(collectionID);
             if(columns != null)
-                await collectionHelper.AddCollectionColumnsAsync(columns);
+                await collectionManager.AddCollectionColumnsAsync(columns);
             if (backgroundImage != null)
                 await imageManager.UploadBackground(backgroundImage, collectionID);
             return collectionID;

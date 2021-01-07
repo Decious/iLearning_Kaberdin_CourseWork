@@ -3,12 +3,12 @@ using KaberdinCourseiLearning.Data.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KaberdinCourseiLearning.Helpers
+namespace KaberdinCourseiLearning.Managers
 {
-    public class CollectionHelper
+    public class CollectionManager
     {
         private ApplicationDbContext context;
-        public CollectionHelper(ApplicationDbContext context)
+        public CollectionManager(ApplicationDbContext context)
         {
             this.context = context;
         }

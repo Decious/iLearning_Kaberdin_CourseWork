@@ -5,7 +5,7 @@ using KaberdinCourseiLearning.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace KaberdinCourseiLearning.Helpers
+namespace KaberdinCourseiLearning.Managers
 {
     public class ImageManager
     {

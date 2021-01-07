@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
+using KaberdinCourseiLearning.Managers;
 
 namespace KaberdinCourseiLearning
 {
@@ -53,6 +54,7 @@ namespace KaberdinCourseiLearning
                 options.ClientSecret = Environment.GetEnvironmentVariable("AuthGoogleSecret");
             });
             services.AddScoped<ImageManager>();
+            services.AddScoped<CollectionManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

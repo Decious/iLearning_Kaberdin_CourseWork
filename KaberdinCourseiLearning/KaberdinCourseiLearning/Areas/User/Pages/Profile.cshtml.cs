@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
+using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,15 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private ApplicationDbContext context;
         private CustomUser guestUser;
         private ImageManager imageManager;
+        private CollectionManager collectionManager;
         public bool PermittedToChange { get; set; }
         public CustomUser PageUser { get; set; }
-        public ProfileModel(UserManager<CustomUser> userManager, ApplicationDbContext context, ImageManager imageManager)
+        public ProfileModel(UserManager<CustomUser> userManager, ApplicationDbContext context, ImageManager imageManager, CollectionManager collectionManager)
         {
             this.userManager = userManager;
             this.context = context;
             this.imageManager = imageManager;
+            this.collectionManager = collectionManager;
         }
         public async Task<IActionResult> OnGetAsync(string name)
         {
@@ -80,8 +83,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (await isLoadedAndPermittedToChange(name))
             {
-                var collectionHelper = new CollectionHelper(context);
-                await collectionHelper.DeleteCollectionAsync(collectionID);
+                await collectionManager.DeleteCollectionAsync(collectionID);
                 return new OkResult();
             }
             return Forbid();
