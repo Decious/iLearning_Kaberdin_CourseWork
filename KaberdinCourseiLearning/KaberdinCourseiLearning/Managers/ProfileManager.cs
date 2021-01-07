@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Helpers
 {
-    public class ProfileHelper
+    public class ProfileManager
     {
         private ApplicationDbContext context;
-        public ProfileHelper(ApplicationDbContext context)
+        public ProfileManager(ApplicationDbContext context)
         {
             this.context = context;
         }

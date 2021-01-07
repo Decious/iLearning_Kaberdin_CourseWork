@@ -55,6 +55,7 @@ namespace KaberdinCourseiLearning
             });
             services.AddScoped<ImageManager>();
             services.AddScoped<CollectionManager>();
+            services.AddScoped<ProfileManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

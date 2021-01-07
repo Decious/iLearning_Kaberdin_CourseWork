@@ -17,14 +17,16 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private CustomUser guestUser;
         private ImageManager imageManager;
         private CollectionManager collectionManager;
+        private ProfileManager profileManager;
         public bool PermittedToChange { get; set; }
         public CustomUser PageUser { get; set; }
-        public ProfileModel(UserManager<CustomUser> userManager, ApplicationDbContext context, ImageManager imageManager, CollectionManager collectionManager)
+        public ProfileModel(UserManager<CustomUser> userManager, ApplicationDbContext context, ImageManager imageManager, CollectionManager collectionManager,ProfileManager profileManager)
         {
             this.userManager = userManager;
             this.context = context;
             this.imageManager = imageManager;
             this.collectionManager = collectionManager;
+            this.profileManager = profileManager;
         }
         public async Task<IActionResult> OnGetAsync(string name)
         {
@@ -73,8 +75,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (await isLoadedAndPermittedToChange(name))
             {
-                var profileHelper = new ProfileHelper(context);
-                await profileHelper.ChangeDescriptionAsync(newText,PageUser.Id);
+                await profileManager.ChangeDescriptionAsync(newText,PageUser.Id);
                 return new OkResult();
             }
             return Forbid();
