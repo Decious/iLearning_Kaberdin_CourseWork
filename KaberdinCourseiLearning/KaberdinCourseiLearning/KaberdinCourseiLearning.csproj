@@ -22,6 +22,8 @@
     <Compile Remove="Migrations\20210103193434_PagesAndCollections.Designer.cs" />
     <Compile Remove="Migrations\20210103193537_PagesAndCollections.cs" />
     <Compile Remove="Migrations\20210103193537_PagesAndCollections.Designer.cs" />
+    <Compile Remove="Migrations\20210107194517_TAGSnTHEMES.cs" />
+    <Compile Remove="Migrations\20210107194517_TAGSnTHEMES.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
