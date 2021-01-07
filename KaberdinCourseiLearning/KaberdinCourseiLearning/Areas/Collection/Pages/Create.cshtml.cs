@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
@@ -27,6 +28,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             this.collectionManager = collectionManager;
         }
         public CustomUser PageUser { get; set; }
+        public ProductCollectionTheme[] Themes { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -42,13 +44,14 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             public string[] ColumnTypes { get; set; }
             public string PageUserName { get; set; }
         }
-        public async Task<IActionResult> OnGetAsync(string name)
+        public async Task<IActionResult> OnGetAsync(string name,int id = -1)
         {
             if (name != null)
             {
                 if (await isPermitted(name))
                 {
                     await LoadReferences();
+                    Themes = context.Themes.ToArray();
                     return Page();
                 }
                 return Forbid();
@@ -68,7 +71,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         }
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
-            if (await isPermitted(Input.PageUserName) && !String.IsNullOrWhiteSpace(Input.Name))
+            if (await isPermitted(Input.PageUserName))
             {
                 var CollectionId = await CreateCollectionAsync(file);
                 if (file != null) return new OkObjectResult(CollectionId);

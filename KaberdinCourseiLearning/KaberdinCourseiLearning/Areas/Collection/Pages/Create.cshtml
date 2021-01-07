@@ -25,9 +25,10 @@
                         <div class="form-group">
                             <label asp-for="Input.Theme"></label>
                             <select asp-for="Input.Theme" id="Theme" class="form-control">
-                                <option>Books</option>
-                                <option>Alcohol</option>
-                                <option>Pens</option>
+                                @foreach (var theme in Model.Themes)
+                                {
+                                    <option>@theme.Theme</option>
+                                }
                             </select>
                         </div>
                         <div class="form-group">
