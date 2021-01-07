@@ -13,6 +13,7 @@ namespace KaberdinCourseiLearning.Data.Models
         {
             Products = new List<Product>();
             CreationDate = DateTime.UtcNow;
+            BackgroundUrl = "https://res.cloudinary.com/ilearningcourse/image/upload/v1610032560/Collection/default.jpg";
         }
         [Key]
         public int CollectionID { get; set; }
@@ -24,5 +25,6 @@ namespace KaberdinCourseiLearning.Data.Models
         public string? Description { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<Product> Products { get; set; }
+        public string BackgroundUrl { get; set; }
     }
 }
