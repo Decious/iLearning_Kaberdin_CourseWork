@@ -18,12 +18,12 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
     {
         private UserManager<CustomUser> userManager;
         private ApplicationDbContext context;
-        private IWebHostEnvironment webHostEnvironment;
-        public CreateModel(UserManager<CustomUser> userManager, ApplicationDbContext context,IWebHostEnvironment webHostEnvironment)
+        private ImageManager imageManager;
+        public CreateModel(UserManager<CustomUser> userManager, ApplicationDbContext context,ImageManager imageManager)
         {
             this.userManager = userManager;
             this.context = context;
-            this.webHostEnvironment = webHostEnvironment;
+            this.imageManager = imageManager;
         }
         public CustomUser PageUser { get; set; }
         [BindProperty]
@@ -77,13 +77,14 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         }
         private async Task<int> CreateCollectionAsync(IFormFile backgroundImage)
         {
-            var collectionHelper = new CollectionHelper(webHostEnvironment, context);
+            var collectionHelper = new CollectionHelper(context);
             var newCollection = new ProductCollection() { Description = Input.Description, Name = Input.Name, Theme = Input.Theme, UserID = PageUser.Id };
             var collectionID = await collectionHelper.CreateCollectionAsync(newCollection);
             var columns = GetCollectionColumns(collectionID);
             if(columns != null)
                 await collectionHelper.AddCollectionColumnsAsync(columns);
-            await collectionHelper.UpdateBackgroundAsync(collectionID,backgroundImage);
+            if (backgroundImage != null)
+                await imageManager.UploadBackground(backgroundImage, collectionID);
             return collectionID;
         }
         private ProductCollectionColumn[] GetCollectionColumns(int CollectionID)

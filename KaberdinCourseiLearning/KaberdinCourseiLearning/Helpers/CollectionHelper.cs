@@ -1,10 +1,5 @@
 ﻿using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,11 +7,9 @@ namespace KaberdinCourseiLearning.Helpers
 {
     public class CollectionHelper
     {
-        private string BGPath;
         private ApplicationDbContext context;
-        public CollectionHelper(IWebHostEnvironment webHostEnvironment, ApplicationDbContext context)
+        public CollectionHelper(ApplicationDbContext context)
         {
-            BGPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "Collection", "Background");
             this.context = context;
         }
         public async Task DeleteCollectionAsync(int collectionID)
@@ -24,8 +17,6 @@ namespace KaberdinCourseiLearning.Helpers
             var coll = context.ProductCollections.FirstOrDefault(i => i.CollectionID == collectionID);
             context.Remove(coll);
             await context.SaveChangesAsync();
-            if (System.IO.File.Exists($"{BGPath}\\{collectionID}.png"))
-                System.IO.File.Delete($"{BGPath}\\{collectionID}.png");
         }
         public async Task EditCollectionAsync(int collectionID,ProductCollection newCollection)
         {
@@ -43,23 +34,6 @@ namespace KaberdinCourseiLearning.Helpers
         {
             context.ProductCollectionColumns.AddRange(columns);
             await context.SaveChangesAsync();
-        }
-        public async Task UpdateBackgroundAsync(int collectionID,IFormFile file)
-        {
-            try
-            {
-                if (file.Length > 0)
-                {
-                    using (var stream = File.Create($"{BGPath}\\{collectionID}.png"))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"[COLLECTION]Exception during file upload.\n {e.Message}");
-            }
         }
     }
 }

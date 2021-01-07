@@ -52,6 +52,7 @@ namespace KaberdinCourseiLearning
                 options.ClientId = Environment.GetEnvironmentVariable("AuthGoogleID");
                 options.ClientSecret = Environment.GetEnvironmentVariable("AuthGoogleSecret");
             });
+            services.AddScoped<ImageManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

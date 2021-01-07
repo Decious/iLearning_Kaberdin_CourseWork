@@ -26,24 +26,11 @@
                     {
                         foreach (var collection in Model.PageUser.ItemCollections)
                         {
-                            var bgImage = $"../images/collection_default.png";
-                            @if (System.IO.File.Exists($"{Model.BGPath}\\{collection.CollectionID}.png"))
-                            {
-                                bgImage = $"{Model.BGPath}/{collection.CollectionID}.png";
-                            }
-                            var css = $"background-image: url({bgImage});";
+                            var css = $"background-image: url({collection.BackgroundUrl});";
                             <div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="@collection.CollectionID">
                                 <div class="row bg-info" name="CollectionAuthor">
                                     <div class="col-2 m-h-100" name="CollectionAuthorAvatar">
-                                        @if (System.IO.File.Exists($"{Model.AvatarPath}\\{collection.UserID}.png"))
-                                        {
-                                            var image = collection.UserID + ".png";
-                                            <img src="~/images/User/Avatar/@image" class="img-thumbnail m-h-100" alt="...">
-                                        }
-                                        else
-                                        {
-                                            <img src="~/images/thumb_user_default.png" class="img-thumbnail m-h-100" alt="...">
-                                        }
+                                       <img src="@Model.PageUser.AvatarUrl" class="img-thumbnail m-h-100" alt="...">
                                     </div>
                                     <div class="col-9" name="CollectionAuthorName">
                                         <a name="CollectionAuthor" asp-area="User" asp-page="/Profile" asp-route-name="@Model.PageUser.UserName" class="text-break font-weight-bold text-light text-left">@Model.PageUser.UserName</a>
@@ -81,15 +68,7 @@
                 <div class="card m-auto" name="ProfileCard">
                     <h4 id="UserName" class="m-auto">@Model.PageUser.UserName</h4>
                     <div id="ProfilePicture">
-                        @if (System.IO.File.Exists($"{Model.AvatarPath}\\{Model.PageUser.Id}.png"))
-                        {
-                            var image = Model.PageUser.Id + ".png";
-                            <img src="~/images/User/Avatar/@image" class="img-thumbnail" alt="...">
-                        }
-                        else
-                        {
-                            <img src="~/images/thumb_user_default.png" class="img-thumbnail" alt="...">
-                        }
+                        <img src="@Model.PageUser.AvatarUrl" class="img-thumbnail" alt="...">
                         @if (Model.PermittedToChange)
                         {
                             <button type="button" id="AvatarChange" class="btn bg-transparent position-absolute" style="display:none;" data-toggle="modal" data-target="#AvatarModal">

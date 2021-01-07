@@ -1,11 +1,7 @@
-using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +12,16 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
     public class ProfileModel : PageModel
     {
         private UserManager<CustomUser> userManager;
-        private IWebHostEnvironment webHostEnvironment;
         private ApplicationDbContext context;
         private CustomUser guestUser;
-        public string AvatarPath { get; set; }
-        public string BGPath { get; set; }
+        private ImageManager imageManager;
         public bool PermittedToChange { get; set; }
         public CustomUser PageUser { get; set; }
-        public ProfileModel(UserManager<CustomUser> userManager, IWebHostEnvironment webHostEnvironment, ApplicationDbContext context)
+        public ProfileModel(UserManager<CustomUser> userManager, ApplicationDbContext context, ImageManager imageManager)
         {
             this.userManager = userManager;
-            this.webHostEnvironment = webHostEnvironment;
             this.context = context;
+            this.imageManager = imageManager;
         }
         public async Task<IActionResult> OnGetAsync(string name)
         {
@@ -45,8 +39,6 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private async Task<bool> TryLoadPropertiesAsync(string pageUserName)
         {
             PageUser = await userManager.FindByNameAsync(pageUserName);
-            AvatarPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "User", "Avatar");
-            BGPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "Collection", "Background");
             guestUser = await userManager.GetUserAsync(User);
             var result = (PageUser != null && guestUser != null);
             if (result)
@@ -64,8 +56,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (await isLoadedAndPermittedToChange(name))
             {
-                var profileHelper = new ProfileHelper(webHostEnvironment, context);
-                await profileHelper.UpdateAvatarAsync(file, PageUser.Id);
+                _ = await imageManager.UploadAvatar(file, PageUser.Id);
                 return new OkResult();
             }
             return Forbid();
@@ -79,7 +70,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (await isLoadedAndPermittedToChange(name))
             {
-                var profileHelper = new ProfileHelper(webHostEnvironment, context);
+                var profileHelper = new ProfileHelper(context);
                 await profileHelper.ChangeDescriptionAsync(newText,PageUser.Id);
                 return new OkResult();
             }
@@ -89,7 +80,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (await isLoadedAndPermittedToChange(name))
             {
-                var collectionHelper = new CollectionHelper(webHostEnvironment, context);
+                var collectionHelper = new CollectionHelper(context);
                 await collectionHelper.DeleteCollectionAsync(collectionID);
                 return new OkResult();
             }
