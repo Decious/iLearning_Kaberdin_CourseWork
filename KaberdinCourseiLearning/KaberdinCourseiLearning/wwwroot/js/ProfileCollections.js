@@ -6,7 +6,10 @@ descriptions.each(function (i, e) {
     let markdownHTML = markdown.render(markdownText);
     e.html(markdownHTML);
 });
-
+function ViewCollection(div) {
+    let collectionID = $(div).closest("[name='Collection']").attr("id");
+    location.href = location.origin + "/Collection?id=" + collectionID;
+}
 function onDelete(btn) {
     let collectionID = $(btn).closest("[name='Collection']").attr("id");
     sendRequest("DeleteCollection", { collectionID: collectionID, name: $("#UserName").text() })
