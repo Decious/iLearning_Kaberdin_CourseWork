@@ -1,0 +1,37 @@
+﻿@model KaberdinCourseiLearning.Pages.Partials.Models.CollectionModel;
+
+@{
+    var css = $"background-image: url({Model.Collection.BackgroundUrl});";
+    var collection = Model.Collection;
+}
+<div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="@collection.CollectionID">
+    <div class="row bg-info" name="CollectionAuthor">
+        <div class="col-2 m-h-100" name="CollectionAuthorAvatar">
+            <img src="@collection.User.AvatarUrl" class="img-thumbnail m-h-100" alt="...">
+        </div>
+        <div class="col-9" name="CollectionAuthorName">
+            <a name="CollectionAuthor" asp-area="User" asp-page="/Profile" asp-route-name="@collection.User.UserName" class="text-break font-weight-bold text-light text-left">@collection.User.UserName</a>
+        </div>
+    </div>
+    <div class="row Blk-Trslcnt-Bg" name="HeaderData">
+        <div class="col-6">
+            <p name="CollectionName" class="font-weight-bold text-light">@collection.Name</p>
+        </div>
+        <div class="col-6">
+            <p name="CollectionTheme" class="font-weight-bold text-light text-right">@collection.Theme</p>
+        </div>
+    </div>
+    <div class="row Blk-Trslcnt-Bg flex-grow-1 overflow-hidden text-light" name="DescriptionDiv" onclick="ViewCollection(this)">
+        <p class="col" name="Description">@collection.Description</p>
+    </div>
+    <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
+        <button class="btn btn-light position-absolute" name="ShowDetail"><i class="fa fa-arrow-down"></i></button>
+        @if (Model.PermittedToChange)
+        {
+            <div class="position-absolute" name="buttonGroup">
+                <button class="btn btn-light" name="Delete" onclick="onDelete(this)"><i class="fa fa-trash"></i></button>
+                <button class="btn btn-light" name="Edit"><i class="fa fa-edit"></i></button>
+            </div>
+        }
+    </div>
+</div>

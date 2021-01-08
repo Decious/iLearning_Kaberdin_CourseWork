@@ -1,37 +1,4 @@
-﻿button[name="ShowDetail"]{
-    Bottom: 0;
-    margin: auto;
-    Left: 0;
-    Right: 0;
-}
-div[name="buttonGroup"] {
-    Bottom: 5px;
-    Right: 15px;
-}
-div[name="ProfileCard"] {
-    width: 18rem;
-}
-div[name="Collection"] {
-    margin-right: 3rem;
-    margin-bottom: 15px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height:240px;
-}
-div[name="CollectionControls"] {
-    min-height: 45px;
-}
-div[name="CollectionAuthor"]{
-    height:40px;
-    max-height:40px;
-}
-div[name="Description"] *{
-    color: inherit !important;
-}
-.m-h-100 {
-    max-height: 100%;
-}
-#ProfilePicture > img {
+﻿#ProfilePicture > img {
     width: 205px;
 }
 #ProfileDescription{
@@ -46,7 +13,6 @@ div[name="Description"] *{
 #DescriptionContent {
     max-height: 115px;
 }
-.Blk-Trslcnt-Bg {
-    background: rgba(0,0,0,0.3);
+#CollectionsRow{
+    margin-right:3rem;
 }
-

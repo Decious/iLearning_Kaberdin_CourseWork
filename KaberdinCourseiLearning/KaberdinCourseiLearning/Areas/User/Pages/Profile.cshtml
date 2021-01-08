@@ -2,8 +2,10 @@
 @model KaberdinCourseiLearning.Areas.User.Pages.ProfileModel
 @{
 }
+@using KaberdinCourseiLearning.Pages.Partials.Models;
 <link href="~/lib/dropzone/min/basic.min.css" rel="stylesheet" />
 <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
+<link href="~/css/Collection.css" rel="stylesheet" />
 <link href="~/css/Profile.css" rel="stylesheet" />
 @Html.AntiForgeryToken()
 <div class="container">
@@ -16,7 +18,7 @@
             {
                 <a name="AddCollectionBtn" asp-area="Collection" asp-page="Create" asp-route-name="@Model.PageUser.UserName" class="row btn btn-primary"><i class="fa fa-plus-square"></i> Add collection</a>
             }
-            <div class="row">
+            <div class="row" id="CollectionsRow">
                 @{
                     if (Model.PageUser.ItemCollections.Count == 0)
                     {
@@ -26,38 +28,8 @@
                     {
                         foreach (var collection in Model.PageUser.ItemCollections)
                         {
-                            var css = $"background-image: url({collection.BackgroundUrl});";
-                            <div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="@collection.CollectionID">
-                                <div class="row bg-info" name="CollectionAuthor">
-                                    <div class="col-2 m-h-100" name="CollectionAuthorAvatar">
-                                       <img src="@Model.PageUser.AvatarUrl" class="img-thumbnail m-h-100" alt="...">
-                                    </div>
-                                    <div class="col-9" name="CollectionAuthorName">
-                                        <a name="CollectionAuthor" asp-area="User" asp-page="/Profile" asp-route-name="@Model.PageUser.UserName" class="text-break font-weight-bold text-light text-left">@Model.PageUser.UserName</a>
-                                    </div>
-                                </div>
-                                <div class="row Blk-Trslcnt-Bg" name="HeaderData">
-                                    <div class="col-6">
-                                        <p name="CollectionName" class="font-weight-bold text-light">@collection.Name</p>
-                                    </div>
-                                    <div class="col-6">
-                                        <p name="CollectionTheme" class="font-weight-bold text-light text-right">@collection.Theme</p>
-                                    </div>
-                                </div>
-                                <div class="row Blk-Trslcnt-Bg flex-grow-1 overflow-hidden text-light" onclick="ViewCollection(this)">
-                                    <p class="col" name="Description">@collection.Description</p>
-                                </div>
-                                <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
-                                    <button class="btn btn-light position-absolute" name="ShowDetail"><i class="fa fa-arrow-down"></i></button>
-                                    @if (Model.PermittedToChange)
-                                    {
-                                        <div class="position-absolute" name="buttonGroup">
-                                            <button class="btn btn-light" name="Delete" onclick="onDelete(this)"><i class="fa fa-trash"></i></button>
-                                            <button class="btn btn-light" name="Edit"><i class="fa fa-edit"></i></button>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
+                            var collectionModel = new CollectionModel() { Collection = collection, PermittedToChange = Model.PermittedToChange };
+                            <partial name="_PartialCollection" model="collectionModel" />
                         }
                     }
                 }
@@ -121,4 +93,4 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/markdown-it/markdown-it.js"></script>
 <script src="~/js/Profile.js"></script>
-<script src="~/js/ProfileCollections.js"></script>
+<script src="~/js/Collection.js"></script>
