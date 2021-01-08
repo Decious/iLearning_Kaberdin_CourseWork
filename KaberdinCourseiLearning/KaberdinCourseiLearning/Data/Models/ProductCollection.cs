@@ -23,6 +23,7 @@ namespace KaberdinCourseiLearning.Data.Models
         public string? Description { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<Product> Products { get; set; }
+        public ICollection<ProductCollectionColumn> Columns { get; set; }
         public string BackgroundUrl { get; set; }
     }
 }

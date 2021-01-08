@@ -21,6 +21,7 @@ namespace KaberdinCourseiLearning.Data.Models
         public string? Tags { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<Like> Likes { get; set; }
+        public ICollection<ProductColumnValue> ColumnValues { get; set; }
         public ICollection<Comment> Comments { get; set; }
         [ForeignKey("Collection")]
         public int CollectionID { get; set; }
