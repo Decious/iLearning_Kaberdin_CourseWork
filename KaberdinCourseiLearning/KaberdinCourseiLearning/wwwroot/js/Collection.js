@@ -12,12 +12,12 @@ function ViewCollection(div) {
 }
 function onDelete(btn) {
     let collectionID = $(btn).closest("[name='Collection']").attr("id");
-    sendRequest("DeleteCollection", { collectionID: collectionID, name: $("#UserName").text() })
+    sendRequest("DeleteCollection", { collectionID: collectionID })
 }
 function sendRequest(handler, data) {
     $.ajax({
         type: "POST",
-        url: '/User/Profile?handler='+handler,
+        url: '/Collection?handler='+handler,
         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
         data: data
     }).done(function () {
