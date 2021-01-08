@@ -40,5 +40,6 @@ namespace KaberdinCourseiLearning.Managers
             context.ProductCollectionColumns.AddRange(columns);
             await context.SaveChangesAsync();
         }
+        public ProductCollectionTheme[] GetCollectionThemes() => context.Themes.ToArray();
     }
 }

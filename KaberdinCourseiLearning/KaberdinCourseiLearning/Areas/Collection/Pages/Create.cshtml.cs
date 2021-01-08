@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
-using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -43,14 +41,13 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             public string[] ColumnTypes { get; set; }
             public string PageUserName { get; set; }
         }
-        public async Task<IActionResult> OnGetAsync(string name,int id = -1)
+        public async Task<IActionResult> OnGetAsync(string name)
         {
             if (name != null)
             {
-                if (await isPermitted(name))
+                if (await TryLoadPropertiesAsync(name))
                 {
                     await LoadReferences();
-                    Themes = context.Themes.ToArray();
                     return Page();
                 }
                 return Forbid();
@@ -58,9 +55,10 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             return Redirect("~/Index");
         }
 
-        private async Task<bool> isPermitted(string name)
+        private async Task<bool> TryLoadPropertiesAsync(string name)
         {
             PageUser = await userManager.FindByNameAsync(name);
+            Themes = collectionManager.GetCollectionThemes();
             return await userManager.IsUserValidAsync(PageUser);
         }
         private async Task LoadReferences()
@@ -69,7 +67,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         }
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
-            if (await isPermitted(Input.PageUserName))
+            if (await TryLoadPropertiesAsync(Input.PageUserName))
             {
                 var CollectionId = await CreateCollectionAsync(file);
                 if (file != null) return new OkObjectResult(CollectionId);
