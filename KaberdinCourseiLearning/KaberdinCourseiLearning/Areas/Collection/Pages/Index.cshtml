@@ -1,5 +1,35 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.Collection.Pages.IndexModel
+@using KaberdinCourseiLearning.Pages.Partials.Models;
 @{
+    var collectionModel = new CollectionModel() { Collection = Model.Collection, PermittedToChange = Model.PermittedToChange };
 }
-<h1>Collection index</h1>
+@Html.AntiForgeryToken()
+<link href="~/css/Collection.css" rel="stylesheet" />
+<partial name="_PartialCollection" model="collectionModel" />
+<table class="table table-borderless table-active">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Tags</th>
+        @foreach (var column in Model.Collection.Columns)
+        {
+            <th>@column.ColumnName (@column.ColumnType)</th>
+        }
+    </tr>
+    @foreach (var product in Model.Collection.Products)
+    {
+        <tr>
+            <td>@product.ProductID</td>
+            <td>@product.Name</td>
+            <td>@product.Tags</td>
+            @foreach (var columnValue in product.ColumnValues)
+            {
+                <td>@columnValue.Value</td>
+            }
+        </tr>
+    }
+</table>
+<script src="~/lib/markdown-it/markdown-it.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/Collection.js"></script>

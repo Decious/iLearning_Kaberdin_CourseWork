@@ -19,7 +19,7 @@ namespace KaberdinCourseiLearning.Data.Models
             ItemCollections = new List<ProductCollection>();
         }
 
-        public string AvatarUrl { get; set; }
+        public string? AvatarUrl { get; set; }
         public UserPage HomePage { get; set; }
         public ICollection<ProductCollection> ItemCollections { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
+using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace KaberdinCourseiLearning.Helpers
 {
     public static class IdentityInitializer
     {
-        public static void SeedData(UserManager<CustomUser> userManager,RoleManager<IdentityRole> roleManager)
+        public static void SeedData(CustomUserManager userManager,RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
@@ -23,7 +24,7 @@ namespace KaberdinCourseiLearning.Helpers
                 _ = roleManager.CreateAsync(role).Result;
             }
         }
-        public static void SeedUsers(UserManager<CustomUser> userManager)
+        public static void SeedUsers(CustomUserManager userManager)
         {
             var users = userManager.GetUsersInRoleAsync(RoleNames.ROLE_ADMINISTRATOR).Result;
             if (users.Count < 1)

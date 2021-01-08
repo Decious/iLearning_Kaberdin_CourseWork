@@ -59,7 +59,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         {
             PageUser = await userManager.FindByNameAsync(name);
             Themes = collectionManager.GetCollectionThemes();
-            return await userManager.IsUserValidAsync(PageUser);
+            return PageUser != null;
         }
         private async Task LoadReferences()
         {
