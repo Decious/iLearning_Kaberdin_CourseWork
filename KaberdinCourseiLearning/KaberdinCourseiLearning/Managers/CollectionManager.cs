@@ -12,23 +12,22 @@ namespace KaberdinCourseiLearning.Managers
         {
             this.context = context;
         }
+        public async Task<ProductCollection> GetCollectionAsync(int collectionID) => await context.ProductCollections.FindAsync(collectionID);
         public async Task DeleteCollectionAsync(int collectionID)
         {
-            var coll = context.ProductCollections.FirstOrDefault(i => i.CollectionID == collectionID);
+            var coll = await GetCollectionAsync(collectionID);
             context.Remove(coll);
             await context.SaveChangesAsync();
         }
-        public async Task EditCollectionAsync(int collectionID,ProductCollection newCollection)
+        public async Task EditCollectionAsync(ProductCollection newCollection)
         {
-            var coll = context.ProductCollections.FirstOrDefault(i => i.CollectionID == collectionID);
             context.Update(newCollection);
             await context.SaveChangesAsync();
         }
-        public async Task<int> CreateCollectionAsync(ProductCollection newCollection)
+        public async Task CreateCollectionAsync(ProductCollection newCollection)
         {
             context.ProductCollections.Add(newCollection);
             await context.SaveChangesAsync();
-            return newCollection.CollectionID;
         }
         public async Task AddCollectionColumnsAsync(ProductCollectionColumn[] columns)
         {

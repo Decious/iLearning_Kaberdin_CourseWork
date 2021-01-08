@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -82,13 +81,13 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         private async Task<int> CreateCollectionAsync(IFormFile backgroundImage)
         {
             var newCollection = new ProductCollection() { Description = Input.Description, Name = Input.Name, Theme = Input.Theme, UserID = PageUser.Id };
-            var collectionID = await collectionManager.CreateCollectionAsync(newCollection);
-            var columns = GetCollectionColumns(collectionID);
+            await collectionManager.CreateCollectionAsync(newCollection);
+            var columns = GetCollectionColumns(newCollection.CollectionID);
             if(columns != null)
                 await collectionManager.AddCollectionColumnsAsync(columns);
             if (backgroundImage != null)
-                await imageManager.UploadBackground(backgroundImage, collectionID);
-            return collectionID;
+                await imageManager.UploadBackground(backgroundImage, newCollection.CollectionID);
+            return newCollection.CollectionID;
         }
         private ProductCollectionColumn[] GetCollectionColumns(int CollectionID)
         {
