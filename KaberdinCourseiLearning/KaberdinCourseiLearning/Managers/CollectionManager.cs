@@ -13,6 +13,12 @@ namespace KaberdinCourseiLearning.Managers
             this.context = context;
         }
         public async Task<ProductCollection> GetCollectionAsync(int collectionID) => await context.ProductCollections.FindAsync(collectionID);
+        public async Task LoadReferencesAsync(ProductCollection productCollection)
+        {
+            await context.Entry(productCollection).Collection(c => c.Products).LoadAsync();
+            await context.Entry(productCollection).Collection(c => c.Columns).LoadAsync();
+            await context.Entry(productCollection).Reference(c => c.User).LoadAsync();
+        }
         public async Task DeleteCollectionAsync(int collectionID)
         {
             var coll = await GetCollectionAsync(collectionID);
