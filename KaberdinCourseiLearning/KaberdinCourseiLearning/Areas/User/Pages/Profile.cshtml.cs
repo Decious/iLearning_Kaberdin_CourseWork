@@ -4,7 +4,6 @@ using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -12,20 +11,17 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
 {
     public class ProfileModel : PageModel
     {
-        private UserManager<CustomUser> userManager;
+        private CustomUserManager userManager;
         private ApplicationDbContext context;
-        private CustomUser guestUser;
         private ImageManager imageManager;
-        private CollectionManager collectionManager;
         private ProfileManager profileManager;
         public bool PermittedToChange { get; set; }
         public CustomUser PageUser { get; set; }
-        public ProfileModel(UserManager<CustomUser> userManager, ApplicationDbContext context, ImageManager imageManager, CollectionManager collectionManager,ProfileManager profileManager)
+        public ProfileModel(CustomUserManager userManager, ApplicationDbContext context, ImageManager imageManager, ProfileManager profileManager)
         {
             this.userManager = userManager;
             this.context = context;
             this.imageManager = imageManager;
-            this.collectionManager = collectionManager;
             this.profileManager = profileManager;
         }
         public async Task<IActionResult> OnGetAsync(string name)
@@ -44,11 +40,10 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private async Task<bool> TryLoadPropertiesAsync(string pageUserName)
         {
             PageUser = await userManager.FindByNameAsync(pageUserName);
-            guestUser = await userManager.GetUserAsync(User);
-            var result = (PageUser != null && guestUser != null);
+            bool result = PageUser != null;
             if (result)
             {
-                PermittedToChange = await new UserValidator(userManager).IsUserOwnerOrAdminAsync(guestUser, pageUserName);
+                PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, pageUserName);
             }
             return result;
         }
@@ -66,9 +61,9 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             }
             return Forbid();
         }
-        private async Task<bool> isLoadedAndPermittedToChange(string name)
+        private async Task<bool> isLoadedAndPermittedToChange(string pageUserName)
         {
-            var loaded = await TryLoadPropertiesAsync(name);
+            var loaded = await TryLoadPropertiesAsync(pageUserName);
             return loaded && PermittedToChange;
         }
         public async Task<IActionResult> OnPostAcceptDescription(string newText, string name)
@@ -76,15 +71,6 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             if (await isLoadedAndPermittedToChange(name))
             {
                 await profileManager.ChangeDescriptionAsync(newText,PageUser.Id);
-                return new OkResult();
-            }
-            return Forbid();
-        }
-        public async Task<IActionResult> OnPostDeleteCollection(int collectionID, string name)
-        {
-            if (await isLoadedAndPermittedToChange(name))
-            {
-                await collectionManager.DeleteCollectionAsync(collectionID);
                 return new OkResult();
             }
             return Forbid();

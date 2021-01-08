@@ -28,7 +28,8 @@ namespace KaberdinCourseiLearning
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<CustomUser>(options => {
+            services.AddDefaultIdentity<CustomUser>(options =>
+            {
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -36,7 +37,8 @@ namespace KaberdinCourseiLearning
                 options.User.RequireUniqueEmail = true;
             })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddUserManager<CustomUserManager>();
             services.AddRazorPages();
             services.AddAuthorization(options =>
             {

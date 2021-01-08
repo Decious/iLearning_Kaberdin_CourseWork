@@ -15,11 +15,11 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
 {
     public class CreateModel : PageModel
     {
-        private UserManager<CustomUser> userManager;
+        private CustomUserManager userManager;
         private ApplicationDbContext context;
         private ImageManager imageManager;
         private CollectionManager collectionManager;
-        public CreateModel(UserManager<CustomUser> userManager, ApplicationDbContext context,ImageManager imageManager, CollectionManager collectionManager)
+        public CreateModel(CustomUserManager userManager, ApplicationDbContext context,ImageManager imageManager, CollectionManager collectionManager)
         {
             this.userManager = userManager;
             this.context = context;
@@ -61,8 +61,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         private async Task<bool> isPermitted(string name)
         {
             PageUser = await userManager.FindByNameAsync(name);
-            var validator = new UserValidator(userManager);
-            return await validator.IsUserValidAsync(PageUser);
+            return await userManager.IsUserValidAsync(PageUser);
         }
         private async Task LoadReferences()
         {

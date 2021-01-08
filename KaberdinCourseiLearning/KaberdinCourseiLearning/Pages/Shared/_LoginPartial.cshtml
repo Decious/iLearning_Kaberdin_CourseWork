@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using KaberdinCourseiLearning.Data.Models;
+@using KaberdinCourseiLearning.Managers;
 @inject SignInManager<CustomUser> SignInManager
-@inject UserManager<CustomUser> UserManager
+@inject CustomUserManager UserManager
 
     <ul class="navbar-nav">
         @{CustomUser currentUser = await UserManager.GetUserAsync(User);}

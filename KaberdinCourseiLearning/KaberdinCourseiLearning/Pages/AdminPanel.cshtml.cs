@@ -2,6 +2,7 @@
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
+using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,10 +18,10 @@ namespace KaberdinCourseiLearning.Pages
     public class AdminPanelModel : PageModel
     {
         private readonly SignInManager<CustomUser> signInManager;
-        private readonly UserManager<CustomUser> userManager;
+        private readonly CustomUserManager userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private string errorMessage;
-        public AdminPanelModel(SignInManager<CustomUser> signInManager, UserManager<CustomUser> userManager,RoleManager<IdentityRole> roleManager)
+        public AdminPanelModel(SignInManager<CustomUser> signInManager, CustomUserManager userManager,RoleManager<IdentityRole> roleManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -142,17 +143,12 @@ namespace KaberdinCourseiLearning.Pages
         }
         private async Task<bool> IsUserAdmin()
         {
-            var currentUser = await userManager.GetUserAsync(User);
-            var validator = new UserValidator(userManager);
-            var isValid = await validator.IsUserValidAsync(currentUser);
-            if (isValid)
-            {
-                return await userManager.IsInRoleAsync(currentUser, RoleNames.ROLE_ADMINISTRATOR);
-            } else
+            var isValid = await userManager.IsUserOwnerOrAdminAsync(User, "");
+            if (!isValid)
             {
                 await SignOut();
-                return false;
             }
+            return isValid;
         }
 
     }
