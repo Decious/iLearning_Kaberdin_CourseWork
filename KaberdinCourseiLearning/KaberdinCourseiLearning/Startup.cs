@@ -10,6 +10,7 @@ using System;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
+using KaberdinCourseiLearning.Middleware;
 
 namespace KaberdinCourseiLearning
 {
@@ -42,7 +43,7 @@ namespace KaberdinCourseiLearning
             services.AddRazorPages();
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(PolicyNames.POLICY_ADMIN, policy =>
+                options.AddPolicy(PolicyNames.POLICY_ADMIN, policy => 
                     policy.RequireRole(RoleNames.ROLE_ADMINISTRATOR));
             });
             services.AddAuthentication().AddFacebook(options =>
@@ -61,7 +62,7 @@ namespace KaberdinCourseiLearning
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<CustomUser> userManager, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CustomUserManager userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -85,7 +86,7 @@ namespace KaberdinCourseiLearning
             app.UseAuthentication();
             IdentityInitializer.SeedData(userManager, roleManager);
             app.UseAuthorization();
-
+            app.UseUserValidationMiddleware();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
