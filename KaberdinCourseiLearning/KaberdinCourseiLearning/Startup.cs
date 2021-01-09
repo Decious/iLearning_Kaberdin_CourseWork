@@ -45,6 +45,8 @@ namespace KaberdinCourseiLearning
             {
                 options.AddPolicy(PolicyNames.POLICY_ADMIN, policy => 
                     policy.RequireRole(RoleNames.ROLE_ADMINISTRATOR));
+                options.AddPolicy(PolicyNames.POLICY_AUTHENTICATED, policy =>
+                    policy.RequireAuthenticatedUser());
             });
             services.AddAuthentication().AddFacebook(options =>
             {

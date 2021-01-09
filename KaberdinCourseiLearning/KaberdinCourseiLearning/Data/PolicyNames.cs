@@ -8,5 +8,6 @@ namespace KaberdinCourseiLearning.Data
     public class PolicyNames
     {
         public const string POLICY_ADMIN = "Admin";
+        public const string POLICY_AUTHENTICATED = "AUTHENTICATED";
     }
 }
