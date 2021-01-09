@@ -26,6 +26,12 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <div id="AlertMessage" class="alert" style="display:none;" role="alert">
+            </div>
+            <div id="PleaseWait" class="align-items-center" style="display:none;">
+                <strong>Please wait...</strong>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
             @RenderBody()
         </main>
     </div>

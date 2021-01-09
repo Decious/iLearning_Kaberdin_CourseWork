@@ -12,26 +12,18 @@
         vertical-align:middle !important;
     }
 </style>
+@Html.AntiForgeryToken()
 <form name="formTable" method="post">
-    <div id="AlertMessage" role="alert">
-        
-    </div>
-    <div id="PleaseWait" class="d-none align-items-center" style="display:none;">
-        <strong>Please wait...</strong>
-        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-    </div>
     <div class="container-fluid d-flex justify-content-center">
         <div class="container">
             <div style="margin-bottom:16px" class="row justify-content-around">
-                <input id="FormActionInput" type="hidden" asp-for="FormAction" />
-                <input id="NewRole" type="hidden" asp-for="NewRole" />
-                <button type="submit" class="btn btn-outline-primary col-3" onclick="prepareAction(this.value)" value="Block">
+                <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Block">
                     <i style="margin-right:5px" class="fa fa-ban"></i>Block
                 </button>
-                <button type="submit" class="btn btn-outline-primary col-3" onclick="prepareAction(this.value)" value="Unblock">
+                <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Unblock">
                     <i style="margin-right:5px" class="fa fa-user-check"></i>Unblock
                 </button>
-                <button type="submit" class="btn btn-outline-primary col-3" onclick="prepareAction(this.value)" value="Delete">
+                <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Delete">
                     <i style="margin-right:5px" class="fa fa-user-slash"></i>Delete
                 </button>
             </div>

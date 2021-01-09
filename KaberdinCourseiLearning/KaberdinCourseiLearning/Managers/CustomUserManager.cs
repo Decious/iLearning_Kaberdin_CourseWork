@@ -15,9 +15,18 @@ namespace KaberdinCourseiLearning.Managers
         public CustomUserManager(IUserStore<CustomUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<CustomUser> passwordHasher, IEnumerable<IUserValidator<CustomUser>> userValidators, IEnumerable<IPasswordValidator<CustomUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<CustomUser>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
         }
+        public async Task<bool> IsUserAdminAsync(CustomUser user)
+        {
+            return await IsInRoleAsync(user, RoleNames.ROLE_ADMINISTRATOR);
+        }
+        public async Task<bool> IsUserAdminAsync(ClaimsPrincipal principal)
+        {
+            var user = await GetUserAsync(principal);
+            return await IsUserAdminAsync(user);
+        }
         public async Task<bool> IsUserOwnerOrAdminAsync(CustomUser user, string ownerName)
         {
-            return (await IsInRoleAsync(user, RoleNames.ROLE_ADMINISTRATOR) || user.UserName == ownerName);
+            return (await IsUserAdminAsync(user) || user.UserName == ownerName);
         }
         public async Task<bool> IsUserOwnerOrAdminAsync(ClaimsPrincipal principal, string ownerName)
         {

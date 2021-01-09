@@ -16,24 +16,21 @@ namespace KaberdinCourseiLearning.Pages
     {
         private readonly CustomUserManager userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private string errorMessage;
+        private JsonResult notAuthorizedResult = new JsonResult(ServerResponse.MakeForbidden());
+        private JsonResult successResult = new JsonResult(ServerResponse.MakeSuccess());
         public AdminPanelModel(CustomUserManager userManager,RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
 
-        [BindProperty]
-        public String FormAction { get; set; }
-        [BindProperty]
-        public String NewRole { get; set; }
         public CustomUser[] Users { get; set; }
         public IdentityRole[] Roles { get; set; }
         public CustomUser CurrentUser { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (!await userManager.IsUserOwnerOrAdminAsync(User, null)) return Forbid();
+            if (!await userManager.IsUserAdminAsync(User)) return Forbid();
             PopulateProperties();
             return Page();
         }
@@ -43,74 +40,66 @@ namespace KaberdinCourseiLearning.Pages
             Roles = roleManager.Roles.ToArray();
             CurrentUser = userManager.GetUserAsync(User).Result;
         }
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostBlock(string[] ids)
         {
-            var resultIsSuccess = false;
-            if (!await userManager.IsUserOwnerOrAdminAsync(User, null)) return Forbid();
-            var ids = Request.Form["Selected"];
-            foreach (String id in ids)
-            {
-                var user = await userManager.FindByIdAsync(id);
-                switch (FormAction)
-                {
-                    case PanelActions.ACTION_BLOCK:
-                        resultIsSuccess = await SetLockout(user, DateTime.MaxValue);
-                        break;
-                    case PanelActions.ACTION_UNBLOCK:
-                        if (await userManager.GetLockoutEndDateAsync(user) > DateTime.Now)
-                        {
-                            resultIsSuccess = await SetLockout(user, null);
-                        }
-                        break;
-                    case PanelActions.ACTION_DELETE:
-                            resultIsSuccess = HandleErrors(await userManager.DeleteAsync(user));
-                        break;
-                    case PanelActions.ACTION_ROLECHANGE:
-                            resultIsSuccess = await ChangeRole(user);
-                        break;
-                }
-            }
-            return RedirectToPage(new { resultIsSuccess, errorMessage});
+            return await DoAction(ids, BlockUser);
         }
-        private async Task<bool> SetLockout(CustomUser user, DateTime? time)
+        private async Task BlockUser(string id) => await SetLockout(id, DateTime.MaxValue);
+        public async Task<IActionResult> OnPostUnblock(string[] ids)
         {
-            var res = await userManager.SetLockoutEndDateAsync(user, time);
-            if (res.Succeeded)
-            {
-                var res2 = await userManager.UpdateAsync(user);
-                if (!res2.Succeeded)
-                {
-                    return HandleErrors(res2);
-                }
-            } else
-            {
-                return HandleErrors(res);
-            }
-            return true;
+            return await DoAction(ids, UnblockUser);
         }
-        private bool HandleErrors(IdentityResult result)
+        private async Task UnblockUser(string id) => await SetLockout(id, null);
+        private async Task SetLockout(string id, DateTime? time)
         {
-            if (!result.Succeeded)
+            var user = await userManager.FindByIdAsync(id);
+            if (user != null)
             {
-                var errors = result.Errors;
-                foreach (var error in errors)
-                {
-                    errorMessage += error.Code + "." + error.Description;
-                }
+                await userManager.SetLockoutEndDateAsync(user, time);
             }
-            return result.Succeeded;
         }
-        private async Task<bool> ChangeRole(CustomUser user)
+        public async Task<IActionResult> OnPostDelete(string[] ids)
+        {
+            return await DoAction(ids, DeleteUser);
+        }
+        private async Task DeleteUser(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user != null)
+                await userManager.DeleteAsync(user);
+        }
+        private async Task<JsonResult> DoAction(string[] ids, Func<string, Task> Action)
+        {
+            if (!await userManager.IsUserAdminAsync(User))
+                return notAuthorizedResult;
+            foreach (var id in ids)
+            {
+                await Action(id);
+            }
+            return successResult;
+        }
+        public async Task<IActionResult> OnPostRolechange(string id, string newRole)
+        {
+            if (!await userManager.IsUserAdminAsync(User))
+                return notAuthorizedResult;
+            return await ChangeRole(id, newRole);
+        }
+        private async Task<JsonResult> ChangeRole(string id, string newRole)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                await RemoveFromCurrentRoles(user);
+                if (RoleNames.ROLE_USER != newRole && await roleManager.RoleExistsAsync(newRole))
+                    await userManager.AddToRoleAsync(user, newRole);
+                return new JsonResult(new ServerResponse(ServerResponseStatus.SUCCESS, $"{user.UserName} role was changed to {newRole}!"));
+            }
+            return new JsonResult(new ServerResponse(ServerResponseStatus.ERROR, "User was not found! Try reloading the page."));
+        }
+        private async Task RemoveFromCurrentRoles(CustomUser user)
         {
             var currentRoles = await userManager.GetRolesAsync(user);
-            if(HandleErrors(await userManager.RemoveFromRolesAsync(user, currentRoles)))
-            {
-                if (NewRole != "User")
-                    return HandleErrors(await userManager.AddToRoleAsync(user, NewRole));
-                return true;
-            }
-            return false;
+            await userManager.RemoveFromRolesAsync(user, currentRoles);
         }
-
     }
 }

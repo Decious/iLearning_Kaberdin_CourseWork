@@ -1,45 +1,27 @@
 ﻿var toggle = true;
 var alert = $("#AlertMessage");
-var queryString = window.location.search;
-var urlParams = new URLSearchParams(queryString);
-checkParams();
-function checkParams() {
-    let resultIsSuccess = urlParams.get('resultIsSuccess');
-    if (resultIsSuccess != undefined) {
-        if (resultIsSuccess) success(); else failed();
-    }
-}
 function roleChanged(e) {
-    prepareAction("Role");
     let changedUserId = $(e).attr("id");
-    prepareSelection(changedUserId)
     let newRole = $(e).val();
-    prepareRole(newRole);
-    $("form").submit();
+    sendRequest("Rolechange", { id: changedUserId, newRole: newRole });
 }
 function prepareAction(action) {
-    let hiddenFormAction = $("#FormActionInput");
-    hiddenFormAction.val(action);
-    startWaiting();
-}
-function prepareSelection(changedUserId) {
-    let checkboxes = $("[name='Selected']");
-    checkboxes.each(function () {
-        if ($(this).val() == changedUserId) {
-            $(this).attr("checked", true);
-        } else {
-            $(this).attr("checked", false);
-        }
+    let checkboxes = $("input[name = 'Selected']:checked");
+    let ids = [];
+    checkboxes.each(function (i, e) {
+        ids.push($(e).val());
+        updateRow($(e).closest('tr'), action);
     })
+    sendRequest(action, {ids:ids});
+    return false;
 }
-function prepareRole(newRole) {
-    let hiddenNewRole = $("#NewRole");
-    hiddenNewRole.val(newRole);
-}
-function startWaiting() {
-    let waitIcon = $("#PleaseWait");
-    waitIcon.removeClass("d-none");
-    waitIcon.addClass("d-flex");
+function updateRow(row,action) {
+    if (action == "Delete")
+        row.remove();
+    if (action == "Block")
+        row.children("td").last().html("Banned");
+    if (action == "Unblock")
+        row.children("td").last().html("Active");
 }
 function toggleClick() {
     var checkboxes = $("[name='Selected']");
@@ -49,18 +31,13 @@ function toggleClick() {
     toggle = !toggle;
     return false
 }
-function showAlert() {
-    alert.addClass("alert");
-    alert.show();
-}
-function success() {
-    alert.addClass("alert-success");
-    alert.text("Action completed successfully.");
-    showAlert();
-}
-function failed() {
-    alert.addClass("alert-danger");
-    let errorMessage = urlParams.get('errorMessage');
-    alert.text("Action failed to complete." + errorMessage);
-    showAlert();
+
+
+function sendRequest(action,data) {
+    $.ajax({
+        type: "POST",
+        url: '/AdminPanel?handler=' + action,
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+        data: data
+    });
 }
