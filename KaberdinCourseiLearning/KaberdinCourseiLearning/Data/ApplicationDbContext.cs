@@ -26,7 +26,7 @@ namespace KaberdinCourseiLearning.Data
         public DbSet<UserPage> UserPages { get; set; }
         public DbSet<ProductCollection> ProductCollections { get; set; }
         public DbSet<ProductCollectionColumn> ProductCollectionColumns { get; set; }
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<ProductColumnValue> ProductColumnValues { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
