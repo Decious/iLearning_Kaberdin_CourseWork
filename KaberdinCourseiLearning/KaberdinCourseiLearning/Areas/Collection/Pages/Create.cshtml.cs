@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace KaberdinCourseiLearning.Areas.Collection.Pages
 {
+    [Authorize(PolicyNames.POLICY_AUTHENTICATED)]
     public class CreateModel : PageModel
     {
         private CustomUserManager userManager;
