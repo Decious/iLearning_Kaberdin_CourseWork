@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
@@ -41,9 +42,9 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             if (PermittedToChange && loaded)
             {
                 await collectionManager.DeleteCollectionAsync(collectionID);
-                return new OkResult();
+                return new JsonResult(ServerResponse.MakeSuccess());
             }
-            return Forbid();
+            return new JsonResult(ServerResponse.MakeForbidden());
         }
     }
 }
