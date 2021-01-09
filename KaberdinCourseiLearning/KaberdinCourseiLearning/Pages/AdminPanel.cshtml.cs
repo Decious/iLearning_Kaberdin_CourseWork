@@ -92,9 +92,9 @@ namespace KaberdinCourseiLearning.Pages
                 await RemoveFromCurrentRoles(user);
                 if (RoleNames.ROLE_USER != newRole && await roleManager.RoleExistsAsync(newRole))
                     await userManager.AddToRoleAsync(user, newRole);
-                return new JsonResult(new ServerResponse(ServerResponseStatus.SUCCESS, $"{user.UserName} role was changed to {newRole}!"));
+                return new JsonResult(new ServerResponse(true, $"{user.UserName} role was changed to {newRole}!"));
             }
-            return new JsonResult(new ServerResponse(ServerResponseStatus.ERROR, "User was not found! Try reloading the page."));
+            return new JsonResult(new ServerResponse(false, "User was not found! Try reloading the page."));
         }
         private async Task RemoveFromCurrentRoles(CustomUser user)
         {

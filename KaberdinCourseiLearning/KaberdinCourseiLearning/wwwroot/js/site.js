@@ -12,7 +12,7 @@ $(document).bind("ajaxSend", function () {
     setTimeout(resetAlertToDefaults, 3000);
 }).bind("ajaxSuccess", function (event, xhr, settings) {
     let data = JSON.parse(xhr.responseText);
-    if (data.status == "success")
+    if (data.successful)
         alert.addClass("alert-success");
     else
         alert.addClass("alert-danger");

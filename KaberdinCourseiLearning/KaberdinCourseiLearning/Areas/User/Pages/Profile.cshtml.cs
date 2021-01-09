@@ -57,7 +57,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             if (await isLoadedAndPermittedToChange(name))
             {
                 _ = await imageManager.UploadAvatar(file, PageUser.Id);
-                return new JsonResult(new ServerResponse(ServerResponseStatus.SUCCESS, "Avatar was uploaded successfully"));
+                return new JsonResult(new ServerResponse(true, "Avatar was uploaded successfully"));
             }
             return new JsonResult(ServerResponse.MakeForbidden());
         }
@@ -71,7 +71,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             if (await isLoadedAndPermittedToChange(name))
             {
                 await profileManager.ChangeDescriptionAsync(newText,PageUser.Id);
-                return new JsonResult(new ServerResponse(ServerResponseStatus.SUCCESS, "Description changed successfully"));
+                return new JsonResult(new ServerResponse(true, "Description changed successfully"));
             }
             return new JsonResult(ServerResponse.MakeForbidden());
         }
