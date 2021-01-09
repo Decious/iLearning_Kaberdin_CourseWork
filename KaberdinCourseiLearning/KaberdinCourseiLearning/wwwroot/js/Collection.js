@@ -14,6 +14,16 @@ function onDelete(btn) {
     let collectionID = $(btn).closest("[name='Collection']").attr("id");
     sendRequest("DeleteCollection", { collectionID: collectionID })
 }
+function onToggleDetail(btn) {
+    let collection = $(btn).closest("[name='Collection']");
+    if (collection.hasClass('expand-collection')) {
+        collection.removeClass('expand-collection');
+        $(btn).html("<i class='fa fa-arrow-down'></i>");
+    } else {
+        collection.addClass('expand-collection');
+        $(btn).html("<i class='fa fa-arrow-up'></i>");
+    }
+}
 function sendRequest(handler, data) {
     $.ajax({
         type: "POST",

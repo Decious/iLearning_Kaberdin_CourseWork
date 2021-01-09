@@ -42,3 +42,6 @@ div[name="Description"] * {
 .Blk-Trslcnt-Bg {
     background: rgba(0,0,0,0.3);
 }
+.expand-collection{
+    height:auto !important;
+}
