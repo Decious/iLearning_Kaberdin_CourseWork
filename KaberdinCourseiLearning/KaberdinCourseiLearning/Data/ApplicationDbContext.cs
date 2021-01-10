@@ -32,5 +32,6 @@ namespace KaberdinCourseiLearning.Data
         public DbSet<Like> Likes { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ProductCollectionTheme> Themes { get; set; }
+        public DbSet<ColumnType> ColumnTypes { get; set; }
     }
 }

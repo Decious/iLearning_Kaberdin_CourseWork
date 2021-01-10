@@ -14,7 +14,9 @@ namespace KaberdinCourseiLearning.Data.Models
         [ForeignKey("Collection")]
         public int CollectionID { get; set; }
         public ProductCollection Collection { get; set; }
-        public string ColumnType { get; set; }
+        [ForeignKey("Type")]
+        public int TypeID { get; set; }
+        public ColumnType Type { get; set; }
         public string ColumnName { get; set; }
     }
 }
