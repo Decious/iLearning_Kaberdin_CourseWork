@@ -28,8 +28,10 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         }
         public CustomUser PageUser { get; set; }
         public ProductCollectionTheme[] Themes { get; set; }
+        public ColumnType[] Types { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
+
 
         public class InputModel
         {
@@ -40,7 +42,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             [Display(Description = "Collection Description")]
             public string Description { get; set; }
             public string[] ColumnNames { get; set; }
-            public string[] ColumnTypes { get; set; }
+            public int[] ColumnTypes { get; set; }
             public string PageUserName { get; set; }
         }
         public async Task<IActionResult> OnGetAsync(string name)
@@ -66,6 +68,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         private async Task LoadReferences()
         {
             await context.Entry(PageUser).Collection(i => i.ItemCollections).LoadAsync();
+            Types = context.ColumnTypes.ToArray();
         }
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
@@ -94,13 +97,17 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             var columns = new List<ProductCollectionColumn>();
             for (int i = 0; i < Input.ColumnNames.Length; i++)
             {
-                var column = new ProductCollectionColumn()
+                var columnType = collectionManager.GetColumnType(Input.ColumnTypes[i]);
+                if(columnType != null)
                 {
-                    CollectionID = CollectionID,
-                    ColumnName = Input.ColumnNames[i],
-                    ColumnType = Input.ColumnTypes[i]
-                };
-                columns.Add(column);
+                    var column = new ProductCollectionColumn()
+                    {
+                        CollectionID = CollectionID,
+                        ColumnName = Input.ColumnNames[i],
+                        Type = context.ColumnTypes.Find(Input.ColumnTypes[i])
+                    };
+                    columns.Add(column);
+                }
             }
             return columns.ToArray();
         }

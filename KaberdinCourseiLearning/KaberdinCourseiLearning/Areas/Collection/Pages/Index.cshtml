@@ -14,7 +14,7 @@
         <th>Tags</th>
         @foreach (var column in Model.Collection.Columns)
         {
-            <th>@column.ColumnName (@column.ColumnType)</th>
+            <th>@column.ColumnName</th>
         }
     </tr>
     @foreach (var product in Model.Collection.Products)

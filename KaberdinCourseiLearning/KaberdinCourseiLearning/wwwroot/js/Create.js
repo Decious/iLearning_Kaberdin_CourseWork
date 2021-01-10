@@ -5,25 +5,12 @@ function onItemAdd() {
 }
 function addItemFieldInput() {
     let items = $("#Items");
-    items.append(
-    "<div class=\"form-group\">" +
-        "<div class=\"container\">" +
-            "<div class=\"row\">" +
-                "<div class=\"col-6\">" +
-                    "<input name=\"Input.ColumnNames["+fieldCount+"]\" class=\"form-control\"/>" +
-                "</div>" +
-                "<div class=\"col-6\">" +
-                    "<select name=\"Input.ColumnTypes["+fieldCount+"]\" class=\"form-control\">" +
-                    "<option>String</option>" +
-                    "<option>TextArea</option>" +
-                    "<option>Number</option>" +
-                    "<option>Boolean</option>" +
-                    "<option>Date</option>" +
-                    "</select>" +
-                "</div>" +
-            "</div>" +
-        "</div>" +
-    "</div>");
+    let clonable = $("#clonableItem");
+    let clone = clonable.clone();
+    clone.removeClass("d-none");
+    clone.find("input").attr('name', 'Input.ColumnNames[' + fieldCount + ']');
+    clone.find("select").attr('name', 'Input.ColumnTypes[' + fieldCount + ']');
+    items.append(clone);
     fieldCount++;
 }
 Dropzone.options.backgroundImageDz = {
@@ -46,12 +33,13 @@ Dropzone.options.backgroundImageDz = {
         });
         this.on("sending", function (file, xhr, formData) {
             let inputs = $("input");
-            let selects = $("select");
             formData.append("Input.Description", $("#Description").val());
             inputs.each(function (i, e) {
                 appendData(e, formData);
             });
-            selects.each(function (i, e) {
+            appendData($("#Theme"), formData);
+            let types = $("select[name^='Input.ColumnTypes']");
+            types.each(function (i, e) {
                 appendData(e, formData);
             });
         });
@@ -61,6 +49,12 @@ Dropzone.options.backgroundImageDz = {
     }
 }
 function appendData(element, formData) {
-    e = $(element);
-    formData.append(e.attr("name"), e.val());
+    let e = $(element);
+    let value = e.val();
+    var result;
+    if (isNaN(value))
+        result = value;
+    else
+        result = +value;
+    formData.append(e.attr("name"), result);
 }

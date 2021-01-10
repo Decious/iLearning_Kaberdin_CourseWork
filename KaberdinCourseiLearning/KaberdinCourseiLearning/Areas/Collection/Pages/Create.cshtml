@@ -27,7 +27,7 @@
                             <select asp-for="Input.Theme" id="Theme" class="form-control">
                                 @foreach (var theme in Model.Themes)
                                 {
-                                    <option>@theme.Theme</option>
+                                    <option value="@theme.Theme">@theme.Theme</option>
                                 }
                             </select>
                         </div>
@@ -48,6 +48,23 @@
                         <h5 class="col-5 p-0 d-inline-block text-center font-weight-bold">Name</h5>
                         <h5 class="col-6 p-0 d-inline-block text-center font-weight-bold">Type</h5>
                         <div id="Items">
+                            <div class="form-group d-none" id="clonableItem">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input name="InputNamePlaceholder" class="form-control" />
+                                        </div>
+                                        <div class="col-6">
+                                            <select name="InputNamePlaceholder" class="form-control">
+                                                @foreach(var type in Model.Types)
+                                                {
+                                                    <option value="@type.TypeID">@type.TypeName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <button id="ItemAdd" onclick="return onItemAdd()" class="btn btn-primary m-2"><i class="fa fa-plus-square"></i> Add item field</button>
                     </div>

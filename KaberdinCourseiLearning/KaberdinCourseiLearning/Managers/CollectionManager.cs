@@ -41,5 +41,6 @@ namespace KaberdinCourseiLearning.Managers
             await context.SaveChangesAsync();
         }
         public ProductCollectionTheme[] GetCollectionThemes() => context.Themes.ToArray();
+        public ColumnType GetColumnType(int typeID) => context.ColumnTypes.Find(typeID);
     }
 }
