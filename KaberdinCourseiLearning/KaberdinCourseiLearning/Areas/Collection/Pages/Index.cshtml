@@ -1,35 +1,44 @@
 ﻿@page
-@model KaberdinCourseiLearning.Areas.Collection.Pages.IndexModel
+@model KaberdinCourseiLearning.Areas.Collection.Pages.IndexModel;
 @using KaberdinCourseiLearning.Pages.Partials.Models;
+@using KaberdinCourseiLearning.Managers;
+@inject TagManager TagManager
 @{
     var collectionModel = new CollectionModel() { Collection = Model.Collection, PermittedToChange = Model.PermittedToChange };
 }
 @Html.AntiForgeryToken()
 <link href="~/css/Collection.css" rel="stylesheet" />
+<link href="~/lib/tagify/tagify.css" rel="stylesheet" />
 <partial name="_PartialCollection" model="collectionModel" />
-<table class="table table-borderless table-active">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Tags</th>
-        @foreach (var column in Model.Collection.Columns)
-        {
-            <th>@column.ColumnName</th>
-        }
-    </tr>
-    @foreach (var product in Model.Collection.Products)
-    {
-        <tr>
-            <td>@product.ProductID</td>
-            <td>@product.Name</td>
-            <td>@product.Tags</td>
-            @foreach (var columnValue in product.ColumnValues)
+<table class="table table-sm table-hover table-borderless table-active">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Tags</th>
+            @foreach (var column in Model.Collection.Columns)
             {
-                <td>@columnValue.Value</td>
+                <th scope="col">@column.ColumnName</th>
             }
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Collection.Products)
+        {
+            <tr class="text-center">
+                <td>@product.ProductID</td>
+                <td>@product.Name</td>
+                <td name="tags">@await TagManager.GetProductTags(product)</td>
+                @foreach (var columnValue in product.ColumnValues)
+                {
+                    <td name="columnValue">@columnValue.Value</td>
+                }
+            </tr>
+        }
+    </tbody>
 </table>
 <script src="~/lib/markdown-it/markdown-it.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Collection/Collection.js"></script>
+<script src="~/lib/tagify/jQuery.tagify.min.js"></script>
+<script src="~/js/Collection/Index.js"></script>
