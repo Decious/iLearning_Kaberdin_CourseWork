@@ -19,7 +19,9 @@ namespace KaberdinCourseiLearning.Data
             builder.Entity<Like>()
                 .HasKey(o => new { o.ProductID,o.UserID});
             builder.Entity<ProductColumnValue>()
-                .HasKey(o => new { o.ColumnID, o.ProductID });
+                .HasKey(o => new { o.ProductID, o.ColumnID });
+            builder.Entity<ProductTag>()
+                .HasKey(o => new { o.ProductID, o.TagID });
             base.OnModelCreating(builder);
         }
 
@@ -33,5 +35,6 @@ namespace KaberdinCourseiLearning.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ProductCollectionTheme> Themes { get; set; }
         public DbSet<ColumnType> ColumnTypes { get; set; }
+        public DbSet<ProductTag> ProductTags { get; set; }
     }
 }
