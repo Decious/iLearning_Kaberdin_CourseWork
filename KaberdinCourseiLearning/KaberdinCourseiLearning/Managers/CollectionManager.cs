@@ -42,5 +42,27 @@ namespace KaberdinCourseiLearning.Managers
         }
         public ProductCollectionTheme[] GetCollectionThemes() => context.Themes.ToArray();
         public ColumnType GetColumnType(int typeID) => context.ColumnTypes.Find(typeID);
+        public string GetColumnTypeHtml(int typeID, string attributes = null, string inner = null)
+        {
+            var columnType = context.ColumnTypes.Find(typeID);
+            return GetColumnTypeHtml(columnType, attributes, inner);
+        }
+        public string GetColumnTypeHtml(ColumnType type, string attributes = null, string inner = null)
+        {
+            if (type != null)
+            {
+                return replaceTemplate(type, attributes, inner);
+            }
+            return null;
+        }
+        private string replaceTemplate(ColumnType type,string attributes=null,string inner=null)
+        {
+            var html = type.TypeHTML;
+            var attr = attributes == null ? "" : attributes;
+            var inn = inner == null ? "" : inner;
+            html = html.Replace("%attributes%", attr);
+            html = html.Replace("%inner%", inn);
+            return html;
+        }
     }
 }
