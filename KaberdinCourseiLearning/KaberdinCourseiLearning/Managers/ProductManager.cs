@@ -1,5 +1,6 @@
 ﻿using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Managers

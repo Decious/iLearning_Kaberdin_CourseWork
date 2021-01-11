@@ -1,7 +1,5 @@
 ﻿using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,6 +34,25 @@ namespace KaberdinCourseiLearning.Managers
         {
             context.Tags.Update(tag);
             await context.SaveChangesAsync();
+        }
+        public async Task AddProductTagAsync(ProductTag tag)
+        {
+            await context.ProductTags.AddAsync(tag);
+            await context.SaveChangesAsync();
+        }
+        public async Task AddProductTags(string[] tags, int productID)
+        {
+            foreach (var tag in tags)
+            {
+                var found = GetTag(tag);
+                if (found == null)
+                {
+                    found = new Tag() { TagValue = tag };
+                    await AddTagAsync(found);
+                }
+                var newPrTag = new ProductTag() { ProductID = productID, TagID = found.TagID };
+                await AddProductTagAsync(newPrTag);
+            }
         }
     }
 }
