@@ -16,10 +16,13 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
     {
         private CollectionManager collectionManager;
         private CustomUserManager userManager;
-        public IndexModel(CollectionManager collectionManager,CustomUserManager userManager)
+        private ProductManager productManager;
+
+        public IndexModel(CollectionManager collectionManager,ProductManager productManager,CustomUserManager userManager)
         {
             this.collectionManager = collectionManager;
             this.userManager = userManager;
+            this.productManager = productManager;
         }
         public ProductCollection Collection { get; set; }
         public bool PermittedToChange { get; set; }
@@ -33,6 +36,8 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             Collection = await collectionManager.GetCollectionAsync(collectionID);
             if (Collection == null) return false;
             await collectionManager.LoadReferencesAsync(Collection);
+            foreach (var product in Collection.Products)
+                await productManager.LoadReferencesAsync(product);
             PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName);
             return true;
         }
