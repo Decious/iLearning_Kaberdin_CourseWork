@@ -26,12 +26,12 @@ namespace KaberdinCourseiLearning.Managers
             context.Remove(pr);
             await context.SaveChangesAsync();
         }
-        public async Task EditCollectionAsync(Product newProduct)
+        public async Task EditProductAsync(Product newProduct)
         {
             context.Update(newProduct);
             await context.SaveChangesAsync();
         }
-        public async Task CreateCollectionAsync(Product newProduct)
+        public async Task CreateProductAsync(Product newProduct)
         {
             context.Products.Add(newProduct);
             await context.SaveChangesAsync();
