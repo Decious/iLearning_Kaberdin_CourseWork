@@ -9,31 +9,54 @@
             <a name="Collection" asp-area="Collection" asp-page="/Index" asp-route-id="@item.CollectionID" class="text-break font-weight-bold text-light text-left">@item.Collection.Name</a>
         </div>
     </div>
-    <div class="row Blk-Trslcnt-Bg" name="HeaderData">
+    <div class="row bg-secondary" name="HeaderData">
         <div class="col-6">
             <p name="ItemName" class="font-weight-bold text-light">@item.Name</p>
         </div>
         <div class="col-6">
-            <p name="ItemTags" class="font-weight-bold text-light text-right">@item.Tags</p>
+            <p name="ItemTags" class="font-weight-bold text-light text-right">
+            @foreach(var tag in item.Tags)
+            {
+                <span class="badge badge-dark badge-pill">@tag.Tag.TagValue</span>
+            }
+            </p>
         </div>
     </div>
-    <div class="row Blk-Trslcnt-Bg flex-grow-1 overflow-hidden text-light text-break" name="FieldsDiv">
-        <div class="col" name="Fields">
-        @foreach(var ColumnValue in item.ColumnValues)
-        {
-            var type = ColumnValue.Column.Type.TypeName;
-            var name = ColumnValue.Column.ColumnName;
-            var value = ColumnValue.Value;
-        }
+    <div class="row flex-grow-1 overflow-hidden text-light text-break" name="FieldsDiv">
+        <div class="col container Blk-Trslcnt-Bg" style="display:none" id="Fields">
+                @foreach (var ColumnValue in item.ColumnValues)
+                {
+                    var type = ColumnValue.Column.Type.TypeName;
+                    var name = ColumnValue.Column.ColumnName;
+                    var value = ColumnValue.Value;
+                    <div class="row"> 
+                        <div class="col-3"><span class="badge badge-dark">@name</span></div>
+                        @{ 
+                            var html = Html.Raw("<strong>"+value+"</strong>");
+                            switch (value)
+                            {
+                                case "on":
+                                    html = Html.Raw("<i class='fa fa-check'></i>");
+                                    break;
+                                case "off":
+                                    html = Html.Raw("<i class='fa fa-times'></i>");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            <div class="col-9 Blk-Trslcnt-Bg">@html</div>
+                        }
+                    </div>
+                }
         </div>
     </div>
-    <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
+    <div class="row bg-secondary" name="CollectionControls">
         <button class="btn btn-light position-absolute" name="ShowDetail" onclick="onToggleDetail(this)"><i class="fa fa-arrow-down"></i></button>
         @if (Model.PermittedToChange)
         {
             <div class="position-absolute" name="buttonGroup">
-                <button class="btn btn-light" name="Delete"><i class="fa fa-trash"></i></button>
-                <button class="btn btn-light" name="Edit"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-light" id="DeleteBtn"><i class="fa fa-trash"></i></button>
+                <button class="btn btn-light" id="EditBtn"><i class="fa fa-edit"></i></button>
             </div>
         }
     </div>

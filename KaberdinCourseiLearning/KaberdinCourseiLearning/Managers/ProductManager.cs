@@ -1,5 +1,6 @@
 ﻿using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,19 @@ namespace KaberdinCourseiLearning.Managers
             await context.Entry(product).Collection(c => c.Likes).LoadAsync();
             await context.Entry(product).Collection(c => c.ColumnValues).LoadAsync();
             await context.Entry(product).Reference(c => c.Collection).LoadAsync();
+        }
+        public async Task<Product> GetProductWithReferencesAsync(int productID)
+        {
+            return await context.Products.Where(p => p.ProductID == productID)
+                .Include(p => p.Comments)
+                .Include(p => p.Likes)
+                .Include(p => p.Collection)
+                .Include(p => p.Tags)
+                .ThenInclude(t => t.Tag)
+                .Include(p => p.ColumnValues)
+                .ThenInclude(c => c.Column)
+                .ThenInclude(c => c.Type)
+                .FirstOrDefaultAsync();
         }
         public async Task DeleteProductAsync(int productID)
         {
