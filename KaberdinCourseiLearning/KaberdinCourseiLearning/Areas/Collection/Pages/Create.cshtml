@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-9">
             <form id="CollectionForm" method="post">
-                <input type="hidden" asp-for="Input.PageUserName" value="@Model.PageUser.UserName"/>
+                <input type="hidden" asp-for="Input.PageUserName" value="@Model.PageUser.UserName" />
                 <div class="row" name="PlanItem">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -56,7 +56,7 @@
                                         </div>
                                         <div class="col-6">
                                             <select name="InputNamePlaceholder" class="form-control">
-                                                @foreach(var type in Model.Types)
+                                                @foreach (var type in Model.Types)
                                                 {
                                                     <option value="@type.TypeID">@type.TypeName</option>
                                                 }
@@ -84,6 +84,6 @@
     </div>
 </div>
 <script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/CreatePlanNavigation.js"></script>
 <script src="~/lib/dropzone/min/dropzone.min.js"></script>
+<script src="~/js/Collection/CreatePlanNavigation.js"></script>
 <script src="~/js/Collection/Create.js"></script>
