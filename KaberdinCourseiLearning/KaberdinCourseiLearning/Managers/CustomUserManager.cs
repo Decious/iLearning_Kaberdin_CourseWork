@@ -26,6 +26,7 @@ namespace KaberdinCourseiLearning.Managers
         }
         public async Task<bool> IsUserOwnerOrAdminAsync(CustomUser user, string ownerName)
         {
+            if (user == null) return false;
             return (await IsUserAdminAsync(user) || user.UserName == ownerName);
         }
         public async Task<bool> IsUserOwnerOrAdminAsync(ClaimsPrincipal principal, string ownerName)
