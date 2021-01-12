@@ -5,7 +5,7 @@
 @using KaberdinCourseiLearning.Pages.Partials.Models;
 <link href="~/lib/dropzone/min/basic.min.css" rel="stylesheet" />
 <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
-<link href="~/css/Collection.css" rel="stylesheet" />
+<link href="~/css/Collection/Collection.css" rel="stylesheet" />
 <link href="~/css/Profile.css" rel="stylesheet" />
 @Html.AntiForgeryToken()
 <div class="container">
@@ -16,7 +16,7 @@
             </div>
             @if (Model.PermittedToChange)
             {
-                <a name="AddCollectionBtn" asp-area="Collection" asp-page="Create" asp-route-name="@Model.PageUser.UserName" class="row btn btn-primary"><i class="fa fa-plus-square"></i> Add collection</a>
+                <a name="AddCollectionBtn" asp-area="Collection" asp-page="Create" asp-route-name="@Model.PageUser.UserName" class="mb-2 row btn btn-primary"><i class="fa fa-plus-square"></i> Add collection</a>
             }
             <div class="row" id="CollectionsRow">
                 @{

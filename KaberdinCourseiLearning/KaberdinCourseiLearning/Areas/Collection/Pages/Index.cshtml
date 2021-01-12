@@ -7,9 +7,14 @@
     var collectionModel = new CollectionModel() { Collection = Model.Collection, PermittedToChange = Model.PermittedToChange };
 }
 @Html.AntiForgeryToken()
-<link href="~/css/Collection.css" rel="stylesheet" />
+<link href="~/css/Collection/Collection.css" rel="stylesheet" />
+<link href="~/css/Collection/Index.css" rel="stylesheet" />
 <link href="~/lib/tagify/tagify.css" rel="stylesheet" />
 <partial name="_PartialCollection" model="collectionModel" />
+@if (Model.PermittedToChange)
+{
+    <a class="btn btn-outline-primary m-2" asp-area="Item" asp-page="Create" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fa fa-plus-square"></i> Add product</a>
+}
 <table class="table table-sm table-hover table-borderless table-active">
     <thead class="thead-dark">
         <tr class="text-center">
@@ -25,7 +30,7 @@
     <tbody>
         @foreach (var product in Model.Collection.Products)
         {
-            <tr class="text-center">
+            <tr name="record" href="/Item?id=@product.ProductID" class="product text-center position-relative">
                 <td>@product.ProductID</td>
                 <td>@product.Name</td>
                 <td name="tags">@await TagManager.GetProductTags(product)</td>

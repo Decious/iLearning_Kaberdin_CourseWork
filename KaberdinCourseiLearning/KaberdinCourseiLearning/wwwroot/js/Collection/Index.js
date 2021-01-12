@@ -15,3 +15,6 @@ tagElements.each(function (i, element) {
     })
     e.html(html);
 })
+$(".product").click(function () {
+    window.location = window.origin+$(this).attr("href");
+})
