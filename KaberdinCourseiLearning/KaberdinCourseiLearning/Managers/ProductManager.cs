@@ -28,6 +28,7 @@ namespace KaberdinCourseiLearning.Managers
                 .Include(p => p.Comments)
                 .Include(p => p.Likes)
                 .Include(p => p.Collection)
+                .ThenInclude(c=>c.User)
                 .Include(p => p.Tags)
                 .ThenInclude(t => t.Tag)
                 .Include(p => p.ColumnValues)

@@ -5,7 +5,7 @@
 }
 <div class="container position-relative d-flex flex-column" name="Item" id="@item.ProductID">
     <div class="row bg-info" name="ItemAuthor">
-        <div class="col" name="ItemCollectionName">
+        <div class="col" name="ItemCollectionName" style="max-height:2rem;">
             <a name="Collection" asp-area="Collection" asp-page="/Index" asp-route-id="@item.CollectionID" class="text-break font-weight-bold text-light text-left">@item.Collection.Name</a>
         </div>
     </div>
@@ -30,7 +30,7 @@
                     var name = ColumnValue.Column.ColumnName;
                     var value = ColumnValue.Value;
                     <div class="row"> 
-                        <div class="col-3"><span class="badge badge-dark">@name</span></div>
+                        <div class="Blk-Trslcnt-Bg col-md-2"><span class="badge badge-dark">@name</span></div>
                         @{ 
                             var html = Html.Raw("<strong>"+value+"</strong>");
                             switch (value)
@@ -44,7 +44,7 @@
                                 default:
                                     break;
                             }
-                            <div class="col-9 Blk-Trslcnt-Bg">@html</div>
+                            <div class="col-md-10 Blk-Trslcnt-Bg">@html</div>
                         }
                     </div>
                 }
