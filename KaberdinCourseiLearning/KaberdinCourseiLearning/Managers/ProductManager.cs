@@ -57,9 +57,8 @@ namespace KaberdinCourseiLearning.Managers
             context.ProductColumnValues.AddRange(columnValues);
             await context.SaveChangesAsync();
         }
-        public async Task AddComment(string message,string userID,int productID)
+        public async Task AddComment(Comment comm)
         {
-            var comm = new Comment() { Message = message, ProductID = productID, UserID = userID };
             context.Comments.Add(comm);
             await context.SaveChangesAsync();
         }
