@@ -12,6 +12,7 @@ namespace KaberdinCourseiLearning.Data.Models
         {
             HomePage = new UserPage() { Description = "I'm a default user!" };
             ItemCollections = new List<ProductCollection>();
+            AvatarUrl = "https://res.cloudinary.com/ilearningcourse/image/upload/v1610032591/Avatar/default.webp";
         }
         public CustomUser(string userName) : base(userName)
         {
