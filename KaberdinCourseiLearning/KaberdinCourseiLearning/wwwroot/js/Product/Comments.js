@@ -22,6 +22,7 @@ function addComment(response) {
     clone.find(".UserName").html(response.userName + " " + roles);
     clone.find(".Date").html(response.creationDate);
     clone.find(".comment-body").html(response.message);
+    clone.attr('id', response.commentID);
     $("#CommentBox").prepend(clone);
     clone.show(300);
 }

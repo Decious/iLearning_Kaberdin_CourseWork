@@ -13,6 +13,7 @@ namespace KaberdinCourseiLearning.Data
         public string UserName { get; set; }
         public string AvatarUrl { get; set; }
         public string CreationDate { get; set; }
+        public int CommentID { get; set; }
         public CommentResponse(CustomUser user,Comment comment,string[] roles)
         {
             Message = comment.Message;
@@ -20,6 +21,7 @@ namespace KaberdinCourseiLearning.Data
             UserName = user.UserName;
             AvatarUrl = user.AvatarUrl;
             CreationDate = comment.CreationTime.ToShortDateString() +" "+ comment.CreationTime.ToShortTimeString();
+            CommentID = comment.CommentID;
         }
     }
 }
