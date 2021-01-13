@@ -1,4 +1,5 @@
 ﻿using KaberdinCourseiLearning.Data;
+using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -26,14 +27,16 @@ namespace KaberdinCourseiLearning.Hubs
             return base.OnConnectedAsync();
         }
         [HubMethodName("sendComment")]
-        public async Task SendCommentAsync(string message,int productID)
+        public async Task SendCommentAsync(string message,string productID)
         {
             var user = await userManager.GetUserAsync(Context.User);
             if(user != null)
             {
                 var roles = userManager.GetRolesAsync(user).Result.ToArray();
-                await productManager.AddComment(message, user.Id, productID);
-                await Clients.OthersInGroup(productID.ToString()).SendAsync("addComment", message,user,roles);
+                var comm = new Comment() { Message = message, ProductID = int.Parse(productID), UserID = user.Id };
+                await productManager.AddComment(comm);
+                var response = new CommentResponse(user, comm, roles);
+                await Clients.Group(productID).SendAsync("addComment", response);
             }
         }
     }
