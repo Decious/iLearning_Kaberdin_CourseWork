@@ -11,6 +11,7 @@ using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
 using KaberdinCourseiLearning.Middleware;
+using KaberdinCourseiLearning.Hubs;
 
 namespace KaberdinCourseiLearning
 {
@@ -58,6 +59,8 @@ namespace KaberdinCourseiLearning
                 options.ClientId = Environment.GetEnvironmentVariable("AuthGoogleID");
                 options.ClientSecret = Environment.GetEnvironmentVariable("AuthGoogleSecret");
             });
+            services.AddCors();
+            services.AddSignalR();
             services.AddScoped<ImageManager>();
             services.AddScoped<CollectionManager>();
             services.AddScoped<ProfileManager>();
@@ -94,6 +97,7 @@ namespace KaberdinCourseiLearning
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ProductHub>("/Item/ProductHub");
             });
         }
 
