@@ -1,7 +1,50 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.Item.Pages.IndexModel
+@using KaberdinCourseiLearning.Managers;
+@using KaberdinCourseiLearning.Data.Models;
+@inject CustomUserManager UserManager
+@inject SignInManager<CustomUser> SignInManager
 @{
 }
 <link href="~/css/Collection/Collection.css" rel="stylesheet" />
+<input hidden id="productID" value="@Model.Product.ProductID" />
 <partial name="_PartialItem" model="Model.ItemModel" />
 <script src="~/js/Product/PartialItem.js"></script>
+<div class="card mt-3" style="max-height:50vh;">
+    <div class="card-header">Comments</div>
+    <div class="card-body pl-0 pr-0" id="CommentBox">
+        @foreach (var comment in Model.Product.Comments)
+        {
+            <div class="card comment">
+                <div class="card-header text p-0 row m-0">
+                    <div class="col-1 p-0"><img src="@comment.User.AvatarUrl" class="img-thumbnail" height="40" width="40" /></div>
+                    @{
+                        var roles = await UserManager.GetRolesAsync(comment.User);
+                        var rolesHtml = "";
+                        foreach (var role in roles)
+                        {
+                            rolesHtml += $"<span class='badge badge-dark'>{role}</span>";
+                        }
+                    }
+                    <div class="col-7">@comment.User.UserName @Html.Raw(rolesHtml)</div>
+                    <div class="col-4 text-right">@comment.CreationTime.ToShortDateString() @comment.CreationTime.ToShortTimeString()</div>
+                </div>
+                <div class="card-body row" name="comment-body">
+                    @comment.Message
+                </div>
+            </div>
+        }
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="card-footer">
+            <div class="row">
+                <input id="commentInput" class="col-11 h-auto bg-dark text-light form-control form-control-plaintext" />
+                <button id="commentSend" class="col-1 btn btn-primary"><i class="fa fa-paper-plane"></i></button>
+            </div>
+        </div>
+    }
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/Product/Comments.js"></script>

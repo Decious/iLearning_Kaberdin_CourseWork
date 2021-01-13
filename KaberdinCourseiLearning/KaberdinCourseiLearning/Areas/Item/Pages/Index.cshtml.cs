@@ -21,11 +21,13 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
             this.userManager = userManager;
         }
         public Product Product { get; set; }
+        public CustomUser GuestUser { get; set; }
         public bool PermittedToChange { get; set; }
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Product = await productManager.GetProductWithReferencesAsync(id);
             if (Product == null) return Redirect("~/Index");
+            GuestUser = await userManager.GetUserAsync(User);
             PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Product.Collection.User.UserName);
             ItemModel = new ItemModel()
             {

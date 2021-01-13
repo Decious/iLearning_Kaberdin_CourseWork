@@ -7,10 +7,6 @@
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
-      "library": "signalr.js@2.4.1",
-      "destination": "wwwroot/lib/signalr.js/"
-    },
-    {
       "library": "tagify@3.22.0",
       "destination": "wwwroot/lib/tagify/"
     },
@@ -21,6 +17,11 @@
     {
       "library": "dropzone@5.7.2",
       "destination": "wwwroot/lib/dropzone/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@5.0.2",
+      "destination": "wwwroot/lib/microsoft/signalr/"
     }
   ]
 }
