@@ -51,15 +51,15 @@ namespace KaberdinCourseiLearning.Managers
         {
             if (type != null)
             {
-                return replaceTemplate(type, attributes, inner);
+                return ReplaceTemplate(type, attributes, inner);
             }
             return null;
         }
-        private string replaceTemplate(ColumnType type,string attributes=null,string inner=null)
+        private static string ReplaceTemplate(ColumnType type,string attributes=null,string inner=null)
         {
             var html = type.TypeHTML;
-            var attr = attributes == null ? "" : attributes;
-            var inn = inner == null ? "" : inner;
+            var attr = attributes ?? "";
+            var inn = inner ?? "";
             html = html.Replace("%attributes%", attr);
             html = html.Replace("%inner%", inn);
             return html;
