@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace KaberdinCourseiLearning.Data.Models
         [Key]
         public int ThemeID { get; set; }
         public string Theme { get; set; }
+        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

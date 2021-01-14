@@ -22,7 +22,59 @@ namespace KaberdinCourseiLearning.Data
                 .HasKey(o => new { o.ProductID, o.ColumnID });
             builder.Entity<ProductTag>()
                 .HasKey(o => new { o.ProductID, o.TagID });
+            GenerateTsVectorColumns(builder);
+
             base.OnModelCreating(builder);
+        }
+        protected virtual void GenerateTsVectorColumns(ModelBuilder builder)
+        {
+            builder.Entity<Product>()
+            .HasGeneratedTsVectorColumn(
+                p => p.SearchVector,
+                "english",
+                p => new { p.Name })
+                .HasIndex(p => p.SearchVector)
+                .HasMethod("GIN");
+
+            builder.Entity<Comment>()
+            .HasGeneratedTsVectorColumn(
+                c => c.SearchVector,
+                "english",
+                c => new { c.Message })
+                .HasIndex(c => c.SearchVector)
+                .HasMethod("GIN");
+
+            builder.Entity<ProductCollection>()
+            .HasGeneratedTsVectorColumn(
+                c => c.SearchVector,
+                "english",
+                c => new { c.Name, c.Description })
+                .HasIndex(c => c.SearchVector)
+                .HasMethod("GIN");
+
+            builder.Entity<ProductCollectionTheme>()
+            .HasGeneratedTsVectorColumn(
+                c => c.SearchVector,
+                "english",
+                c => new { c.Theme })
+                .HasIndex(c => c.SearchVector)
+                .HasMethod("GIN");
+
+            builder.Entity<ProductColumnValue>()
+            .HasGeneratedTsVectorColumn(
+                c => c.SearchVector,
+                "english",
+                c => new { c.Value })
+                .HasIndex(c => c.SearchVector)
+                .HasMethod("GIN");
+
+            builder.Entity<Tag>()
+            .HasGeneratedTsVectorColumn(
+                c => c.SearchVector,
+                "english",
+                c => new { c.TagValue })
+                .HasIndex(c => c.SearchVector)
+                .HasMethod("GIN");
         }
 
         public DbSet<UserPage> UserPages { get; set; }

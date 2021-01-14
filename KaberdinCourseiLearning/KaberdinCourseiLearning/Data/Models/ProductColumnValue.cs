@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace KaberdinCourseiLearning.Data.Models
         public int ColumnID { get; set; }
         public ProductCollectionColumn Column { get; set; }
         public string Value { get; set; }
+        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

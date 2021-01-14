@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace KaberdinCourseiLearning.Data.Models
         public int TagID { get; set; }
         public string TagValue { get; set; }
         public ICollection<ProductTag> ProductTags { get; set; }
+        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

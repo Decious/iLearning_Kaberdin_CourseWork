@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,5 +27,6 @@ namespace KaberdinCourseiLearning.Data.Models
         [ForeignKey("Collection")]
         public int CollectionID { get; set; }
         public ProductCollection Collection { get; set; }
+        public NpgsqlTsVector SearchVector { get; set; }
     }
 }
