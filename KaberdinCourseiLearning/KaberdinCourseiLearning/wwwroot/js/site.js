@@ -36,3 +36,7 @@ $("#navbarBtn").on('click', function () {
     $("#header-searchbar").hide(300);
     $("#navbar").show(300);
 })
+$("[name='SearchBtn']").on('click', function () {
+    let searchVal = $(this).closest("[name='searchbarGroup']").children("input").val();
+    location.href = location.origin + "/Find?q=" + searchVal;
+})
