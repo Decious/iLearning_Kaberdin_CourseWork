@@ -11,18 +11,42 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">KaberdinCourseiLearning</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse">
-                    <partial name="_LoginPartial" />
+        <div class="container-fluid bg-white border-bottom box-shadow mb-3">
+            <div class="row" id="header-searchbar" style="display:none">
+                <div class="col-2 text-center"><button class="btn" id="navbarBtn"><i class="fa fa-arrow-left align-middle"></i></button></div>
+                <div class="col-10">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search here">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
+            <div class="row" id="navbar">
+                <a asp-area="" asp-page="/Index">
+                    <img src="https://res.cloudinary.com/ilearningcourse/image/upload/c_crop,g_center,h_50,w_200/v1610630020/logo-light-new_envtpe.png">
+                </a>
+                <div class="col container">
+                    <div class="row">
+                        <div class="d-none d-sm-flex m-auto col-md-10 col-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search here">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-4 pr-4 col text-right dropdown">
+                            <div class="d-sm-none d-inline p-2">
+                                <button class="btn" id="searchbarBtn"><i class="fa fa-search"></i></button>
+                            </div>
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

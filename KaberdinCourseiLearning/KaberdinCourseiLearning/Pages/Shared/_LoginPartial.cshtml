@@ -4,38 +4,43 @@
 @inject SignInManager<CustomUser> SignInManager
 @inject CustomUserManager UserManager
 
-    <ul class="navbar-nav">
-        @{CustomUser currentUser = await UserManager.GetUserAsync(User);}
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout">Logout</a>
-            </li>
-            if (await UserManager.IsInRoleAsync(currentUser, "Administrator"))
+
+    <a href="#" role="button" style="display:inline-block" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @{
+            string picture;
+            CustomUser currentUser = null;
+            if (SignInManager.IsSignedIn(User))
             {
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-page="/AdminPanel">Admin-panel</a>
-                </li>
+                currentUser = await UserManager.GetUserAsync(User);
+                picture = currentUser.AvatarUrl;
+            }
+            else
+            {
+                picture = "https://res.cloudinary.com/ilearningcourse/image/upload/v1610032591/Avatar/default.webp";
             }
         }
-        else
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-            </li>
+        <img class="img-fluid rounded-circle" height="50" width="50" src="@picture" />
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-5px, 38px, 0px);">
+        @{
+            if (SignInManager.IsSignedIn(User))
+            {
+                <p class="dropdown-header text-center">@currentUser.UserName</p>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link text-dark" asp-area="User" asp-page="/Profile" asp-route-name="@currentUser.UserName"><i class="fa fa-home"></i> My page</a>
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa fa-cog"></i> Settings</a>
+                if (await UserManager.IsInRoleAsync(currentUser, RoleNames.ROLE_ADMINISTRATOR))
+                {
+                    <a class="nav-link text-dark" asp-area="" asp-page="/AdminPanel"><i class="fa fa-hammer"></i> Admin-panel</a>
+                }
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            }
+            else
+            {
+                <p class="dropdown-header text-center">Guest</p>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user-plus"></i> Register</a>
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+            }
         }
-    </ul>
-    <ul class="navbar-nav flex-grow-1">
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="User" asp-page="/Profile" asp-route-name="@currentUser.UserName">My page</a>
-            </li>
-        }
-    </ul>
+    </div>

@@ -28,3 +28,11 @@ function resetAlertToDefaults() {
     if (alert.hasClass('alert-success'))
         alert.removeClass('alert-success');
 }
+$("#searchbarBtn").on('click', function () {
+    $("#navbar").hide(300);
+    $("#header-searchbar").show(300);
+})
+$("#navbarBtn").on('click', function () {
+    $("#header-searchbar").hide(300);
+    $("#navbar").show(300);
+})
