@@ -1,60 +1,104 @@
-﻿var fieldCount = 0;
-function onItemAdd() {
-    addItemFieldInput()
-    return false;
-}
+﻿var url;
+var name;
+var description;
+var theme;
+var columns;
+var collectionID;
+var deletedColumns = [];
+var dropzoneObject;
+Dropzone.autoDiscover = false;
+$("#backgroundImageDz").dropzone({
+    autoProcessQueue: false,
+    method: "post",
+    ParallelUploads: 100,
+    maxFiles: 1,
+    maxFilesize: 8,
+    url: location.origin + "/Collection/Create?handler=UpdateImage",
+    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+    paramName: "file",
+    acceptedFiles: 'image/*',
+    init: function () {
+        dropzoneObject = this;
+    },
+    success: function (file, response) {
+        location.href = location.origin + url;
+    },
+    sending: function (file, xml, formData) {
+        formData.append("collectionID", collectionID)
+    }
+})
+$("#ItemAdd").on('click', addItemFieldInput);
+$("#SubmitBtn").on('click', prepareRequest);
+$("[name='deleteColumnBtn']").on('click', deleteColumn);
 function addItemFieldInput() {
     let items = $("#Items");
     let clonable = $("#clonableItem");
     let clone = clonable.clone();
     clone.removeClass("d-none");
-    clone.find("input").attr('name', 'Input.ColumnNames[' + fieldCount + ']');
-    clone.find("select").attr('name', 'Input.ColumnTypes[' + fieldCount + ']');
+    clone.removeAttr("id");
+    clone.find("[name='PlaceholderName']").attr('name', 'ColumnName');
+    clone.find("[name='PlaceholderType']").attr('name', 'ColumnType');
+    clone.find("[name='PlaceholderDeleteBtn']").attr('name', 'deleteColumnBtn').on('click',deleteColumn);
     items.append(clone);
-    fieldCount++;
 }
-Dropzone.options.backgroundImageDz = {
-    autoProcessQueue: false,
-    ParallelUploads: 100,
-    maxFiles: 1,
-    maxFilesize: 8,
-    url: location.href,
-    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
-    paramName:"file",
-    acceptedFiles:'image/*',
-    init: function () {
-        dropzone = this;
-        $("button[type='submit']").on('click', function (e) {
-            if (dropzone.getQueuedFiles().length > 0) {
-                e.preventDefault();
-                e.stopPropagation();
-                dropzone.processQueue();
-            } 
-        });
-        this.on("sending", function (file, xhr, formData) {
-            let inputs = $("input");
-            formData.append("Input.Description", $("#Description").val());
-            inputs.each(function (i, e) {
-                appendData(e, formData);
-            });
-            appendData($("#Theme"), formData);
-            let types = $("select[name^='Input.ColumnTypes']");
-            types.each(function (i, e) {
-                appendData(e, formData);
-            });
-        });
-        this.on("success", function (files, response) {
-            location.href = location.origin + "/Collection?id=" + response;
-        });
-    }
+function prepareRequest() {
+    let username = $("#PageUserName");
+    collectionID = $("#CollectionID").val();
+    name = $("#Name").val();
+    description = $("#Description").val();
+    theme = $("#Theme").val();
+    if (username.length != 0) sendCreateRequest(username.val());
+    if (collectionID != undefined) sendEditRequest();
 }
-function appendData(element, formData) {
-    let e = $(element);
-    let value = e.val();
-    var result;
-    if (isNaN(value))
-        result = value;
-    else
-        result = +value;
-    formData.append(e.attr("name"), result);
+function getColumns(collectionID=0) {
+    let columnArr = [];
+    let columnTypes = $("[name='ColumnType']");
+    let columnNames = $("[name='ColumnName']");
+    columnTypes.each(function (i, e) {
+        let columnName = columnNames.get(i);
+        columnName = $(columnName).val();
+        let columnID = $(e).closest("[name='Item']").attr('id');
+        if (columnID == undefined) columnID = 0;
+        let typeID = $(e).val();
+        let column = { ColumnID: +columnID, CollectionID: +collectionID, Collection: null, TypeID: +typeID, Type:null, ColumnName: columnName };
+        columnArr.push(column);
+    })
+    return columnArr;
 }
+function sendCreateRequest(username) {
+    columns = getColumns();
+    let data = { name: name, description: description, theme: +theme, columns: columns, pageUserName: username };
+    sendRequest(data, "CreateCollection");
+}
+function sendEditRequest() {
+    columns = getColumns(collectionID);
+    let data = { name: name, description: description, theme: +theme, columns: columns, collectionID: +collectionID, deletedColumns: deletedColumns };
+    sendRequest(data, "EditCollection");
+}
+function sendRequest(data,handler) {
+    let json = JSON.stringify(data);
+    $.ajax({
+        method: "post",
+        contentType: "application/json",
+        url: "/Collection/Create?handler="+handler,
+        data: json,
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+        success: function (data, status, jqXHR) {
+            if (data.successful) {
+                url = data.url;
+                let regex = /[?|&](?:id|collectionID)=(\w*)/;
+                collectionID = regex.exec(url)[1];
+                if (dropzoneObject.files.length == 0) location.href = location.origin + url;
+                dropzoneObject.processQueue();
+            }
+        }
+    });
+}
+function deleteColumn(event) {
+    let element = $(this);
+    let column = element.closest("[name='Item']");
+    let id = column.attr('id');
+    if (id != undefined) deletedColumns.push(id);
+    column.remove();
+}
+

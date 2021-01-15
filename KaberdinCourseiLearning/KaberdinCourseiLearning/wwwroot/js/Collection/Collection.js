@@ -1,5 +1,7 @@
 ﻿let descriptions = $("[name='Description']");
 let markdown = window.markdownit();
+$("[name='colDelete']").on('click', Delete);
+$("[name='colEdit']").on('click', Edit);
 descriptions.each(function (i, e) {
     e = $(e);
     let markdownText = e.html();
@@ -10,9 +12,13 @@ function ViewCollection(div) {
     let collectionID = $(div).closest("[name='Collection']").attr("id");
     location.href = location.origin + "/Collection?id=" + collectionID;
 }
-function onDelete(btn) {
-    let collectionID = $(btn).closest("[name='Collection']").attr("id");
+function Delete() {
+    let collectionID = $(this).closest("[name='Collection']").attr("id");
     sendRequest("DeleteCollection", { collectionID: collectionID })
+}
+function Edit() {
+    let collectionID = $(this).closest("[name='Collection']").attr("id");
+    location.href = location.origin + "/Collection/Create?id=" + collectionID;
 }
 function onToggleDetail(btn) {
     let collection = $(btn).closest("[name='Collection']");

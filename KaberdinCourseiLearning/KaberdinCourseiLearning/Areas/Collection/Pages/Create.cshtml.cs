@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
+using KaberdinCourseiLearning.Data.CollectionRequests;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Authorization;
@@ -16,42 +17,25 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
     public class CreateModel : PageModel
     {
         private CustomUserManager userManager;
-        private ApplicationDbContext context;
         private ImageManager imageManager;
         private CollectionManager collectionManager;
-        public CreateModel(CustomUserManager userManager, ApplicationDbContext context,ImageManager imageManager, CollectionManager collectionManager)
+        public CreateModel(CustomUserManager userManager,ImageManager imageManager, CollectionManager collectionManager)
         {
             this.userManager = userManager;
-            this.context = context;
             this.imageManager = imageManager;
             this.collectionManager = collectionManager;
         }
         public CustomUser PageUser { get; set; }
+        public ProductCollection Collection { get; set; }
         public ProductCollectionTheme[] Themes { get; set; }
         public ColumnType[] Types { get; set; }
-        [BindProperty]
-        public InputModel Input { get; set; }
 
-
-        public class InputModel
+        public async Task<IActionResult> OnGetAsync(string name,int id)
         {
-            [Display(Name = "Collection name")]
-            public string Name { get; set; }
-            [Display(Name = "Collection theme")]
-            public string Theme { get; set; }
-            [Display(Description = "Collection Description")]
-            public string Description { get; set; }
-            public string[] ColumnNames { get; set; }
-            public int[] ColumnTypes { get; set; }
-            public string PageUserName { get; set; }
-        }
-        public async Task<IActionResult> OnGetAsync(string name)
-        {
-            if (name != null)
+            if (name != null || id != 0)
             {
-                if (await TryLoadPropertiesAsync(name))
+                if (await TryLoadPropertiesAsync(name,id))
                 {
-                    await LoadReferences();
                     return Page();
                 }
                 return Forbid();
@@ -59,57 +43,39 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             return Redirect("~/Index");
         }
 
-        private async Task<bool> TryLoadPropertiesAsync(string name)
+        private async Task<bool> TryLoadPropertiesAsync(string name,int id)
         {
-            PageUser = await userManager.FindByNameAsync(name);
+            Collection = new ProductCollection();
+            if (id != 0)
+                Collection = await collectionManager.GetCollectionAsyncWithReferences(id);
+            else if(name != null)
+                PageUser = await userManager.FindUserByNameWithReferencesAsync(name);
+            Types = collectionManager.GetColumnTypes();
             Themes = collectionManager.GetCollectionThemes();
-            return PageUser != null;
+            return PageUser != null || Collection != null;
         }
-        private async Task LoadReferences()
+        public async Task<IActionResult> OnPostCreateCollection([FromBody] CreateCollectionRequest request)
         {
-            await context.Entry(PageUser).Collection(i => i.ItemCollections).LoadAsync();
-            Types = context.ColumnTypes.ToArray();
+            if(request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
+            if(!await userManager.IsUserOwnerOrAdminAsync(User,request.PageUserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to create collections for this account.","/User/Profile?name="+request.PageUserName));
+            var response = await collectionManager.CreateCollectionAsync(request);
+            return new JsonResult(response);
         }
-        public async Task<IActionResult> OnPostAsync(IFormFile file)
+        public async Task<IActionResult> OnPostEditCollection([FromBody] EditCollectionRequest request)
         {
-            if (await TryLoadPropertiesAsync(Input.PageUserName))
-            {
-                var CollectionId = await CreateCollectionAsync(file);
-                if (file != null) return new OkObjectResult(CollectionId);
-                return RedirectToPage("/Index", new { id = CollectionId });
-            }
-            return Forbid();
+            if (request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
+            Collection = await collectionManager.GetCollectionAsyncWithReferences(request.CollectionID);
+            if(Collection == null) return new JsonResult(new ServerResponse(false, "Collection no longer exists."));
+            if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to edit this collection.", "/Collection?id=" + request.CollectionID));
+            var response = await collectionManager.EditCollectionAsync(request);
+            return new JsonResult(response);
         }
-        private async Task<int> CreateCollectionAsync(IFormFile backgroundImage)
+        public async Task<IActionResult> OnPostUpdateImage(IFormFile file,[FromForm] int collectionID)
         {
-            var newCollection = new ProductCollection() { Description = Input.Description, Name = Input.Name, Theme = Input.Theme, UserID = PageUser.Id };
-            await collectionManager.CreateCollectionAsync(newCollection);
-            var columns = GetCollectionColumns(newCollection.CollectionID);
-            if(columns != null)
-                await collectionManager.AddCollectionColumnsAsync(columns);
-            if (backgroundImage != null)
-                await imageManager.UploadBackground(backgroundImage, newCollection.CollectionID);
-            return newCollection.CollectionID;
-        }
-        private ProductCollectionColumn[] GetCollectionColumns(int CollectionID)
-        {
-            if (Input.ColumnNames == null) return null;
-            var columns = new List<ProductCollectionColumn>();
-            for (int i = 0; i < Input.ColumnNames.Length; i++)
-            {
-                var columnType = collectionManager.GetColumnType(Input.ColumnTypes[i]);
-                if(columnType != null)
-                {
-                    var column = new ProductCollectionColumn()
-                    {
-                        CollectionID = CollectionID,
-                        ColumnName = Input.ColumnNames[i],
-                        Type = context.ColumnTypes.Find(Input.ColumnTypes[i])
-                    };
-                    columns.Add(column);
-                }
-            }
-            return columns.ToArray();
+            Collection = await collectionManager.GetCollectionAsyncWithReferences(collectionID);
+            if (Collection == null || !await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return Forbid();
+            await imageManager.UploadBackground(file, collectionID);
+            return new OkResult();
         }
     }
 }

@@ -4,36 +4,64 @@
 }
 @Html.AntiForgeryToken()
 <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
-<h2>Collection creation</h2>
+@if (Model.PageUser != null)
+{
+    <h2>Collection creation</h2>
+} else
+{
+    <h2>@Model.Collection.Name update</h2>
+}
+
 
 <div>
-    <h4>Create your collection</h4>
+    @if (Model.PageUser != null)
+    {
+        <h4>Create your collection</h4>
+    }
+    else
+    {
+        <h2>Edit your collection</h2>
+    }
     <hr />
     <div class="row">
         <div class="col-md-3">
             <partial name="_CreatePlan" />
         </div>
         <div class="col-md-9">
-            <form id="CollectionForm" method="post">
-                <input type="hidden" asp-for="Input.PageUserName" value="@Model.PageUser.UserName" />
+            <div id="CollectionForm">
+                @if (Model.PageUser != null)
+                {
+                    <input type="hidden" id="PageUserName" value="@Model.PageUser.UserName" />
+                }
+                else
+                {
+                    <input type="hidden" id="CollectionID" value="@Model.Collection.CollectionID" />
+                }
                 <div class="row" name="PlanItem">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Input.Name"></label>
-                            <input asp-for="Input.Name" id="Name" class="form-control" />
+                            <label for="Name">Name</label>
+                            <input id="Name" class="form-control" value="@Model.Collection.Name" />
                         </div>
                         <div class="form-group">
-                            <label asp-for="Input.Theme"></label>
-                            <select asp-for="Input.Theme" id="Theme" class="form-control">
+                            <label for="Theme">Theme</label>
+                            <select id="Theme" class="form-control">
                                 @foreach (var theme in Model.Themes)
                                 {
-                                    <option value="@theme.Theme">@theme.Theme</option>
+                                    if (Model.Collection.Theme == theme.Theme)
+                                    {
+                                        <option selected value="@theme.ThemeID">@theme.Theme</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@theme.ThemeID">@theme.Theme</option>
+                                    }
                                 }
                             </select>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Input.Description"></label>
-                            <textarea asp-for="Input.Description" id="Description" class="form-control" style="resize:none;"></textarea>
+                            <label for="Description">Description</label>
+                            <textarea id="Description" class="form-control" style="resize:none;">@Model.Collection.Description</textarea>
                         </div>
                         <div class="form-group">
                             <label>Background Image</label>
@@ -48,38 +76,68 @@
                         <h5 class="col-5 p-0 d-inline-block text-center font-weight-bold">Name</h5>
                         <h5 class="col-6 p-0 d-inline-block text-center font-weight-bold">Type</h5>
                         <div id="Items">
-                            <div class="form-group d-none" id="clonableItem">
+
+                            <div class="form-group d-none" name="Item" id="clonableItem">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6">
-                                            <input name="InputNamePlaceholder" class="form-control" />
+                                            <input name="PlaceholderName" class="form-control" />
                                         </div>
-                                        <div class="col-6">
-                                            <select name="InputNamePlaceholder" class="form-control">
+                                        <div class="col-5">
+                                            <select name="PlaceholderType" class="form-control">
                                                 @foreach (var type in Model.Types)
                                                 {
                                                     <option value="@type.TypeID">@type.TypeName</option>
                                                 }
                                             </select>
                                         </div>
+                                        <button class="btn col-1 p-0" name="PlaceholderDeleteBtn"><i class="fa fa-trash"></i></button>
                                     </div>
                                 </div>
                             </div>
+                            @foreach (var item in Model.Collection.Columns)
+                            {
+                                <div class="form-group" name="Item" id="@item.ColumnID">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input name="ColumnName" class="form-control" value="@item.ColumnName" />
+                                            </div>
+                                            <div class="col-5">
+                                                <select name="ColumnType" class="form-control">
+                                                    @foreach (var type in Model.Types)
+                                                    {
+                                                        if (type.TypeID == item.TypeID)
+                                                        {
+                                                            <option selected value="@type.TypeID">@type.TypeName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@type.TypeID">@type.TypeName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <button class="btn col-1 p-0" name="deleteColumnBtn"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                        <button id="ItemAdd" onclick="return onItemAdd()" class="btn btn-primary m-2"><i class="fa fa-plus-square"></i> Add item field</button>
+                        <button id="ItemAdd" class="btn btn-primary m-2"><i class="fa fa-plus-square"></i> Add item field</button>
                     </div>
                 </div>
                 <div class="row d-none" name="PlanItem">
                     <div class="col-md-6">
-                        <h4>Here is how your collection looks right now:</h4>
+                        <h4>Publish your changes!</h4>
                         <ul id="PublishInfo">
                         </ul>
                     </div>
                 </div>
                 <button id="Previous" onclick="return onPrev()" class="btn btn-primary disabled">Previous</button>
                 <button id="Next" onclick="return onNext()" class="btn btn-primary">Next</button>
-                <button id="SubmitBtn" type="submit" class="btn btn-primary d-none">Publish!</button>
-            </form>
+                <button id="SubmitBtn" class="btn btn-primary d-none">Publish!</button>
+            </div>
         </div>
     </div>
 </div>
