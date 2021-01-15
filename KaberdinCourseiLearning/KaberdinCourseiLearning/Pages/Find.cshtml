@@ -2,4 +2,25 @@
 @model KaberdinCourseiLearning.Pages.FindModel
 @{
 }
-You searched for: @Model.q
+Results (@Model.MatchedResult.Length)
+@if (Model.MatchedResult.Length == 0)
+{
+    <h3>Nothing found. Change your search query!</h3>
+}
+@foreach (var product in Model.MatchedResult)
+{
+    <div class="card hoverable mb-2">
+        <a class="text-decoration-none text-dark" asp-area="Item" asp-page="Index" asp-route-id="@product.ProductID">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <p>@product.Name</p>
+                    </div>
+                    <div class="col-8 text-right">
+                        <p>Created on: @product.CreationDate.ToShortDateString()</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+}

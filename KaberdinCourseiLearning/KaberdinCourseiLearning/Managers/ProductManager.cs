@@ -63,5 +63,30 @@ namespace KaberdinCourseiLearning.Managers
             context.Comments.Add(comm);
             await context.SaveChangesAsync();
         }
+        public async Task<Product[]> FindProducts(string query)
+        {
+            if (query == null) return null;
+            return await context.Products.Where(p =>
+                        p.SearchVector.Matches(query) ||
+                        p.Collection.SearchVector.Matches(query) ||
+                        p.Comments.Any(c => c.SearchVector.Matches(query)) ||
+                        p.ColumnValues.Any(cv => cv.SearchVector.Matches(query)) ||
+                        p.Tags.Any(t => t.Tag.SearchVector.Matches(query))
+                        ).ToArrayAsync();
+        }
+        public async Task<Product[]> FindProductsByTag(string tag)
+        {
+            if (tag == null) return null;
+            return await context.Products.Where(p =>
+                            p.Tags.Any(t => t.Tag.SearchVector.Matches(tag))
+                            ).ToArrayAsync();
+        }
+        public async Task<Product[]> FindProductsByOwner(string owner)
+        {
+            if (owner == null) return null;
+            return await context.Products.Where(p => 
+            p.Collection.User.UserName == owner
+            ).ToArrayAsync();
+        }
     }
 }
