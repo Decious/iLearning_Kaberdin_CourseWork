@@ -1,5 +1,7 @@
 ﻿using KaberdinCourseiLearning.Data;
+using KaberdinCourseiLearning.Data.CollectionRequests;
 using KaberdinCourseiLearning.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +15,14 @@ namespace KaberdinCourseiLearning.Managers
             this.context = context;
         }
         public async Task<ProductCollection> GetCollectionAsync(int collectionID) => await context.ProductCollections.FindAsync(collectionID);
+        public async Task<ProductCollection> GetCollectionAsyncWithReferences(int collectionID)
+        {
+            return await context.ProductCollections.Where(pc => 
+            pc.CollectionID == collectionID)
+                .Include(p => p.User)
+                .Include(p => p.Columns)
+                .FirstOrDefaultAsync();
+        }
         public async Task LoadReferencesAsync(ProductCollection productCollection)
         {
             await context.Entry(productCollection).Collection(c => c.Products).LoadAsync();
@@ -25,23 +35,80 @@ namespace KaberdinCourseiLearning.Managers
             context.Remove(coll);
             await context.SaveChangesAsync();
         }
-        public async Task EditCollectionAsync(ProductCollection newCollection)
+        public async Task<ServerResponse> EditCollectionAsync(EditCollectionRequest request)
         {
-            context.Update(newCollection);
+            var collection = await context.ProductCollections
+                             .Where(c => c.CollectionID == request.CollectionID)
+                             .Include(c => c.Columns).FirstOrDefaultAsync();
+            if (collection == null) return new ServerResponse(false, "No such collection found! Maybe collection got deleted?");
+            var theme = await context.Themes.FindAsync(request.ThemeID);
+            if (theme == null) return new ServerResponse(false, "No such theme found! Maybe theme got deleted?");
+            DeleteColumns(request.DeletedColumns);
+            UpdateCollection(collection, request, theme);
+            UpdateColumns(collection, request);
             await context.SaveChangesAsync();
+            return new ServerResponse(true, "Collection successfully updated!", "/Collection?id=" + collection.CollectionID);
         }
-        public async Task CreateCollectionAsync(ProductCollection newCollection)
+        private void DeleteColumns(int[] columnIDs)
         {
-            context.ProductCollections.Add(newCollection);
-            await context.SaveChangesAsync();
+            foreach (var deletedColumnID in columnIDs)
+            {
+                var column = context.ProductCollectionColumns.Find(deletedColumnID);
+                context.ProductCollectionColumns.Remove(column);
+            }
         }
-        public async Task AddCollectionColumnsAsync(ProductCollectionColumn[] columns)
+        private void UpdateCollection(ProductCollection collection,EditCollectionRequest request, ProductCollectionTheme theme)
+        {
+            collection.Description = request.Description;
+            collection.Theme = theme.Theme;
+            collection.Name = request.Name;
+        }
+        private void UpdateColumns(ProductCollection collection, EditCollectionRequest request)
+        {
+            foreach (var column in request.Columns)
+            {
+                if (column.ColumnID != 0)
+                {
+                    var tracked = context.ProductCollectionColumns.Find(column.ColumnID);
+                    tracked.ColumnName = column.ColumnName;
+                    tracked.TypeID = column.TypeID;
+                    context.ProductCollectionColumns.Update(tracked);
+                }
+                else
+                {
+                    column.CollectionID = collection.CollectionID;
+                    context.ProductCollectionColumns.Add(column);
+                }
+            }
+        }
+        public async Task<ServerResponse> CreateCollectionAsync(CreateCollectionRequest request)
+        {
+            var theme = await context.Themes.FindAsync(request.ThemeID);
+            if (theme == null) return new ServerResponse(false, "No such theme found! Maybe theme got deleted?");
+            var user = await context.Users.Where(u => u.UserName == request.PageUserName).FirstOrDefaultAsync();
+            if (user == null) return new ServerResponse(false, "No such user found! Maybe user got deleted?");
+            var id = await SaveCollection(request,theme,user.Id);
+            return new ServerResponse(true, "Successfully created collection", "/Collection?id=" + id);
+        }
+        private async Task<int> SaveCollection(CreateCollectionRequest request, ProductCollectionTheme theme,string userID)
+        {
+            ProductCollection newColl = new ProductCollection() { Description = request.Description,UserID = userID, Theme = theme.Theme, Name = request.Name };
+            context.ProductCollections.Add(newColl);
+            await context.SaveChangesAsync();
+            foreach (var column in request.Columns)
+            {
+                column.CollectionID = newColl.CollectionID;
+            }
+            await AddCollectionColumnsAsync(request.Columns);
+            return newColl.CollectionID;
+        }
+        private async Task AddCollectionColumnsAsync(ProductCollectionColumn[] columns)
         {
             context.ProductCollectionColumns.AddRange(columns);
             await context.SaveChangesAsync();
         }
         public ProductCollectionTheme[] GetCollectionThemes() => context.Themes.ToArray();
-        public ColumnType GetColumnType(int typeID) => context.ColumnTypes.Find(typeID);
+        public ColumnType[] GetColumnTypes() => context.ColumnTypes.ToArray();
         public string GetColumnTypeHtml(int typeID, string attributes = null, string inner = null)
         {
             var columnType = context.ColumnTypes.Find(typeID);
