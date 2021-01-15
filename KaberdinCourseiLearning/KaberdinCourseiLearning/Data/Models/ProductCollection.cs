@@ -11,6 +11,7 @@ namespace KaberdinCourseiLearning.Data.Models
         public ProductCollection()
         {
             Products = new List<Product>();
+            Columns = new List<ProductCollectionColumn>();
             CreationDate = DateTime.UtcNow;
             BackgroundUrl = "https://res.cloudinary.com/ilearningcourse/image/upload/v1610032560/Collection/default.jpg";
         }
