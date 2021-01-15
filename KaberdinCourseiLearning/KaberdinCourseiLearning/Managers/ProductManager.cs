@@ -34,6 +34,7 @@ namespace KaberdinCourseiLearning.Managers
                 .Include(p => p.ColumnValues)
                 .ThenInclude(c => c.Column)
                 .ThenInclude(c => c.Type)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync();
         }
         public async Task DeleteProductAsync(int productID)
