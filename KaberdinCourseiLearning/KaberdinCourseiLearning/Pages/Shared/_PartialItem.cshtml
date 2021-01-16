@@ -3,13 +3,20 @@
 @{
     var item = Model.Item;
 }
-<div class="container position-relative d-flex flex-column" name="Item" id="@item.ProductID">
-    <div class="row bg-info" name="ItemAuthor">
+<style>
+    .PartialItem{
+        background-image: url(@item.Collection.BackgroundUrl);
+        background-size:cover;
+        background-repeat:no-repeat;
+    }
+</style>
+<div class="PartialItem container position-relative d-flex flex-column" name="Item" id="@item.ProductID">
+    <div class="row Blk-Trslcnt-Bg" name="ItemAuthor">
         <div class="col" name="ItemCollectionName" style="max-height:2rem;">
             <a name="Collection" asp-area="Collection" asp-page="/Index" asp-route-id="@item.CollectionID" class="text-break font-weight-bold text-light text-left">@item.Collection.Name</a>
         </div>
     </div>
-    <div class="row bg-secondary" name="HeaderData">
+    <div class="row Blk-Trslcnt-Bg" name="HeaderData">
         <div class="col-6">
             <p name="ItemName" class="font-weight-bold text-light">@item.Name</p>
         </div>
@@ -22,14 +29,14 @@
             </p>
         </div>
     </div>
-    <div class="row flex-grow-1 overflow-hidden text-light text-break" name="FieldsDiv">
-        <div class="col container Blk-Trslcnt-Bg" style="display:none" id="Fields">
+    <div class="row flex-grow-1 Blk-Trslcnt-Bg overflow-hidden text-light text-break" name="FieldsDiv">
+        <div class="col container" style="display:none" id="Fields">
                 @foreach (var ColumnValue in item.ColumnValues)
                 {
                     var name = ColumnValue.Column.ColumnName;
                     var value = ColumnValue.Value;
                     <div class="row"> 
-                        <div class="Blk-Trslcnt-Bg col-md-2"><span class="badge badge-dark">@name</span></div>
+                        <div class="col-md-2"><span class="badge badge-dark">@name</span></div>
                         @{ 
                             var html = Html.Raw("<strong>"+value+"</strong>");
                             switch (value)
@@ -43,13 +50,13 @@
                                 default:
                                     break;
                             }
-                            <div class="col-md-10 Blk-Trslcnt-Bg">@html</div>
+                            <div class="col-md-10">@html</div>
                         }
                     </div>
                 }
         </div>
     </div>
-    <div class="row bg-secondary" name="CollectionControls">
+    <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
         <button class="btn btn-light position-absolute" name="ShowDetail" onclick="onToggleDetail(this)"><i class="fa fa-arrow-down"></i></button>
         @if (Model.PermittedToChange)
         {
