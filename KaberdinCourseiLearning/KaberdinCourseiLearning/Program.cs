@@ -20,6 +20,11 @@ namespace KaberdinCourseiLearning
         public static IWebHostBuilder CreateHostBuilder(string[] args)
         {
             var port = Environment.GetEnvironmentVariable("PORT");
+            if(port == null)
+            {
+                return WebHost.CreateDefaultBuilder(args)
+                    .UseStartup<Startup>();
+            }
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseUrls("http://*:" + port);
