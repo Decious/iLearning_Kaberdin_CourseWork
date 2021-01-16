@@ -11,39 +11,53 @@
 <link href="~/css/Collection/Index.css" rel="stylesheet" />
 <link href="~/lib/tagify/tagify.css" rel="stylesheet" />
 <partial name="_PartialCollection" model="collectionModel" />
-@if (Model.PermittedToChange)
-{
-    <a class="btn btn-outline-primary m-2" asp-area="Item" asp-page="Create" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fa fa-plus-square"></i> Add product</a>
-}
-<table class="table table-sm table-responsive table-hover table-borderless table-active">
-    <thead class="thead-dark">
-        <tr class="text-center">
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Tags</th>
-            @foreach (var column in Model.Collection.Columns)
-            {
-                <th scope="col">@column.ColumnName</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model.Collection.Products)
-        {
-            <tr name="record" href="/Item?id=@product.ProductID" class="product text-center position-relative">
-                <td>@product.ProductID</td>
-                <td>@product.Name</td>
-                <td name="tags">@await TagManager.GetProductTags(product)</td>
-                @foreach (var columnValue in product.ColumnValues)
+<div id="products">
+    @if (Model.PermittedToChange)
+    {
+        <a class="btn btn-outline-primary m-2" asp-area="Item" asp-page="Create" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fa fa-plus-square"></i> Add product</a>
+    }
+    <input class="search d-inline-block form-control" style="width:12rem;" placeholder="Search" />
+    <table class="table table-sm table-sm-responsive table-hover table-borderless table-active">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th class="sort" data-sort="ID" scope="col">ID</th>
+                <th class="sort" data-sort="Name" scope="col">Name</th>
+                <th class="sort" data-sort="Tags" scope="col">Tags</th>
+                @foreach (var column in Model.Collection.Columns)
                 {
-                    <td name="columnValue">@columnValue.Value</td>
+                    <th class="sort" data-sort="@column.ColumnName" name="ColumnName" scope="col">@column.ColumnName</th>
                 }
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody class="list">
+            @foreach (var product in Model.Collection.Products)
+            {
+                <tr name="record" href="/Item?id=@product.ProductID" class="product text-center position-relative">
+                    <td class="ID">@product.ProductID</td>
+                    <td class="Name">@product.Name</td>
+                    <td class="Tags" name="tags">@await TagManager.GetProductTags(product)</td>
+                    @foreach (var columnValue in product.ColumnValues)
+                    {
+                        var html = Html.Raw(columnValue.Value);
+                        switch (columnValue.Value)
+                        {
+                            case "true":
+                                html = Html.Raw("<i class='fa fa-check'></i>");
+                                break;
+                            case "false":
+                                html = Html.Raw("<i class='fa fa-times'></i>");
+                                break;
+                        }
+                        <td class="@columnValue.Column.ColumnName">@html</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <script src="~/lib/markdown-it/markdown-it.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Collection/Collection.js"></script>
 <script src="~/lib/tagify/jQuery.tagify.min.js"></script>
+<script src="~/lib/list.js/list.js"></script>
 <script src="~/js/Collection/Index.js"></script>

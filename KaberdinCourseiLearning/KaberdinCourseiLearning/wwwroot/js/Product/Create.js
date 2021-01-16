@@ -25,7 +25,11 @@ function getColumnValues() {
     values = [];
     columnIds = [];
     valueInputs.each(function (i, e) {
-        values.push($(e).val());
+        if ($(e).attr('type') == "checkbox") {
+            values.push($(e).is(":checked"));
+        } else {
+            values.push($(e).val());
+        }
         let columnId = $(e).attr('id');
         columnIds.push(+columnId);
     })

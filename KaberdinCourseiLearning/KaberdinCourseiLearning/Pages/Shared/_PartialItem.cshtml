@@ -26,7 +26,6 @@
         <div class="col container Blk-Trslcnt-Bg" style="display:none" id="Fields">
                 @foreach (var ColumnValue in item.ColumnValues)
                 {
-                    var type = ColumnValue.Column.Type.TypeName;
                     var name = ColumnValue.Column.ColumnName;
                     var value = ColumnValue.Value;
                     <div class="row"> 
@@ -35,10 +34,10 @@
                             var html = Html.Raw("<strong>"+value+"</strong>");
                             switch (value)
                             {
-                                case "on":
+                                case "true":
                                     html = Html.Raw("<i class='fa fa-check'></i>");
                                     break;
-                                case "off":
+                                case "false":
                                     html = Html.Raw("<i class='fa fa-times'></i>");
                                     break;
                                 default:

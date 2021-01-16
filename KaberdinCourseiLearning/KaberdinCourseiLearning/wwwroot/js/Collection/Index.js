@@ -1,9 +1,11 @@
-﻿var values = $("[name='columnValue']");
-values.each(function (i,e) {
-    let value = $(e).text();
-    if (value == "on") $(e).text('Yes');
-    if (value == "off") $(e).text('No');
-})
+﻿var names = ['ID','Name','Tags'];
+$("[name='ColumnName']").each(function (i, e) {
+    names.push($(e).data('sort'));
+});
+var options = {
+    valueNames: names
+};
+var productList = new List('products', options);
 var tagElements = $("[name='tags']");
 tagElements.each(function (i, element) {
     let e = $(element);
