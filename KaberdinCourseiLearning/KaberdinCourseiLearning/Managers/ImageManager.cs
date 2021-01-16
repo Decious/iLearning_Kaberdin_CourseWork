@@ -43,7 +43,7 @@ namespace KaberdinCourseiLearning.Managers
                 Folder = folder
             };
             var result = await cloudinary.UploadAsync(parameters);
-            return result.Url.ToString();
+            return result.SecureUrl.ToString();
         }
     }
 }
