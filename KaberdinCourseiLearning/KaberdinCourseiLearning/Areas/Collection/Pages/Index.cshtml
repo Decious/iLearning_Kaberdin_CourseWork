@@ -20,23 +20,23 @@
     <table class="table table-sm table-sm-responsive table-hover table-borderless table-active">
         <thead class="thead-dark">
             <tr class="text-center">
-                <th class="sort" data-sort="ID" scope="col">ID</th>
-                <th class="sort" data-sort="Name" scope="col">Name</th>
-                <th class="sort" data-sort="Tags" scope="col">Tags</th>
-                @foreach (var column in Model.Collection.Columns)
+                <th class="sort hoverable" data-sort="ID" scope="col">ID</th>
+                <th class="sort hoverable" data-sort="Name" scope="col">Name</th>
+                <th class="sort hoverable" data-sort="Tags" scope="col">Tags</th>
+                @foreach (var column in Model.Collection.Columns.OrderBy(c=>c.ColumnID))
                 {
-                    <th class="sort" data-sort="@column.ColumnName" name="ColumnName" scope="col">@column.ColumnName</th>
+                    <th class="sort hoverable" data-sort="@column.ColumnName" name="ColumnName" scope="col">@column.ColumnName</th>
                 }
             </tr>
         </thead>
         <tbody class="list">
             @foreach (var product in Model.Collection.Products)
             {
-                <tr name="record" href="/Item?id=@product.ProductID" class="product text-center position-relative">
+                <tr name="record" href="/Item?id=@product.ProductID" class="product hoverable text-center position-relative">
                     <td class="ID">@product.ProductID</td>
                     <td class="Name">@product.Name</td>
                     <td class="Tags" name="tags">@await TagManager.GetProductTags(product)</td>
-                    @foreach (var columnValue in product.ColumnValues)
+                    @foreach (var columnValue in product.ColumnValues.OrderBy(c => c.ColumnID))
                     {
                         var html = Html.Raw(columnValue.Value);
                         switch (columnValue.Value)
