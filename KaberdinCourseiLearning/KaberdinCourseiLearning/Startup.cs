@@ -63,7 +63,6 @@ namespace KaberdinCourseiLearning
             services.AddSignalR();
             services.AddScoped<ImageManager>();
             services.AddScoped<CollectionManager>();
-            services.AddScoped<ProfileManager>();
             services.AddScoped<ProductManager>();
             services.AddScoped<TagManager>();
         }

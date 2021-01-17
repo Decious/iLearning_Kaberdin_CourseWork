@@ -5,7 +5,9 @@ using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Areas.Item.Pages
@@ -15,15 +17,13 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
     {
         private ProductManager productManager;
         private CustomUserManager userManager;
-        private CollectionManager collectionManager;
-        private TagManager tagManager;
+        private ApplicationDbContext context;
 
-        public CreateModel(CollectionManager collectionManager,ProductManager productManager,CustomUserManager userManager,TagManager tagManager)
+        public CreateModel(ApplicationDbContext context,ProductManager productManager,CustomUserManager userManager)
         {
             this.productManager = productManager;
             this.userManager = userManager;
-            this.collectionManager = collectionManager;
-            this.tagManager = tagManager;
+            this.context = context;
         }
         public ProductCollection Collection { get; set; }
         public IEnumerable<ProductCollectionColumn> Columns { get; set; }
@@ -47,30 +47,43 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
         private async Task<bool> TryLoadPropertiesAsync(int collectionID, int productID)
         {
             ColumnValues = new Dictionary<int, string>();
-            if (productID != 0)
-            {
-                isEdit = true;
-                Product = await productManager.GetProductWithReferencesAsync(productID);
-                OwnerUserName = Product.Collection.User.UserName;
-                Columns = Product.Collection.Columns;
-                foreach(var columnValue in Product.ColumnValues)
-                {
-                    ColumnValues.Add(columnValue.ColumnID, columnValue.Value);
-                }
-            } else if (collectionID != 0)
-            {
-                isEdit = false;
-                Collection = await collectionManager.GetCollectionAsyncWithReferences(collectionID);
-                OwnerUserName = Collection.User.UserName;
-                Columns = Collection.Columns;
-                Product = new Product();
-            }
+            isEdit = productID != 0;
+            if (isEdit)
+                await LoadProductAsync(productID);
+            else
+                await LoadCollectionAsync(collectionID);
+            Columns = Collection.Columns;
+            OwnerUserName = Collection.User.UserName;
             LoadTags();
             return Product != null || Collection != null;
         }
+        private async Task LoadProductAsync(int productID)
+        {
+            Product = await context.Products
+                .Where(p => p.ProductID == productID)
+                .Include(p => p.Tags).ThenInclude(t => t.Tag)
+                .Include(p => p.Collection).ThenInclude(c => c.User)
+                .Include(p => p.Collection).ThenInclude(c => c.Columns)
+                .Include(p => p.ColumnValues)
+                .AsSplitQuery().FirstOrDefaultAsync();
+            Collection = Product.Collection;
+            foreach (var columnValue in Product.ColumnValues)
+            {
+                ColumnValues.Add(columnValue.ColumnID, columnValue.Value);
+            }
+        }
+        private async Task LoadCollectionAsync(int collectionID)
+        {
+            Collection = await  context.ProductCollections
+                .Where(c => c.CollectionID == collectionID)
+                .Include(c => c.User)
+                .Include(c => c.Columns)
+                .FirstOrDefaultAsync();
+            Product = new Product();
+        }
         private void LoadTags()
         {
-            var tagObjects = tagManager.GetAllTags();
+            var tagObjects = context.Tags.ToArray();
             var tagValues = new List<string>();
             foreach(var obj in tagObjects){
                 tagValues.Add(obj.TagValue);
@@ -80,7 +93,7 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
         public async Task<IActionResult> OnPostCreateProduct([FromBody] ProductCreateRequest request)
         {
             if (request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
-            Collection = await collectionManager.GetCollectionAsyncWithReferences(request.CollectionID);
+            Collection = await context.ProductCollections.Where(c => c.CollectionID == request.CollectionID).Include(c => c.User).FirstOrDefaultAsync();
             if (Collection == null) return new JsonResult(new ServerResponse(false, "Collection no longer exists."));
             if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to create products for this collection.", "/Collection?collectionID=" + request.CollectionID));
             
@@ -90,9 +103,9 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
         public async Task<IActionResult> OnPostEditProduct([FromBody] ProductEditRequest request)
         {
             if (request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
-            Product = await productManager.GetProductWithReferencesAsync(request.ProductID);
+            Product = await context.Products.FindAsync(request.ProductID);
             if (Product == null) return new JsonResult(new ServerResponse(false, "Item no longer exists."));
-            Collection = await collectionManager.GetCollectionAsyncWithReferences(Product.CollectionID);
+            Collection = await context.ProductCollections.Where(c => c.CollectionID == Product.CollectionID).Include(c => c.User).FirstOrDefaultAsync();
             if (Collection == null) return new JsonResult(new ServerResponse(false, "Collection no longer exists."));
             if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to edit this product.", "/Item?id=" + request.ProductID));
             

@@ -4,23 +4,24 @@
 }
 @Html.AntiForgeryToken()
 <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
-@if (Model.PageUser != null)
-{
-    <h2>Collection creation</h2>
-} else
+@if (Model.isEdit)
 {
     <h2>@Model.Collection.Name update</h2>
+}
+else
+{
+    <h2>Collection creation</h2>
 }
 
 
 <div>
-    @if (Model.PageUser != null)
+    @if (Model.isEdit)
     {
-        <h4>Create your collection</h4>
+        <h2>Edit your collection</h2>
     }
     else
     {
-        <h2>Edit your collection</h2>
+        <h4>Create your collection</h4>
     }
     <hr />
     <div class="row">
@@ -29,13 +30,13 @@
         </div>
         <div class="col-md-9">
             <div id="CollectionForm">
-                @if (Model.PageUser != null)
+                @if (Model.isEdit)
                 {
-                    <input type="hidden" id="PageUserName" value="@Model.PageUser.UserName" />
+                    <input type="hidden" id="CollectionID" value="@Model.Collection.CollectionID" />
                 }
                 else
                 {
-                    <input type="hidden" id="CollectionID" value="@Model.Collection.CollectionID" />
+                    <input type="hidden" id="PageUserName" value="@Model.PageUser.UserName" />
                 }
                 <div class="row" name="PlanItem">
                     <div class="col-md-6">

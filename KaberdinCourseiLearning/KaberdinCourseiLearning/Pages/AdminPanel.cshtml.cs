@@ -31,14 +31,14 @@ namespace KaberdinCourseiLearning.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             if (!await userManager.IsUserAdminAsync(User)) return Forbid();
-            PopulateProperties();
+            await PopulatePropertiesAsync();
             return Page();
         }
-        private void PopulateProperties()
+        private async Task PopulatePropertiesAsync()
         {
             Users = userManager.Users.ToArray();
             Roles = roleManager.Roles.ToArray();
-            CurrentUser = userManager.GetUserAsync(User).Result;
+            CurrentUser = await userManager.GetUserAsync(User);
         }
         public async Task<IActionResult> OnPostBlock(string[] ids)
         {

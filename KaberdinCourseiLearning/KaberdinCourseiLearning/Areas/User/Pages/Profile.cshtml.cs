@@ -1,11 +1,12 @@
+using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
-using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace KaberdinCourseiLearning.Areas.User.Pages
 {
@@ -14,15 +15,13 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private CustomUserManager userManager;
         private ApplicationDbContext context;
         private ImageManager imageManager;
-        private ProfileManager profileManager;
         public bool PermittedToChange { get; set; }
         public CustomUser PageUser { get; set; }
-        public ProfileModel(CustomUserManager userManager, ApplicationDbContext context, ImageManager imageManager, ProfileManager profileManager)
+        public ProfileModel(CustomUserManager userManager, ApplicationDbContext context, ImageManager imageManager)
         {
             this.userManager = userManager;
             this.context = context;
             this.imageManager = imageManager;
-            this.profileManager = profileManager;
         }
         public async Task<IActionResult> OnGetAsync(string name)
         {
@@ -31,7 +30,6 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
                 var loaded = await TryLoadPropertiesAsync(name);
                 if (loaded)
                 {
-                    await LoadCustomUserReferencesAsync();
                     return Page();
                 }
             }
@@ -39,18 +37,17 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         }
         private async Task<bool> TryLoadPropertiesAsync(string pageUserName)
         {
-            PageUser = await userManager.FindByNameAsync(pageUserName);
+            PageUser = await context.Users
+                .Where(u => u.UserName == pageUserName)
+                .Include(u => u.HomePage)
+                .Include(u => u.ItemCollections)
+                .FirstOrDefaultAsync();
             bool result = PageUser != null;
             if (result)
             {
                 PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, pageUserName);
             }
             return result;
-        }
-        private async Task LoadCustomUserReferencesAsync()
-        {
-            await context.Entry(PageUser).Reference(i => i.HomePage).LoadAsync();
-            await context.Entry(PageUser).Collection(i => i.ItemCollections).LoadAsync();
         }
         public async Task<IActionResult> OnPostUploadAvatar(IFormFile file, string name)
         {
@@ -70,7 +67,9 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (await isLoadedAndPermittedToChange(name))
             {
-                await profileManager.ChangeDescriptionAsync(newText,PageUser.Id);
+                PageUser.HomePage.Description = newText;
+                context.UserPages.Update(PageUser.HomePage);
+                await context.SaveChangesAsync();
                 return new JsonResult(new ServerResponse(true, "Description changed successfully"));
             }
             return new JsonResult(ServerResponse.MakeForbidden());

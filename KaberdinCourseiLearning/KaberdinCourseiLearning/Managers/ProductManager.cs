@@ -17,28 +17,6 @@ namespace KaberdinCourseiLearning.Managers
         }
 
         public async Task<Product> GetProductAsync(int productID) => await context.Products.FindAsync(productID);
-        public async Task LoadReferencesAsync(Product product)
-        {
-            await context.Entry(product).Collection(c => c.Comments).LoadAsync();
-            await context.Entry(product).Collection(c => c.Likes).LoadAsync();
-            await context.Entry(product).Collection(c => c.ColumnValues).LoadAsync();
-            await context.Entry(product).Reference(c => c.Collection).LoadAsync();
-        }
-        public async Task<Product> GetProductWithReferencesAsync(int productID)
-        {
-            return await context.Products.Where(p => p.ProductID == productID)
-                .Include(p => p.Comments)
-                .Include(p => p.Likes)
-                .Include(p => p.Collection)
-                .ThenInclude(c=>c.User)
-                .Include(p => p.Tags)
-                .ThenInclude(t => t.Tag)
-                .Include(p => p.ColumnValues)
-                .ThenInclude(c => c.Column)
-                .ThenInclude(c => c.Type)
-                .AsSplitQuery()
-                .FirstOrDefaultAsync();
-        }
         public async Task DeleteProductAsync(int productID)
         {
             var pr = await GetProductAsync(productID);

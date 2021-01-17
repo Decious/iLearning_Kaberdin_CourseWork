@@ -14,20 +14,9 @@ namespace KaberdinCourseiLearning.Managers
 {
     public class CustomUserManager : UserManager<CustomUser>
     {
-        private ApplicationDbContext context;
-        public CustomUserManager(ApplicationDbContext context,IUserStore<CustomUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<CustomUser> passwordHasher, IEnumerable<IUserValidator<CustomUser>> userValidators, IEnumerable<IPasswordValidator<CustomUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<CustomUser>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+        public CustomUserManager(IUserStore<CustomUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<CustomUser> passwordHasher, IEnumerable<IUserValidator<CustomUser>> userValidators, IEnumerable<IPasswordValidator<CustomUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<CustomUser>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
-            this.context = context;
         }
-        public async Task<CustomUser> FindUserByNameWithReferencesAsync(string name)
-        {
-            return await context.Users
-                .Where(u => u.UserName == name)
-                .Include(u => u.ItemCollections)
-                .Include(u => u.HomePage)
-                .FirstOrDefaultAsync();
-        }
-
         public async Task<bool> IsUserAdminAsync(CustomUser user)
         {
             return await IsInRoleAsync(user, RoleNames.ROLE_ADMINISTRATOR);

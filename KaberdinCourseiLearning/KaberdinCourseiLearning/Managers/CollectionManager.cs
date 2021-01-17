@@ -14,27 +14,6 @@ namespace KaberdinCourseiLearning.Managers
         {
             this.context = context;
         }
-        public async Task<ProductCollection> GetCollectionAsync(int collectionID) => await context.ProductCollections.FindAsync(collectionID);
-        public async Task<ProductCollection> GetCollectionAsyncWithReferences(int collectionID)
-        {
-            return await context.ProductCollections.Where(pc => 
-            pc.CollectionID == collectionID)
-                .Include(p => p.User)
-                .Include(p => p.Columns)
-                .FirstOrDefaultAsync();
-        }
-        public async Task LoadReferencesAsync(ProductCollection productCollection)
-        {
-            await context.Entry(productCollection).Collection(c => c.Products).LoadAsync();
-            await context.Entry(productCollection).Collection(c => c.Columns).LoadAsync();
-            await context.Entry(productCollection).Reference(c => c.User).LoadAsync();
-        }
-        public async Task DeleteCollectionAsync(int collectionID)
-        {
-            var coll = await GetCollectionAsync(collectionID);
-            context.Remove(coll);
-            await context.SaveChangesAsync();
-        }
         public async Task<ServerResponse> EditCollectionAsync(EditCollectionRequest request)
         {
             var collection = await context.ProductCollections
@@ -107,8 +86,6 @@ namespace KaberdinCourseiLearning.Managers
             context.ProductCollectionColumns.AddRange(columns);
             await context.SaveChangesAsync();
         }
-        public ProductCollectionTheme[] GetCollectionThemes() => context.Themes.ToArray();
-        public ColumnType[] GetColumnTypes() => context.ColumnTypes.ToArray();
         public string GetColumnTypeHtml(int typeID, string attributes = null, string inner = null)
         {
             var columnType = context.ColumnTypes.Find(typeID);

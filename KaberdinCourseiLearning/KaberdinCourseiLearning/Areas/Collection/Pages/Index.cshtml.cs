@@ -9,20 +9,19 @@ using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace KaberdinCourseiLearning.Areas.Collection.Pages
 {
     public class IndexModel : PageModel
     {
-        private CollectionManager collectionManager;
         private CustomUserManager userManager;
-        private ProductManager productManager;
+        private ApplicationDbContext context;
 
-        public IndexModel(CollectionManager collectionManager,ProductManager productManager,CustomUserManager userManager)
+        public IndexModel(ApplicationDbContext context,CustomUserManager userManager)
         {
-            this.collectionManager = collectionManager;
             this.userManager = userManager;
-            this.productManager = productManager;
+            this.context = context;
         }
         public ProductCollection Collection { get; set; }
         public bool PermittedToChange { get; set; }
@@ -33,20 +32,28 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
         }
         private async Task<bool> LoadPropertiesAsync(int collectionID)
         {
-            Collection = await collectionManager.GetCollectionAsync(collectionID);
+            Collection = await context.ProductCollections
+                .Where(c => c.CollectionID == collectionID)
+                .Include(c => c.User)
+                .Include(c => c.Columns)
+                .Include(c => c.Products).ThenInclude(p => p.ColumnValues)
+                .Include(c => c.Products).ThenInclude(p => p.Tags).ThenInclude(t => t.Tag)
+                .AsSplitQuery().FirstOrDefaultAsync();
             if (Collection == null) return false;
-            await collectionManager.LoadReferencesAsync(Collection);
-            foreach (var product in Collection.Products)
-                await productManager.LoadReferencesAsync(product);
             PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName);
             return true;
         }
         public async Task<IActionResult> OnPostDeleteCollection(int collectionID)
         {
-            var loaded = await LoadPropertiesAsync(collectionID);
-            if (PermittedToChange && loaded)
+            Collection = await context.ProductCollections
+                .Where(c => c.CollectionID == collectionID)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync();
+            PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName);
+            if (PermittedToChange && Collection != null)
             {
-                await collectionManager.DeleteCollectionAsync(collectionID);
+                context.ProductCollections.Remove(Collection);
+                await context.SaveChangesAsync();
                 return new JsonResult(ServerResponse.MakeSuccess());
             }
             return new JsonResult(ServerResponse.MakeForbidden());
