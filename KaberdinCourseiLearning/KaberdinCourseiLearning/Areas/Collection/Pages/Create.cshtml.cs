@@ -36,9 +36,9 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             {
                 if (await TryLoadPropertiesAsync(name,id))
                 {
+                    if (!await userManager.IsUserOwnerOrAdminAsync(User, PageUser.UserName)) return Forbid();
                     return Page();
                 }
-                return Forbid();
             }
             return Redirect("~/Index");
         }
