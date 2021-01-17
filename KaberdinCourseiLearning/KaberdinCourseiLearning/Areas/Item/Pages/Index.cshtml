@@ -6,9 +6,11 @@
 @inject SignInManager<CustomUser> SignInManager
 @{
 }
+@Html.AntiForgeryToken()
 <link href="~/css/Collection/Collection.css" rel="stylesheet" />
 <input hidden id="productID" value="@Model.Product.ProductID" />
 <partial name="_PartialItem" model="Model.ItemModel" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Product/PartialItem.js"></script>
 <link href="~/css/Product/Product.css" rel="stylesheet" />
 <link href="~/css/Comment/Comment.css" rel="stylesheet" />

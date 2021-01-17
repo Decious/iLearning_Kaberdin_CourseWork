@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Managers;
 using KaberdinCourseiLearning.Pages.Partials.Models;
@@ -35,6 +36,19 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
                 PermittedToChange = PermittedToChange
             };
             return Page();
+        }
+        public async Task<IActionResult> OnPostDeleteProduct(int id)
+        {
+            Product = await productManager.GetProductWithReferencesAsync(id);
+            if (Product == null) return new JsonResult(new ServerResponse(false,"Product doesnt exist","/"));
+            PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Product.Collection.User.UserName);
+            if (PermittedToChange)
+            {
+                var coll_ID = Product.Collection.CollectionID;
+                await productManager.DeleteProductAsync(id);
+                return new JsonResult(new ServerResponse(true,"Product successfully deleted.","/Collection?id="+ coll_ID));
+            }
+            return new JsonResult(ServerResponse.MakeForbidden());
         }
         public ItemModel ItemModel { get; set; }
     }

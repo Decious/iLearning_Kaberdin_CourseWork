@@ -41,20 +41,6 @@ namespace KaberdinCourseiLearning.Managers
             await context.ProductTags.AddAsync(tag);
             await context.SaveChangesAsync();
         }
-        public async Task AddProductTags(string[] tags, int productID)
-        {
-            foreach (var tag in tags)
-            {
-                var found = GetTag(tag);
-                if (found == null)
-                {
-                    found = new Tag() { TagValue = tag };
-                    await AddTagAsync(found);
-                }
-                var newPrTag = new ProductTag() { ProductID = productID, TagID = found.TagID };
-                await AddProductTagAsync(newPrTag);
-            }
-        }
         public async Task<string> GetProductTags(Product prod)
         {
             await context.Entry(prod).Collection(c => c.Tags).LoadAsync();

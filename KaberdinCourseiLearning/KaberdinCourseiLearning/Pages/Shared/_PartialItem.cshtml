@@ -62,7 +62,7 @@
         {
             <div class="position-absolute" name="buttonGroup">
                 <button class="btn btn-light" id="DeleteBtn"><i class="fa fa-trash"></i></button>
-                <button class="btn btn-light" id="EditBtn"><i class="fa fa-edit"></i></button>
+                <a class="btn btn-light" id="EditBtn" asp-area="Item" asp-page="Create" asp-route-productID="@item.ProductID"><i class="fa fa-edit"></i></a>
             </div>
         }
     </div>

@@ -1,32 +1,66 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.Item.Pages.CreateModel
 @using KaberdinCourseiLearning.Managers;
+@using System.Text.Json;
 @inject CollectionManager CollectionManager
 @Html.AntiForgeryToken()
 <link href="~/lib/tagify/tagify.css" rel="stylesheet" />
 <link href="~/css/Product/Product.css" rel="stylesheet" />
 <div class="container text-center">
-    <h3>Add an item</h3>
+    @if (Model.isEdit)
+    {
+        <h3>Edit an item</h3>
+        <input hidden id="productID" value="@Model.Product.ProductID" />
+    }
+    else
+    {
+        <h3>Add an item</h3>
+        <input hidden id="collectionID" value="@Model.Collection.CollectionID" />
+    }
     <form method="post" class="card p-3">
         <div class="container">
             <div class="form-group row">
                 <label class="col-md-2" for="Name">Name</label>
-                <input class="form-control col-md-10" id="Name" />
+                <input class="form-control col-md-10" id="Name" value="@Model.Product.Name" />
             </div>
             <div class="form-group row">
                 <label class="col-md-2" for="Tags">Tags</label>
-                <textarea class="form-control col-md-10 text-left" id="Tags" whitelist="@Model.Tags" placeholder="Tags"></textarea>
+                @{
+                    var tags = "";
+                    var tagList = new List<string>();
+                    if (Model.isEdit)
+                    {
+                        foreach (var tag in Model.Product.Tags)
+                        {
+                            tagList.Add(tag.Tag.TagValue);
+                        }
+                    }
+                    tags = JsonSerializer.Serialize(tagList.ToArray());
+                    <textarea class="form-control col-md-10 text-left" id="Tags" whitelist="@Model.Tags" placeholder="Tags">@tags</textarea>
+                }
             </div>
             @{
-                foreach (var column in Model.Collection.Columns)
+                foreach (var column in Model.Columns)
                 {
+                    string initial = "";
+                    if (Model.isEdit)
+                    {
+                        var value = Model.ColumnValues[column.ColumnID];
+                        initial = $" value='{value}' checked='{value}' ";
+                    }
                     <div class="form-group row">
                         <label class="col-md-2" for="@column.ColumnName">@column.ColumnName</label>
-                        @Html.Raw(CollectionManager.GetColumnTypeHtml(column.TypeID, $"name='columnValue' id={column.ColumnID} class='form-control col-md-10'"))
+                        @Html.Raw(CollectionManager.GetColumnTypeHtml(column.TypeID, $"name='columnValue' {initial} id={column.ColumnID} class='form-control col-md-10'"))
                     </div>
                 }
+
+                var btnContent = "Add product";
+                if (Model.isEdit)
+                {
+                    btnContent = "Edit product";
+                }
+                <button class="btn btn-outline-primary" id="submitBtn"><i class="fa fa-plus-square"></i> @btnContent</button>
             }
-            <button class="btn btn-primary" onclick="return onSubmit()"><i class="fa fa-plus-square"></i> Add Product</button>
         </div>
     </form>
 </div>

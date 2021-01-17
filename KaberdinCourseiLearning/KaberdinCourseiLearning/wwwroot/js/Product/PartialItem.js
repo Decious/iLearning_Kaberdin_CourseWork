@@ -10,3 +10,17 @@ function onToggleDetail(btn) {
     }
     displayed = !displayed;
 }
+$("#DeleteBtn").on('click', function () {
+    var id = $(this).closest("[name='Item']").attr('id');
+    $.ajax({
+        method: "post",
+        url: "/Item?handler=DeleteProduct",
+        data: {id:+id},
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+        success: function (data, status, jqXHR) {
+            if (data.successful) {
+                location.href = location.origin + data.url;
+            }
+        }
+    });
+})

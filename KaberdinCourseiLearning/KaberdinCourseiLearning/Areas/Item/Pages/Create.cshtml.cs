@@ -26,12 +26,17 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
             this.tagManager = tagManager;
         }
         public ProductCollection Collection { get; set; }
+        public IEnumerable<ProductCollectionColumn> Columns { get; set; }
+        public Product Product { get; set; }
+        public string OwnerUserName { get; set; }
+        public Dictionary<int,string> ColumnValues { get; set; }
+        public bool isEdit { get; set; }
         public string Tags { get; set; }
-        public async Task<IActionResult> OnGetAsync(int collectionID)
+        public async Task<IActionResult> OnGetAsync(int collectionID,int productID)
         {
-            if(await TryLoadPropertiesAsync(collectionID))
+            if(await TryLoadPropertiesAsync(collectionID,productID))
             {
-                if (await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName))
+                if (await userManager.IsUserOwnerOrAdminAsync(User, OwnerUserName))
                 {
                     return Page();
                 }
@@ -39,16 +44,29 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
             }
             return Redirect("~/Index");
         }
-        private async Task<bool> TryLoadPropertiesAsync(int CollectionID)
+        private async Task<bool> TryLoadPropertiesAsync(int collectionID, int productID)
         {
-            Collection = await collectionManager.GetCollectionAsync(CollectionID);
-            if (Collection != null)
+            ColumnValues = new Dictionary<int, string>();
+            if (productID != 0)
             {
-                await collectionManager.LoadReferencesAsync(Collection);
-                LoadTags();
-                return true;
+                isEdit = true;
+                Product = await productManager.GetProductWithReferencesAsync(productID);
+                OwnerUserName = Product.Collection.User.UserName;
+                Columns = Product.Collection.Columns;
+                foreach(var columnValue in Product.ColumnValues)
+                {
+                    ColumnValues.Add(columnValue.ColumnID, columnValue.Value);
+                }
+            } else if (collectionID != 0)
+            {
+                isEdit = false;
+                Collection = await collectionManager.GetCollectionAsyncWithReferences(collectionID);
+                OwnerUserName = Collection.User.UserName;
+                Columns = Collection.Columns;
+                Product = new Product();
             }
-            return false;
+            LoadTags();
+            return Product != null || Collection != null;
         }
         private void LoadTags()
         {
@@ -59,36 +77,27 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
             }
             Tags = string.Join(",", tagValues);
         }
-        public async Task<IActionResult> OnPostAsync([FromBody] ProductCreateRequest createRequest,int collectionID)
+        public async Task<IActionResult> OnPostCreateProduct([FromBody] ProductCreateRequest request)
         {
-            if(isInputCorrect(createRequest, collectionID))
-            {
-                Collection = await collectionManager.GetCollectionAsync(collectionID);
-                if (Collection == null) return new JsonResult(new ServerResponse(false,"Error while creating product. Collection no longer exists."));
-                if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(ServerResponse.MakeForbidden());
-                var id = await CreateProduct(createRequest, collectionID);
-                return new JsonResult(new ServerResponse(true, "Successfully created product.", "/Item?id=" + id));
-            }
-            return new JsonResult(new ServerResponse(false,"Error while creating product. Field name is empty."));
+            if (request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
+            Collection = await collectionManager.GetCollectionAsyncWithReferences(request.CollectionID);
+            if (Collection == null) return new JsonResult(new ServerResponse(false, "Collection no longer exists."));
+            if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to create products for this collection.", "/Collection?collectionID=" + request.CollectionID));
+            
+            var response = await productManager.CreateProductAsync(request);
+            return new JsonResult(response);
         }
-        public bool isInputCorrect(ProductCreateRequest createRequest, int collectionID)
+        public async Task<IActionResult> OnPostEditProduct([FromBody] ProductEditRequest request)
         {
-            return createRequest != null && collectionID != 0 && !string.IsNullOrWhiteSpace(createRequest.Name);
-        }
-
-        public async Task<int> CreateProduct(ProductCreateRequest createRequest, int collectionID)
-        {
-            var newProduct = new Product() { Name = createRequest.Name, CollectionID = collectionID };
-            await productManager.CreateProductAsync(newProduct);
-            var newColumnValues = new ProductColumnValue[createRequest.ColumnValues.Length];
-            for (int i = 0; i < createRequest.ColumnValues.Length; i++)
-            {
-                newColumnValues[i] = new ProductColumnValue() { ProductID = newProduct.ProductID, Value = createRequest.ColumnValues[i], ColumnID = createRequest.ColumnIDs[i] };
-            }
-            await productManager.AddProductColumnValuesAsync(newColumnValues);
-            var tags = createRequest.Tags.Split(",");
-            await tagManager.AddProductTags(tags, newProduct.ProductID);
-            return newProduct.ProductID;
+            if (request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
+            Product = await productManager.GetProductWithReferencesAsync(request.ProductID);
+            if (Product == null) return new JsonResult(new ServerResponse(false, "Item no longer exists."));
+            Collection = await collectionManager.GetCollectionAsyncWithReferences(Product.CollectionID);
+            if (Collection == null) return new JsonResult(new ServerResponse(false, "Collection no longer exists."));
+            if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to edit this product.", "/Item?id=" + request.ProductID));
+            
+            var response = await productManager.EditProductAsync(request);
+            return new JsonResult(response);
         }
     }
 }

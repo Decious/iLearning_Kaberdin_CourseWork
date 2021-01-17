@@ -2,15 +2,9 @@
 
 namespace KaberdinCourseiLearning.Data.ProductRequests
 {
-    public class ProductCreateRequest
+    public class ProductCreateRequest : ProductRequest
     {
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
-        [JsonPropertyName("tags")]
-        public string Tags { get; set; }
-        [JsonPropertyName("columnValues")]
-        public string[] ColumnValues { get; set; }
-        [JsonPropertyName("columnIDs")]
-        public int[] ColumnIDs { get; set; }
+        [JsonPropertyName("collectionID")]
+        public int CollectionID { get; set; }
     }
 }
