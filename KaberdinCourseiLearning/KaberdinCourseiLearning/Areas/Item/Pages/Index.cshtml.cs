@@ -31,7 +31,7 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
         {
             Product = await context.Products
                 .Where(p => p.ProductID == id)
-                .Include(p => p.Comments)
+                .Include(p => p.Comments).ThenInclude(c=>c.User)
                 .Include(p => p.Likes)
                 .Include(p => p.Collection).ThenInclude(c=>c.User)
                 .Include(p => p.ColumnValues).ThenInclude(c => c.Column)
