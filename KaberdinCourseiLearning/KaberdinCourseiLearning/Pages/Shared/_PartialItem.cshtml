@@ -57,13 +57,30 @@
         </div>
     </div>
     <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
-        <button class="btn btn-light position-absolute" name="ShowDetail" onclick="onToggleDetail(this)"><i class="fa fa-arrow-down"></i></button>
-        @if (Model.PermittedToChange)
-        {
-            <div class="position-absolute" name="buttonGroup">
-                <button class="btn btn-light" id="DeleteBtn"><i class="fa fa-trash"></i></button>
-                <a class="btn btn-light" id="EditBtn" asp-area="Item" asp-page="Create" asp-route-productID="@item.ProductID"><i class="fa fa-edit"></i></a>
-            </div>
-        }
-    </div>
+        <div class="LikeBox position-absolute align-bottom-left">
+            @{
+                string likeBtnCss = "color:var(--light);";
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (Model.isLiked)
+                    {
+                        likeBtnCss = "color:var(--danger);";
+                    }
+                    <a data-liked="@Model.isLiked.ToString().ToLower()" style="@likeBtnCss cursor:pointer;" id="LikeBtn"><i class="fas fa-heart"></i> <span class="badge badge-light badge-pill" id="LikeCount">@item.Likes.Count</span></a>
+                }
+                else
+                {
+                    <a style="@likeBtnCss"><i class="fas fa-heart"></i> <span class="badge badge-light badge-pill" id="LikeCount">@item.Likes.Count</span></a>
+                }
+            }
+        </div>
+            <button class="btn btn-light align-bottom-center position-absolute" name="ShowDetail"><i class="fa fa-arrow-down"></i></button>
+            @if (Model.PermittedToChange)
+            {
+                <div class="position-absolute align-bottom-right" name="buttonGroup">
+                    <button class="btn btn-light" id="DeleteBtn"><i class="fa fa-trash"></i></button>
+                    <a class="btn btn-light" id="EditBtn" asp-area="Item" asp-page="Create" asp-route-productID="@item.ProductID"><i class="fa fa-edit"></i></a>
+                </div>
+            }
+        </div>
 </div>

@@ -25,10 +25,10 @@
         <p class="col" name="Description">@collection.Description</p>
     </div>
     <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
-        <button class="btn btn-light position-absolute" name="ShowDetail" onclick="onToggleDetail(this)"><i class="fa fa-arrow-down"></i></button>
+        <button class="btn btn-light align-bottom-center position-absolute" name="ShowDetail" onclick="onToggleDetail(this)"><i class="fa fa-arrow-down"></i></button>
         @if (Model.PermittedToChange)
         {
-            <div class="position-absolute" name="buttonGroup">
+            <div class="position-absolute align-bottom-right" name="buttonGroup">
                 <button class="btn btn-light" name="colDelete"><i class="fa fa-trash"></i></button>
                 <button class="btn btn-light" name="colEdit"><i class="fa fa-edit"></i></button>
             </div>

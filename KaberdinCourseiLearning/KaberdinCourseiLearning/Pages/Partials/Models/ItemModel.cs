@@ -11,5 +11,6 @@ namespace KaberdinCourseiLearning.Pages.Partials.Models
     {
         public Product Item { get; set; }
         public bool PermittedToChange { get; set; }
+        public bool isLiked { get; set; }
     }
 }

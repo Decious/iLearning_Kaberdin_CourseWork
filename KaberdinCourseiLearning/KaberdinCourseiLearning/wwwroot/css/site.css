@@ -92,3 +92,18 @@ body {
 .bg-cloud {
     background: linear-gradient(to right, #ece9e6, #ffffff);
 }
+
+.align-bottom-right {
+    Bottom: 5px;
+    Right: 15px;
+}
+.align-bottom-center {
+    Bottom: 5px;
+    margin: auto;
+    Left: 0;
+    Right: 0;
+}
+.align-bottom-left {
+    Bottom: 5px;
+    Left: 15px;
+}
