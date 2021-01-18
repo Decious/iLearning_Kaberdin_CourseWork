@@ -24,6 +24,7 @@ namespace KaberdinCourseiLearning.Pages
         {
             if(q != null)
             {
+                SearchedFor = q;
                 if (q.StartsWith('#'))
                 {
                     q = q.Remove(0, 1);
@@ -41,5 +42,6 @@ namespace KaberdinCourseiLearning.Pages
             return Page();
         }
         public Product[] MatchedResult { get; set; }
+        public string SearchedFor { get; set; }
     }
 }
