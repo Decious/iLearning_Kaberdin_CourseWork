@@ -41,6 +41,7 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
                 .Where(u => u.UserName == pageUserName)
                 .Include(u => u.HomePage)
                 .Include(u => u.ItemCollections)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync();
             bool result = PageUser != null;
             if (result)
