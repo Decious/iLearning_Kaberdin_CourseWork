@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        @foreach (var comment in Model.Product.Comments)
+        @foreach (var comment in Model.Product.Comments.OrderByDescending(c=>c.CreationTime))
         {
             <div class="card comment" id="@comment.CommentID">
                 <div class="card-header text p-0 row m-0">
