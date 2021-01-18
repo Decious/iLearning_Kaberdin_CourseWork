@@ -1,0 +1,13 @@
+﻿.carousel {
+    height: 15rem;
+}
+
+.carousel-caption {
+    background: rgba(0,0,0,0.4);
+}
+
+.carousel-item {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: inherit;
+}
