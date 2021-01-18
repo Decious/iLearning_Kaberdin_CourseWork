@@ -9,14 +9,8 @@ namespace KaberdinCourseiLearning.Data.Models
 {
     public class Tag
     {
-        public Tag()
-        {
-            ProductTags = new List<ProductTag>();
-        }
         [Key]
         public int TagID { get; set; }
         public string TagValue { get; set; }
-        public ICollection<ProductTag> ProductTags { get; set; }
-        public NpgsqlTsVector SearchVector { get; set; }
     }
 }

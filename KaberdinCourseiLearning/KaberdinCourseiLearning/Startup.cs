@@ -64,7 +64,6 @@ namespace KaberdinCourseiLearning
             services.AddScoped<ImageManager>();
             services.AddScoped<CollectionManager>();
             services.AddScoped<ProductManager>();
-            services.AddScoped<TagManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

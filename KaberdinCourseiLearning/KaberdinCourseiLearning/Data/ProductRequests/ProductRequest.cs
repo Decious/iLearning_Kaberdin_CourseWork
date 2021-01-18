@@ -12,7 +12,7 @@ namespace KaberdinCourseiLearning.Data.ProductRequests
         [JsonPropertyName("name")]
         public string Name { get; set; }
         [JsonPropertyName("tags")]
-        public string[] Tags { get; set; }
+        public string Tags { get; set; }
         [JsonPropertyName("columnValues")]
         public ProductColumnValue[] ColumnValues { get; set; }
     }

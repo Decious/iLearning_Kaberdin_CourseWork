@@ -22,9 +22,9 @@
         </div>
         <div class="col-6">
             <p name="ItemTags" class="font-weight-bold text-light text-right">
-            @foreach(var tag in item.Tags)
+            @foreach(var tag in item.Tags.Split(","))
             {
-                <span class="badge badge-dark badge-pill">@tag.Tag.TagValue</span>
+                <span class="badge badge-dark badge-pill">@tag</span>
             }
             </p>
         </div>

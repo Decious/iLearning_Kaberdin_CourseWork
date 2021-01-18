@@ -2,7 +2,6 @@
 @model KaberdinCourseiLearning.Areas.Collection.Pages.IndexModel;
 @using KaberdinCourseiLearning.Pages.Partials.Models;
 @using KaberdinCourseiLearning.Managers;
-@inject TagManager TagManager
 @{
     var collectionModel = new CollectionModel() { Collection = Model.Collection, PermittedToChange = Model.PermittedToChange };
 }
@@ -35,7 +34,7 @@
                 <tr name="record" href="/Item?id=@product.ProductID" class="product hoverable text-center position-relative">
                     <td class="ID">@product.ProductID</td>
                     <td class="Name">@product.Name</td>
-                    <td class="Tags" name="tags">@await TagManager.GetProductTags(product)</td>
+                    <td class="Tags" name="tags">@product.Tags</td>
                     @foreach (var columnValue in product.ColumnValues.OrderBy(c => c.ColumnID))
                     {
                         var html = Html.Raw(columnValue.Value);

@@ -20,10 +20,7 @@ namespace KaberdinCourseiLearning.Data
                 .HasKey(o => new { o.ProductID,o.UserID});
             builder.Entity<ProductColumnValue>()
                 .HasKey(o => new { o.ProductID, o.ColumnID });
-            builder.Entity<ProductTag>()
-                .HasKey(o => new { o.ProductID, o.TagID });
             GenerateTsVectorColumns(builder);
-
             base.OnModelCreating(builder);
         }
         protected virtual void GenerateTsVectorColumns(ModelBuilder builder)
@@ -32,7 +29,7 @@ namespace KaberdinCourseiLearning.Data
             .HasGeneratedTsVectorColumn(
                 p => p.SearchVector,
                 "english",
-                p => new { p.Name })
+                p => new { p.Name,p.Tags })
                 .HasIndex(p => p.SearchVector)
                 .HasMethod("GIN");
 
@@ -68,13 +65,6 @@ namespace KaberdinCourseiLearning.Data
                 .HasIndex(c => c.SearchVector)
                 .HasMethod("GIN");
 
-            builder.Entity<Tag>()
-            .HasGeneratedTsVectorColumn(
-                c => c.SearchVector,
-                "english",
-                c => new { c.TagValue })
-                .HasIndex(c => c.SearchVector)
-                .HasMethod("GIN");
         }
 
         public DbSet<UserPage> UserPages { get; set; }
@@ -87,6 +77,5 @@ namespace KaberdinCourseiLearning.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ProductCollectionTheme> Themes { get; set; }
         public DbSet<ColumnType> ColumnTypes { get; set; }
-        public DbSet<ProductTag> ProductTags { get; set; }
     }
 }

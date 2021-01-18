@@ -2,6 +2,7 @@
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Data.ProductRequests;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,8 +29,7 @@ namespace KaberdinCourseiLearning.Managers
             var product = context.Products.Find(request.ProductID);
             if (product == null) return new ServerResponse(false, "Item does not exist.");
             await UpdateColumnValuesAsync(request.ColumnValues);
-            await RemoveProductTagsAsync(request.ProductID);
-            await AddProductTagsAsync(request.Tags,request.ProductID);
+            await ChangeProductTagsAsync(request.Tags, product);
             product.Name = request.Name;
             await context.SaveChangesAsync();
             return new ServerResponse(true, "Item successfully updated!", "/Item?id=" + product.ProductID);
@@ -50,22 +50,16 @@ namespace KaberdinCourseiLearning.Managers
             }
             await context.SaveChangesAsync();
         }
-        private async Task RemoveProductTagsAsync(int productID)
-        {
-            var tags = await context.ProductTags.Where(t => t.ProductID == productID).ToArrayAsync();
-            context.RemoveRange(tags);
-            await context.SaveChangesAsync();
-        }
         public async Task<ServerResponse> CreateProductAsync(ProductCreateRequest request)
         {
             var newProduct = new Product() { Name = request.Name, CollectionID = request.CollectionID };
             await context.AddAsync(newProduct);
             await context.SaveChangesAsync();
-            await addColumnValuesAsync(request.ColumnValues, newProduct.ProductID);
-            await AddProductTagsAsync(request.Tags, newProduct.ProductID);
+            await AddColumnValuesAsync(request.ColumnValues, newProduct.ProductID);
+            await ChangeProductTagsAsync(request.Tags, newProduct);
             return new ServerResponse(true, "Successfully created product.", "/Item?id=" + newProduct.ProductID);
         }
-        private async Task addColumnValuesAsync(IEnumerable<ProductColumnValue> columnValues,int productID)
+        private async Task AddColumnValuesAsync(IEnumerable<ProductColumnValue> columnValues,int productID)
         {
             foreach(var columnValue in columnValues)
             {
@@ -77,9 +71,10 @@ namespace KaberdinCourseiLearning.Managers
             await context.ProductColumnValues.AddRangeAsync(columnValues);
             await context.SaveChangesAsync();
         }
-        private async Task AddProductTagsAsync(string[] tags, int productID)
+        private async Task ChangeProductTagsAsync(string tags, Product product)
         {
-            foreach (var tag in tags)
+            product.Tags = tags;
+            foreach (var tag in tags.Split(','))
             {
                 var found = context.Tags.FirstOrDefault(e => e.TagValue == tag);
                 if (found == null)
@@ -88,10 +83,8 @@ namespace KaberdinCourseiLearning.Managers
                     await context.Tags.AddAsync(found);
                     await context.SaveChangesAsync();
                 }
-                var newPrTag = new ProductTag() { ProductID = productID, TagID = found.TagID };
-                await context.ProductTags.AddAsync(newPrTag);
-                await context.SaveChangesAsync();
             }
+            await context.SaveChangesAsync();
         }
         public async Task AddComment(Comment comm)
         {
@@ -105,15 +98,14 @@ namespace KaberdinCourseiLearning.Managers
                         p.SearchVector.Matches(query) ||
                         p.Collection.SearchVector.Matches(query) ||
                         p.Comments.Any(c => c.SearchVector.Matches(query)) ||
-                        p.ColumnValues.Any(cv => cv.SearchVector.Matches(query)) ||
-                        p.Tags.Any(t => t.Tag.SearchVector.Matches(query))
+                        p.ColumnValues.Any(cv => cv.SearchVector.Matches(query))
                         ).ToArrayAsync();
         }
         public async Task<Product[]> FindProductsByTag(string tag)
         {
             if (tag == null) return null;
             return await context.Products.Where(p =>
-                            p.Tags.Any(t => t.Tag.SearchVector.Matches(tag))
+                            p.Tags.Contains(tag)
                             ).ToArrayAsync();
         }
         public async Task<Product[]> FindProductsByOwner(string owner)

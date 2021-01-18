@@ -13,13 +13,13 @@ namespace KaberdinCourseiLearning.Data.Models
             Likes = new List<Like>();
             Comments = new List<Comment>();
             ColumnValues = new List<ProductColumnValue>();
-            Tags = new List<ProductTag>();
             CreationDate = DateTime.UtcNow;
+            Tags = "";
         }
         [Key]
         public int ProductID { get; set; }
-        public string Name { get; set; }
-        public ICollection<ProductTag> Tags { get; set; }
+        public string? Name { get; set; }
+        public string? Tags { get; set; }
         public DateTime CreationDate { get; set; }
         public ICollection<Like> Likes { get; set; }
         public ICollection<ProductColumnValue> ColumnValues { get; set; }

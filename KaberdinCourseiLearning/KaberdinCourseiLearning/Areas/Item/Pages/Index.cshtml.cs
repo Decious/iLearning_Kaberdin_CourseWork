@@ -34,7 +34,6 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
                 .Include(p => p.Comments)
                 .Include(p => p.Likes)
                 .Include(p => p.Collection).ThenInclude(c=>c.User)
-                .Include(p => p.Tags).ThenInclude(p => p.Tag)
                 .Include(p => p.ColumnValues).ThenInclude(c => c.Column)
                 .AsSplitQuery().FirstOrDefaultAsync();
             if (Product == null) return Redirect("~/Index");

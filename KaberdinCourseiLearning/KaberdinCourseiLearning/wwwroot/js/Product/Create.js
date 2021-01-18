@@ -12,14 +12,14 @@ tagsinput.tagify({
 
 var values = [];
 var columnIds = [];
-var tags = [];
+var tags;
 var columnValues = [];
 var name;
 var productID;
 var collectionID;
 $("#submitBtn").on('click', function () {
     name = $("#Name").val();
-    tags = tagsinput.val().split(',');
+    tags = tagsinput.val();
     getIDs();
     getColumnValues();
     if (productID != 0) sendEditRequest();

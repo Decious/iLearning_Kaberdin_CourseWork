@@ -21,36 +21,31 @@
         <div class="container">
             <div class="form-group row">
                 <label class="col-md-2" for="Name">Name</label>
+
                 <input class="form-control col-md-10" id="Name" value="@Model.Product.Name" />
             </div>
             <div class="form-group row">
                 <label class="col-md-2" for="Tags">Tags</label>
                 @{
-                    var tags = "";
-                    var tagList = new List<string>();
-                    if (Model.isEdit)
-                    {
-                        foreach (var tag in Model.Product.Tags)
-                        {
-                            tagList.Add(tag.Tag.TagValue);
-                        }
-                    }
-                    tags = JsonSerializer.Serialize(tagList.ToArray());
-                    <textarea class="form-control col-md-10 text-left" id="Tags" whitelist="@Model.Tags" placeholder="Tags">@tags</textarea>
+                    var tags = Model.Product.Tags.Split(",");
+                    var tagsJson = JsonSerializer.Serialize(tags);
+                    <textarea class="form-control col-md-10 text-left" id="Tags" whitelist="@Model.Tags" placeholder="Tags">@tagsJson</textarea>
                 }
             </div>
             @{
                 foreach (var column in Model.Columns)
                 {
                     string initial = "";
+                    string inner = "";
                     if (Model.isEdit)
                     {
                         var value = Model.ColumnValues[column.ColumnID];
                         initial = $" value='{value}' checked='{value}' ";
+                        if (column.TypeID == 5) inner = value;
                     }
                     <div class="form-group row">
                         <label class="col-md-2" for="@column.ColumnName">@column.ColumnName</label>
-                        @Html.Raw(CollectionManager.GetColumnTypeHtml(column.TypeID, $"name='columnValue' {initial} id={column.ColumnID} class='form-control col-md-10'"))
+                        @Html.Raw(CollectionManager.GetColumnTypeHtml(column.TypeID, $"name='columnValue' {initial} id={column.ColumnID} class='form-control col-md-10'", inner))
                     </div>
                 }
 

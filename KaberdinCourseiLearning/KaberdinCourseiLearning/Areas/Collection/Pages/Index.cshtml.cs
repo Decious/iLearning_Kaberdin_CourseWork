@@ -37,7 +37,6 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
                 .Include(c => c.User)
                 .Include(c => c.Columns)
                 .Include(c => c.Products).ThenInclude(p => p.ColumnValues)
-                .Include(c => c.Products).ThenInclude(p => p.Tags).ThenInclude(t => t.Tag)
                 .AsSplitQuery().FirstOrDefaultAsync();
             if (Collection == null) return false;
             PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName);
