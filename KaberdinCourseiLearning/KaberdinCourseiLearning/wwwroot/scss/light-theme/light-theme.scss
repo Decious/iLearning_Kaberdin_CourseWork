@@ -1,1 +1,8 @@
-﻿
+﻿@import "../common/main.scss";
+$primary:#02b875;
+$border-color: $primary;
+$link-color: $primary;
+@import "../../lib/bootstrap/scss/bootstrap";
+.underlay {
+    background-color: $gray-300;
+}

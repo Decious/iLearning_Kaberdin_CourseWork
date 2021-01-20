@@ -5,68 +5,77 @@
 }
 <link href="~/css/MainPage.css" rel="stylesheet" />
 <div class="container">
-    <h3>Tags</h3>
-    <hr />
-    <div class="mb-2 mt-2" name="tagCloud">
-        @foreach (var tag in Model.Tags)
-        {
-            <a asp-page="Find" asp-route-q="#@tag.TagValue"><span class="hoverable mr-1 badge badge-dark badge-pill">@tag.TagValue</span></a>
-        }
-    </div>
-    <h3>Last added items:</h3>
-    <hr />
-    <div class="mb-2 mt-2" name="LastAdded">
-        <div id="carouselLastAdded" class="carousel slide carousel-fade" data-ride="carousel">
-            <div class="carousel-inner h-100">
-                @foreach (var product in Model.LastItems)
+    <div class="p-2 m-4 rounded3x underlay">
+        <div class="p-2">
+            <h3>Tags</h3>
+            <div class="mb-2 h4 mt-2" name="tagCloud">
+                @foreach (var tag in Model.Tags)
                 {
-                    <div class="carousel-item" style="background-image:url(@product.Collection.BackgroundUrl)">
-                        <a asp-area="Item" asp-page="Index" asp-route-id="@product.ProductID">
-                            <div class="carousel-caption d-block">
-                                <h5>@product.Name</h5>
-                            </div>
-                        </a>
-                    </div>
+                    <a asp-page="Find" asp-route-q="#@tag.TagValue"><span class="hoverable mr-1 badge badge-dark badge-pill">@tag.TagValue</span></a>
                 }
             </div>
-            <a class="carousel-control-prev" href="#carouselLastAdded" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselLastAdded" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
         </div>
     </div>
-    <h3>Biggest collections:</h3>
-    <hr />
-    <div class="mb-2 mt-2" name="BiggestCollections">
-        <div id="carouselBiggestCollections" class="carousel slide carousel-fade" data-ride="carousel">
-            <div class="carousel-inner h-100">
-                @foreach (var collection in Model.BiggestCollections)
-                {
-                <div class="carousel-item" style="background-image:url(@collection.BackgroundUrl)">
-                    <a asp-area="Collection" asp-page="Index" asp-route-id="@collection.CollectionID">
-                        <div class="carousel-caption d-block">
-                            <h5>@collection.Name</h5>
-                            <p>@collection.Description</p>
-                        </div>
+    <div class="p-2 m-4 rounded3x underlay">
+        <div class="p-2">
+            <h3>Last added items:</h3>
+            <div class="mb-2 mt-2" name="LastAdded">
+                <div id="carouselLastAdded" class="carousel slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner h-100">
+                        @foreach (var product in Model.LastItems)
+                        {
+                            <div class="carousel-item" style="background-image:url(@product.Collection.BackgroundUrl)">
+                                <a asp-area="Item" asp-page="Index" asp-route-id="@product.ProductID">
+                                    <div class="carousel-caption d-block">
+                                        <h5>@product.Name</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselLastAdded" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselLastAdded" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
                     </a>
                 </div>
-                }
             </div>
-            <a class="carousel-control-prev" href="#carouselBiggestCollections" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselBiggestCollections" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
         </div>
     </div>
-</div>
+    <div class="p-2 m-4 rounded3x underlay">
+        <div class="p-2">
+            <h3>Biggest collections:</h3>
+            <div class="mb-2 mt-2" name="BiggestCollections">
+                <div id="carouselBiggestCollections" class="carousel slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner h-100">
+                        @foreach (var collection in Model.BiggestCollections)
+                        {
+                            <div class="carousel-item" style="background-image:url(@collection.BackgroundUrl)">
+                                <a asp-area="Collection" asp-page="Index" asp-route-id="@collection.CollectionID">
+                                    <div class="carousel-caption d-block">
+                                        <h5>@collection.Name</h5>
+                                        <p>@collection.Description</p>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselBiggestCollections" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselBiggestCollections" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 <script>
     $(".carousel-inner").each(function (i, e) {
         $(this).children().first().addClass("active");

@@ -27,20 +27,20 @@
             {
                 <p class="dropdown-header text-center">@currentUser.UserName</p>
                 <div class="dropdown-divider"></div>
-                <a class="nav-link text-dark" asp-area="User" asp-page="/Profile" asp-route-name="@currentUser.UserName"><i class="fa fa-home"></i> My page</a>
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa fa-cog"></i> Settings</a>
+                <a class="nav-link" asp-area="User" asp-page="/Profile" asp-route-name="@currentUser.UserName"><i class="fa fa-home"></i> My page</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa fa-cog"></i> Settings</a>
                 if (await UserManager.IsInRoleAsync(currentUser, RoleNames.ROLE_ADMINISTRATOR))
                 {
-                    <a class="nav-link text-dark" asp-area="" asp-page="/AdminPanel"><i class="fa fa-hammer"></i> Admin-panel</a>
+                    <a class="nav-link" asp-area="" asp-page="/AdminPanel"><i class="fa fa-hammer"></i> Admin-panel</a>
                 }
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             }
             else
             {
                 <p class="dropdown-header text-center">Guest</p>
                 <div class="dropdown-divider"></div>
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user-plus"></i> Register</a>
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user-plus"></i> Register</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
             }
         }
     </div>

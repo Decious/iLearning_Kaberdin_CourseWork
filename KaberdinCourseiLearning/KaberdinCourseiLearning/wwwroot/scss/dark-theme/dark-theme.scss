@@ -1,1 +1,13 @@
-﻿
+﻿@import "../common/main.scss";
+$primary: #78c2ad;
+$border-color: $primary;
+$link-color: $primary;
+@import "_variables.scss";
+@import "../../lib/bootstrap/scss/bootstrap";
+@import "_bootswatch.scss";
+.underlay{
+    background-color:$dark;
+}
+.dropzone{
+    color:$dark
+}

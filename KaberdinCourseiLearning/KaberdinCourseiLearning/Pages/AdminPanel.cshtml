@@ -30,7 +30,7 @@
         </div>
     </div>
     <table class="table table-sm table-hover">
-        <thead class="thead-dark">
+        <thead>
             <tr class="text-center">
                 <th scope="col" class="col-1"><button class="btn-primary font-weight-bold rounded" OnClick="return toggleClick()">Toggle</button></th>
                 <th scope="col">Name</th>
@@ -50,7 +50,7 @@
                 var userRoles = await UserManager.GetRolesAsync(user);
                 <tr class="@Style text-center">
                     <td class="align-middle text-center"><input type="checkbox" name="Selected" value="@user.Id" /></td>
-                    <td><a class="nav-link text-dark" asp-area="User" asp-page="/Profile" asp-route-name="@user.UserName">@user.UserName</a></td>
+                    <td><a class="nav-link" asp-area="User" asp-page="/Profile" asp-route-name="@user.UserName">@user.UserName</a></td>
                     <td>@user.Email</td>
                     <td>
                         <select class="form-control" name="SelectedRole" id="@user.Id" onchange="return roleChanged(this)">
