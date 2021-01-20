@@ -2,6 +2,9 @@
 .rounded3x {
   border-radius: 0.65rem !important; }
 
+#searchbarBtn {
+  cursor: pointer; }
+
 /*!
  * Bootstrap v4.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors

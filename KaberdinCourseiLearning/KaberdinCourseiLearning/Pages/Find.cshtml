@@ -11,7 +11,7 @@ Results (@Model.MatchedResult.Length)
 @foreach (var product in Model.MatchedResult)
 {
     <div class="card hoverable mb-2">
-        <a class="text-decoration-none text-dark" asp-area="Item" asp-page="Index" asp-route-id="@product.ProductID">
+        <a class="text-decoration-none" asp-area="Item" asp-page="Index" asp-route-id="@product.ProductID">
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">

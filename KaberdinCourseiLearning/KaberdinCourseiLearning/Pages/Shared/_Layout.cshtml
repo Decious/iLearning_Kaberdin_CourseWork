@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - KaberdinCourseiLearning</title>
-    <!-- <link href="~/scss/dark-theme/dark-theme.min.css" rel="stylesheet" /> -->
-    <!-- <link href="~/scss/light-theme/light-theme.min.css" rel="stylesheet" /> -->
-    <link href="~/scss/dark-theme/dark-theme.min.css" rel="stylesheet" />
+    <link href="~/scss/light-theme/light-theme.min.css" id="theme-light" disabled rel="stylesheet" />
+    <link href="~/scss/dark-theme/dark-theme.min.css" id="theme-dark" disabled rel="stylesheet" />
+    <script src="~/js/ThemeLoader.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/lib/font-awesome/css/fontawesome.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -32,7 +32,7 @@
                 </a>
                 <div class="col container">
                     <div class="row h-100">
-                        <div class="d-none d-sm-flex m-auto col-md-10 col-8">
+                        <div class="d-none d-sm-flex m-auto col">
                             <div class="input-group" name="searchbarGroup">
                                 <input type="text" class="form-control" placeholder="Search here">
                                 <div class="input-group-append">
@@ -40,11 +40,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2 col-sm-4 pr-4 col m-auto text-right dropdown">
-                            <div class="d-sm-none d-inline p-2">
-                                <button class="btn" id="searchbarBtn"><i class="fa fa-search"></i></button>
+                        <div class="d-flex justify-content-end align-middle align-content-center col m-auto text-right dropdown">
+                            <div class="d-flex flex-wrap align-items-center">
+                                <div class="d-sm-none d-inline p-2">
+                                    <a class="p-0" id="searchbarBtn"><i class="fa fa-search"></i></a>
+                                </div>
+                                <div style="transform: scale(0.6); margin-right:-20px; margin-left:-25px;">
+                                    <input type="checkbox" name="checkbox" id="themeBtn" onclick="toggleTheme()" class="switch">
+                                </div>
+                                <partial name="_LoginPartial" />
                             </div>
-                            <partial name="_LoginPartial" />
                         </div>
                     </div>
                 </div>
@@ -65,7 +70,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - KaberdinCourseiLearning - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2020 - KaberdinCourseiLearning - <a asp-area="" asp-page="/">Privacy</a>
         </div>
     </footer>
 

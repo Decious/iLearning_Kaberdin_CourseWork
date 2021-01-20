@@ -2,6 +2,12 @@
 $primary:#02b875;
 $border-color: $primary;
 $link-color: $primary;
+$font-family-sans-serif: Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$font-size-base: .9375rem !default;
+$font-size-sm: $font-size-base * .88 !default;
+$h1-font-size: 3rem !default;
+$h2-font-size: 2.5rem !default;
+$h3-font-size: 2rem !default;
 @import "../../lib/bootstrap/scss/bootstrap";
 .underlay {
     background-color: $gray-300;
