@@ -1,9 +1,10 @@
-/*
+﻿/*
  * The MIT License
  * Copyright (c) 2012 Matias Meno <m@tias.me>
  */
 .dropzone, .dropzone * {
-  box-sizing: border-box; }
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 .dropzone {
   position: relative; }
@@ -37,3 +38,5 @@
       height: 58px;
       left: 50%;
       margin-left: -27px; }
+
+/*# sourceMappingURL=wwwroot\lib\dropzone\basic.css.map */
