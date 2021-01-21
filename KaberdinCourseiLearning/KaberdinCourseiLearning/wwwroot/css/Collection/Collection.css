@@ -27,9 +27,6 @@ div[name="Description"] * {
 .m-h-100 {
     max-height: 100%;
 }
-.Blk-Trslcnt-Bg {
-    background: rgba(0,0,0,0.3);
-}
 .expand-collection{
     height:auto !important;
 }

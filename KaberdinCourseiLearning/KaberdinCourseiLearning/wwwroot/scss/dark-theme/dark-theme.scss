@@ -3,7 +3,7 @@ $primary: #78c2ad;
 $border-color: $primary;
 $link-color: $primary;
 @import "_variables.scss";
-@import "../../lib/bootstrap/scss/bootstrap";
+@import "../../lib/bootstrap/scss/bootstrap.scss";
 @import "_bootswatch.scss";
 .underlay{
     background-color:$dark;
