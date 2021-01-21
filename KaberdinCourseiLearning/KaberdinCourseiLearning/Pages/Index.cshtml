@@ -1,7 +1,8 @@
 ﻿@page
 @model IndexModel
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Home page";
+ViewData["Title"]="Home page" ;
 }
 <link href="~/css/MainPage.css" rel="stylesheet" />
 <div class="container">
@@ -24,13 +25,13 @@
                     <div class="carousel-inner h-100">
                         @foreach (var product in Model.LastItems)
                         {
-                        <a class="carousel-item" style="background-image:url(@product.Collection.BackgroundUrl)" asp-area="Item" asp-page="Index" asp-route-id="@product.ProductID">
-                            <div class="position-relative h-100 w-100 Blk-Trslcnt-Bg">
-                                <div class="text-center position-absolute align-bottom-center">
-                                    <h5 class="text-light">@product.Name</h5>
+                            <a class="carousel-item" style="background-image:url(@product.Collection.BackgroundUrl)" asp-area="Item" asp-page="Index" asp-route-id="@product.ProductID">
+                                <div class="position-relative h-100 w-100 Blk-Trslcnt-Bg">
+                                    <div class="text-center position-absolute align-bottom-center">
+                                        <h5 class="text-light">@product.Name</h5>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
                         }
                     </div>
                     <a class="carousel-control-prev" href="#carouselLastAdded" role="button" data-slide="prev">
@@ -53,14 +54,14 @@
                     <div class="carousel-inner h-100">
                         @foreach (var collection in Model.BiggestCollections)
                         {
-                        <a class="carousel-item" style="background-image:url(@collection.BackgroundUrl)" asp-area="Collection" asp-page="Index" asp-route-id="@collection.CollectionID">
-                            <div class="position-relative h-100 w-100 Blk-Trslcnt-Bg">
-                                <div class="text-center position-absolute align-bottom-center">
-                                    <h5 class="text-light">@collection.Name</h5>
-                                    <p class="text-light">@collection.Description</p>
+                            <a class="carousel-item" style="background-image:url(@collection.BackgroundUrl)" asp-area="Collection" asp-page="Index" asp-route-id="@collection.CollectionID">
+                                <div class="position-relative h-100 w-100 Blk-Trslcnt-Bg">
+                                    <div class="text-center position-absolute align-bottom-center">
+                                        <h5 class="text-light">@collection.Name</h5>
+                                        <p class="text-light">@collection.Description</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
                         }
                     </div>
                     <a class="carousel-control-prev" href="#carouselBiggestCollections" role="button" data-slide="prev">
@@ -75,7 +76,7 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 <script>
     $(".carousel-inner").each(function (i, e) {
         $(this).children().first().addClass("active");

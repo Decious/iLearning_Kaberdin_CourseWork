@@ -12,6 +12,8 @@ using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
 using KaberdinCourseiLearning.Middleware;
 using KaberdinCourseiLearning.Hubs;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace KaberdinCourseiLearning
 {
@@ -41,7 +43,9 @@ namespace KaberdinCourseiLearning
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddUserManager<CustomUserManager>();
-            services.AddRazorPages();
+            services.AddControllers();
+            services.AddRazorPages().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyNames.POLICY_ADMIN, policy => 
@@ -65,7 +69,6 @@ namespace KaberdinCourseiLearning
             services.AddScoped<CollectionManager>();
             services.AddScoped<ProductManager>();
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CustomUserManager userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -88,11 +91,13 @@ namespace KaberdinCourseiLearning
             if (Environment.GetEnvironmentVariable("PORT") == null)
             {
                 app.UseHttpsRedirection();
-            } else
+            }
+            else
             {
                 app.UseCustomHttpsRedirection();
             }
             app.UseStaticFiles();
+            app.UseRequestLocalization(GetLocalizationOptions());
             app.UseRouting();
             app.UseAuthentication();
             IdentityInitializer.SeedData(userManager, roleManager);
@@ -100,10 +105,18 @@ namespace KaberdinCourseiLearning
             app.UseUserValidationMiddleware();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ProductHub>("/Item/ProductHub");
             });
         }
-
+        private RequestLocalizationOptions GetLocalizationOptions()
+        {
+            var supportedCultures = Configuration.GetSection("Localization").GetChildren().ToDictionary(x => x.Key, x => x.Value).Keys.ToArray();
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+            return localizationOptions;
+        }
     }
 }

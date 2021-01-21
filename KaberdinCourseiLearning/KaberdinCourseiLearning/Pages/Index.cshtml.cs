@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration
 @using KaberdinCourseiLearning.Data.Models;
 @using KaberdinCourseiLearning.Managers;
 @inject SignInManager<CustomUser> SignInManager
 @inject CustomUserManager UserManager
-
+@inject IConfiguration Configuration 
 
     <a href="#" role="button" style="display:inline-block" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         @{
@@ -46,5 +47,26 @@
             <div class="dropdown-divider"></div>
             <label class="text-primary" for="dropdownThemeBtn">Light theme</label>
             <input type="checkbox" id="dropdownThemeBtn" name="themeBtn" onclick="toggleTheme(this)">
+
+            var currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var cultures = Configuration.GetSection("Localization").GetChildren().ToDictionary(x => x.Key, x => x.Value);
+            var uri = $"{Context.Request.Path}{Context.Request.QueryString}";
+
+            <form asp-controller="Culture" asp-action="SetCulture">
+                <select name="culture" class="form-control-sm" onchange="this.form.submit()">
+                    @foreach (var culture in cultures)
+                    {
+                        if (currentCulture == culture.Key)
+                        {
+                            <option selected value="@culture.Key">@culture.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@culture.Key">@culture.Value</option>
+                        }
+                    }
+                </select>
+                <input hidden name="returnUri" value="@uri" />
+            </form>
         }
     </div>
