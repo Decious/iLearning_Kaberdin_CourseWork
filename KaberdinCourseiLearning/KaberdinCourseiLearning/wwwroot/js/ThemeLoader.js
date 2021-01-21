@@ -8,7 +8,11 @@ function setTheme(themeName, oldTheme) {
     localStorage.setItem('theme', themeName);
     document.getElementById(themeName).removeAttribute("disabled");
 }
-function toggleTheme() {
+function toggleTheme(inputElement) {
+    if (inputElement.checked)
+        setChecked();
+    else
+        removeChecked();
     if (localStorage.getItem('theme') === 'theme-dark') {
         setTheme('theme-light', 'theme-dark');
     } else {
@@ -18,13 +22,18 @@ function toggleTheme() {
 
 window.addEventListener("load", function (event) {
     if (localStorage.getItem('theme') === 'theme-dark') {
-        setChecked(false);
+        removeChecked();
     } else {
-        setChecked(true);
+        setChecked();
     }
 });
-function setChecked(value) {
-    if (value) {
-        document.getElementById("themeBtn").setAttribute('checked', true);
-    }
+function setChecked() {
+    document.getElementsByName("themeBtn").forEach(function (v, i, a) {
+        v.checked = true;
+    })
+}
+function removeChecked() {
+    document.getElementsByName("themeBtn").forEach(function (v, i, a) {
+        v.checked = false;
+    })
 }

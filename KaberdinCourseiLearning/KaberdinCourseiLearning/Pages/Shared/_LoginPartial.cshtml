@@ -21,7 +21,7 @@
         }
         <img class="img-fluid rounded-circle" height="40" width="40" src="@picture" />
     </a>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-5px, 38px, 0px);">
+    <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-5px, 38px, 0px);">
         @{
             if (SignInManager.IsSignedIn(User))
             {
@@ -42,5 +42,9 @@
                 <a class="nav-link" asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user-plus"></i> Register</a>
                 <a class="nav-link" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
             }
+            <p class="dropdown-header">Preferences</p>
+            <div class="dropdown-divider"></div>
+            <label class="text-primary" for="dropdownThemeBtn">Light theme</label>
+            <input type="checkbox" id="dropdownThemeBtn" name="themeBtn" onclick="toggleTheme(this)">
         }
     </div>
