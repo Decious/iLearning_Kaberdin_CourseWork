@@ -1,5 +1,6 @@
 ﻿@page
 @model KaberdinCourseiLearning.Pages.AdminPanelModel
+@inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "AdminPanel";
 }
@@ -8,8 +9,8 @@
 @using KaberdinCourseiLearning.Data.Models;
 @inject UserManager<CustomUser> UserManager
 <style>
-    td{
-        vertical-align:middle !important;
+    td {
+        vertical-align: middle !important;
     }
 </style>
 @Html.AntiForgeryToken()
@@ -18,13 +19,13 @@
         <div class="container">
             <div style="margin-bottom:16px" class="row justify-content-around">
                 <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Block">
-                    <i style="margin-right:5px" class="fa fa-ban"></i>Block
+                    <i style="margin-right:5px" class="fa fa-ban"></i>@Localizer["Block"]
                 </button>
                 <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Unblock">
-                    <i style="margin-right:5px" class="fa fa-user-check"></i>Unblock
+                    <i style="margin-right:5px" class="fa fa-user-check"></i>@Localizer["Unblock"]
                 </button>
                 <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Delete">
-                    <i style="margin-right:5px" class="fa fa-user-slash"></i>Delete
+                    <i style="margin-right:5px" class="fa fa-user-slash"></i>@Localizer["Delete"]
                 </button>
             </div>
         </div>
@@ -32,11 +33,11 @@
     <table class="table table-sm table-hover">
         <thead>
             <tr class="text-center">
-                <th scope="col" class="col-1"><button class="btn-primary font-weight-bold rounded" OnClick="return toggleClick()">Toggle</button></th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col" class="col-3">Role</th>
-                <th scope="col">Status</th>
+                <th scope="col" class="col-1"><button class="btn-primary font-weight-bold rounded" OnClick="return toggleClick()">@Localizer["Toggle"]</button></th>
+                <th scope="col">@Localizer["Name"]</th>
+                <th scope="col">@Localizer["Email"]</th>
+                <th scope="col" class="col-3">@Localizer["Role"]</th>
+                <th scope="col">@Localizer["Status"]</th>
             </tr>
         </thead>
         <tbody>
@@ -58,39 +59,39 @@
                             {
                                 if (userRoles.Contains(role.Name))
                                 {
-                                    <option selected>@role.Name</option>
+                                    <option selected>@Localizer[role.Name]</option>
                                 }
                                 else
                                 {
-                                    <option>@role.Name</option>
+                                    <option>@Localizer[role.Name]</option>
                                 }
                             }
                             @{
                                 if (userRoles.Count == 0)
                                 {
-                                    <option selected>User</option>
+                                    <option selected>@Localizer["User"]</option>
                                 }
                                 else
                                 {
-                                    <option>User</option>
+                                    <option>@Localizer["User"]</option>
                                 }
                             }
                         </select>
                     </td>
                     @if (user.LockoutEnd > DateTime.Now)
                     {
-                        <td>Banned</td>
+                        <td>@Localizer["Banned"]</td>
                     }
                     else
                     {
-                        <td>Active</td>
+                        <td>@Localizer["Active"]</td>
                     }
                 </tr>
             }
         </tbody>
     </table>
 </form>
-
+<script>var locale = {Banned:"@Localizer["Banned"]",Active:"@Localizer["Active"]"}</script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/AdminPanel.js"></script>
 

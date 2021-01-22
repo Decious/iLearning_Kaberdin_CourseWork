@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BiggestHeading" xml:space="preserve">
-    <value>Biggest collections</value>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Пожалуйста подождите...</value>
   </data>
-  <data name="LastItemsHeading" xml:space="preserve">
-    <value>Last added items</value>
+  <data name="Privacy" xml:space="preserve">
+    <value>Приватность</value>
   </data>
-  <data name="TagsHeading" xml:space="preserve">
-    <value>Tags</value>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Искать</value>
   </data>
 </root>

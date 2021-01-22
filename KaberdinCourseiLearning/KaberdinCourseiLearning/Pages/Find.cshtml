@@ -1,12 +1,13 @@
 ﻿@page
 @model KaberdinCourseiLearning.Pages.FindModel
+@inject IViewLocalizer Localizer
 @{
 }
 <h4>@Model.SearchedFor</h4>
-Results (@Model.MatchedResult.Length)
+@Localizer["Results"] (@Model.MatchedResult.Length)
 @if (Model.MatchedResult.Length == 0)
 {
-    <h3>Nothing found. Change your search query!</h3>
+    <h3>@Localizer["NothingFound"]</h3>
 }
 @foreach (var product in Model.MatchedResult)
 {
@@ -18,7 +19,7 @@ Results (@Model.MatchedResult.Length)
                         <p>@product.Name</p>
                     </div>
                     <div class="col-8 text-right">
-                        <p>Created on: @product.CreationDate.ToShortDateString()</p>
+                        <p>@Localizer["Created on"]: @product.CreationDate.ToShortDateString()</p>
                     </div>
                 </div>
             </div>

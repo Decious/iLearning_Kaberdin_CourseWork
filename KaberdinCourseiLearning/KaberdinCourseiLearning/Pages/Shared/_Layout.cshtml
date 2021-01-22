@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IViewLocalizer Localizer
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,7 +21,7 @@
                 <div class="col-2 text-center"><button class="btn" id="navbarBtn"><i class="fa fa-arrow-left align-middle"></i></button></div>
                 <div class="col-10">
                     <div class="input-group" name="searchbarGroup">
-                        <input type="text" class="form-control" placeholder="Search here">
+                        <input type="text" class="form-control" placeholder="@Localizer["SearchPlaceholder"]">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" name="SearchBtn" type="button"><i class="fa fa-search"></i></button>
                         </div>
@@ -34,7 +36,7 @@
                     <div class="row h-100">
                         <div class="d-none d-sm-flex m-auto col">
                             <div class="input-group" name="searchbarGroup">
-                                <input type="text" class="form-control" placeholder="Search here">
+                                <input type="text" class="form-control" placeholder="@Localizer["SearchPlaceholder"]">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" name="SearchBtn" type="button"><i class="fa fa-search"></i></button>
                                 </div>
@@ -61,7 +63,7 @@
             <div id="AlertMessage" class="alert" style="display:none;" role="alert">
             </div>
             <div id="PleaseWait" class="align-items-center" style="display:none;">
-                <strong>Please wait...</strong>
+                <strong>@Localizer["PleaseWait"]</strong>
                 <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
             </div>
             @RenderBody()
@@ -70,7 +72,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - KaberdinCourseiLearning - <a asp-area="" asp-page="/">Privacy</a>
+            &copy; 2020 - KaberdinCourseiLearning - <a asp-area="" asp-page="/">@Localizer["Privacy"]</a>
         </div>
     </footer>
 

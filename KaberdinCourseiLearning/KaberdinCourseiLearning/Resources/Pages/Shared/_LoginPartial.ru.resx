@@ -117,13 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BiggestHeading" xml:space="preserve">
-    <value>Biggest collections</value>
+  <data name="Admin-Panel" xml:space="preserve">
+    <value>Админ-панель</value>
   </data>
-  <data name="LastItemsHeading" xml:space="preserve">
-    <value>Last added items</value>
+  <data name="Guest" xml:space="preserve">
+    <value>Гость</value>
   </data>
-  <data name="TagsHeading" xml:space="preserve">
-    <value>Tags</value>
+  <data name="Light theme" xml:space="preserve">
+    <value>Светлая тема</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="My page" xml:space="preserve">
+    <value>Моя страница</value>
+  </data>
+  <data name="Preferences" xml:space="preserve">
+    <value>Общие настройки</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
   </data>
 </root>

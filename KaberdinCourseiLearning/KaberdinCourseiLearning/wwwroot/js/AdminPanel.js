@@ -19,9 +19,9 @@ function updateRow(row,action) {
     if (action == "Delete")
         row.remove();
     if (action == "Block")
-        row.children("td").last().html("Banned");
+        row.children("td").last().html(locale.Banned);
     if (action == "Unblock")
-        row.children("td").last().html("Active");
+        row.children("td").last().html(locale.Active);
 }
 function toggleClick() {
     var checkboxes = $("[name='Selected']");

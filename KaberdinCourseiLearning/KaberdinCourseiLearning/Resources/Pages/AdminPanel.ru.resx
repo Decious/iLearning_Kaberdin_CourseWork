@@ -117,13 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BiggestHeading" xml:space="preserve">
-    <value>Biggest collections</value>
+  <data name="Active" xml:space="preserve">
+    <value>Активен</value>
   </data>
-  <data name="LastItemsHeading" xml:space="preserve">
-    <value>Last added items</value>
+  <data name="Administrator" xml:space="preserve">
+    <value>Администратор</value>
   </data>
-  <data name="TagsHeading" xml:space="preserve">
-    <value>Tags</value>
+  <data name="Banned" xml:space="preserve">
+    <value>Заблокирован</value>
+  </data>
+  <data name="Block" xml:space="preserve">
+    <value>Заблокировать</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Почта</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Toggle" xml:space="preserve">
+    <value>Выделить</value>
+  </data>
+  <data name="Unblock" xml:space="preserve">
+    <value>Разблокировать</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Пользователь</value>
   </data>
 </root>

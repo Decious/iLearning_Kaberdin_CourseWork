@@ -8,7 +8,7 @@ ViewData["Title"]="Home page" ;
 <div class="container">
     <div class="p-2 m-4 rounded3x underlay">
         <div class="p-2">
-            <h3 class="text-center">Tags</h3>
+            <h3 class="text-center">@Localizer["TagsHeading"]</h3>
             <div class="mb-2 h4 mt-2" name="tagCloud">
                 @foreach (var tag in Model.Tags)
                 {
@@ -19,7 +19,7 @@ ViewData["Title"]="Home page" ;
     </div>
     <div class="p-2 m-4 rounded3x underlay">
         <div class="p-2">
-            <h3 class="text-center">Last added items</h3>
+            <h3 class="text-center">@Localizer["LastItemsHeading"]</h3>
             <div class="mb-2 mt-2" name="LastAdded">
                 <div id="carouselLastAdded" class="carousel slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner h-100">
@@ -48,7 +48,7 @@ ViewData["Title"]="Home page" ;
     </div>
     <div class="p-2 m-4 rounded3x underlay">
         <div class="p-2">
-            <h3 class="text-center">Biggest collections</h3>
+            <h3 class="text-center">@Localizer["BiggestHeading"]</h3>
             <div class="mb-2 mt-2" name="BiggestCollections">
                 <div id="carouselBiggestCollections" class="carousel slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner h-100">

@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="test" xml:space="preserve">
-    <value>Привет!</value>
+  <data name="BiggestHeading" xml:space="preserve">
+    <value>Коллекции с самым большим количеством товаров</value>
+  </data>
+  <data name="LastItemsHeading" xml:space="preserve">
+    <value>Последние добавленные товары</value>
+  </data>
+  <data name="TagsHeading" xml:space="preserve">
+    <value>Теги</value>
   </data>
 </root>

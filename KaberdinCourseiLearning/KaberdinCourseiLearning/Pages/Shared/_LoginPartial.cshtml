@@ -4,7 +4,8 @@
 @using KaberdinCourseiLearning.Managers;
 @inject SignInManager<CustomUser> SignInManager
 @inject CustomUserManager UserManager
-@inject IConfiguration Configuration 
+@inject IConfiguration Configuration
+@inject IViewLocalizer Localizer 
 
     <a href="#" role="button" style="display:inline-block" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         @{
@@ -28,24 +29,24 @@
             {
                 <p class="dropdown-header text-center">@currentUser.UserName</p>
                 <div class="dropdown-divider"></div>
-                <a class="nav-link" asp-area="User" asp-page="/Profile" asp-route-name="@currentUser.UserName"><i class="fa fa-home"></i> My page</a>
-                <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa fa-cog"></i> Settings</a>
+                <a class="nav-link" asp-area="User" asp-page="/Profile" asp-route-name="@currentUser.UserName"><i class="fa fa-home"></i> @Localizer["My page"]</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa fa-cog"></i> @Localizer["Settings"]</a>
                 if (await UserManager.IsInRoleAsync(currentUser, RoleNames.ROLE_ADMINISTRATOR))
                 {
-                    <a class="nav-link" asp-area="" asp-page="/AdminPanel"><i class="fa fa-hammer"></i> Admin-panel</a>
+                    <a class="nav-link" asp-area="" asp-page="/AdminPanel"><i class="fa fa-hammer"></i> @Localizer["Admin-Panel"]</a>
                 }
-                <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout"><i class="fas fa-sign-out-alt"></i> @Localizer["Logout"]</a>
             }
             else
             {
-                <p class="dropdown-header text-center">Guest</p>
+                <p class="dropdown-header text-center">@Localizer["Guest"]</p>
                 <div class="dropdown-divider"></div>
-                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user-plus"></i> Register</a>
-                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register"><i class="fa fa-user-plus"></i> @Localizer["Register"]</a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> @Localizer["Login"]</a>
             }
-            <p class="dropdown-header">Preferences</p>
+            <p class="dropdown-header">@Localizer["Preferences"]</p>
             <div class="dropdown-divider"></div>
-            <label class="text-primary" for="dropdownThemeBtn">Light theme</label>
+            <label class="text-primary" for="dropdownThemeBtn">@Localizer["Light theme"]</label>
             <input type="checkbox" id="dropdownThemeBtn" name="themeBtn" onclick="toggleTheme(this)">
 
             var currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
