@@ -117,19 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add collection" xml:space="preserve">
-    <value>Добавить коллекцию</value>
+  <data name="ConcurrencyFailure" xml:space="preserve">
+    <value>An unknown failure has occurred.</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Закрыть</value>
+  <data name="DefaultError" xml:space="preserve">
+    <value>Optimistic concurrency failure, object has been modified.</value>
   </data>
-  <data name="Collections" xml:space="preserve">
-    <value>Коллекции</value>
+  <data name="DefaultIdentityError" xml:space="preserve">
+    <value>Identity system error.</value>
   </data>
-  <data name="No collections" xml:space="preserve">
-    <value>Нет коллекций для просмотра.</value>
+  <data name="DuplicateEmail" xml:space="preserve">
+    <value>Email {0} is already taken.</value>
   </data>
-  <data name="Upload your new avatar" xml:space="preserve">
-    <value>Загрузите свое изображение как аватар</value>
+  <data name="DuplicateRoleName" xml:space="preserve">
+    <value>Role {0} is already taken.</value>
+  </data>
+  <data name="DuplicateUserName" xml:space="preserve">
+    <value>UserName {0} is already taken.</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Email {0} is invalid.</value>
+  </data>
+  <data name="InvalidRoleName" xml:space="preserve">
+    <value>Role {0} is invalid.</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Invalid token.</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>User name {0} is invalid, can only contain letters or digits.</value>
+  </data>
+  <data name="LoginAlreadyAssociated" xml:space="preserve">
+    <value>Login already associated to this user.</value>
+  </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Incorrect password.</value>
+  </data>
+  <data name="PasswordRequiresDigit" xml:space="preserve">
+    <value>Passwords must have at least one digit ('0'-'9').</value>
+  </data>
+  <data name="PasswordRequiresLower" xml:space="preserve">
+    <value>Passwords must have at least one lowercase ('a'-'z').</value>
+  </data>
+  <data name="PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value>Passwords must have at least one non alphanumeric char.</value>
+  </data>
+  <data name="PasswordRequiresUniqueChars" xml:space="preserve">
+    <value>Passwords must have at least {0} uniquechars.</value>
+  </data>
+  <data name="PasswordRequiresUpper" xml:space="preserve">
+    <value>Passwords must have at least one uppercase ('A'-'Z').</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>Passwords must be at least {0} characters.</value>
+  </data>
+  <data name="RecoveryCodeRedemptionFailed" xml:space="preserve">
+    <value>Recovery code redemption failed.</value>
+  </data>
+  <data name="UserAlreadyHasPassword" xml:space="preserve">
+    <value>User already has a password set.</value>
+  </data>
+  <data name="UserAlreadyInRole" xml:space="preserve">
+    <value>User already in role {0}.</value>
+  </data>
+  <data name="UserLockoutNotEnabled" xml:space="preserve">
+    <value>Lockout is not enabled for this user.</value>
+  </data>
+  <data name="UserNotInRole" xml:space="preserve">
+    <value>User is not in role {0}.</value>
   </data>
 </root>

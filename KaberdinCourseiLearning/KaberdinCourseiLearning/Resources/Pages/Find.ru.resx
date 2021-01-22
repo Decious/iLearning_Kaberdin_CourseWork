@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Created on" xml:space="preserve">
-    <value>Создан </value>
+    <value>Создан</value>
   </data>
   <data name="NothingFound" xml:space="preserve">
     <value>Мы ничего не нашли!</value>

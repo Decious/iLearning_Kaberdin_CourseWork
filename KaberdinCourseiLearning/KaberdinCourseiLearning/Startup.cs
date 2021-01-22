@@ -14,6 +14,7 @@ using KaberdinCourseiLearning.Middleware;
 using KaberdinCourseiLearning.Hubs;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Razor;
+using KaberdinCourseiLearning.Areas.Identity;
 
 namespace KaberdinCourseiLearning
 {
@@ -40,6 +41,7 @@ namespace KaberdinCourseiLearning
                 options.Password.RequireUppercase = false;
                 options.User.RequireUniqueEmail = true;
             })
+                .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddUserManager<CustomUserManager>();

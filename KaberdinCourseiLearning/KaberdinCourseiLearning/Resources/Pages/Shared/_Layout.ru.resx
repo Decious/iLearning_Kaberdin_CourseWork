@@ -142,7 +142,7 @@
     <value>Вы не можете загружать больше файлов.</value>
   </data>
   <data name="dictRemoveFile" xml:space="preserve">
-    <value>Удалить файл.</value>
+    <value>Удалить файл</value>
   </data>
   <data name="dictResponseError" xml:space="preserve">
     <value>Сервер ответил кодом {{statusCode}}.</value>
