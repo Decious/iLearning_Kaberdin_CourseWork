@@ -117,6 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="dictCancelUpload" xml:space="preserve">
+    <value>Cancel upload</value>
+  </data>
+  <data name="dictCancelUploadConfirmation" xml:space="preserve">
+    <value>Are you sure you want to cancel this upload?</value>
+  </data>
+  <data name="dictDefaultMessage" xml:space="preserve">
+    <value>Drop files here to upload</value>
+  </data>
+  <data name="dictFallbackMessage" xml:space="preserve">
+    <value>Your browser does not support drag'n'drop file uploads.</value>
+  </data>
+  <data name="dictFallbackText" xml:space="preserve">
+    <value>Please use the fallback form below to upload your files like in the olden days.</value>
+  </data>
+  <data name="dictFileTooBig" xml:space="preserve">
+    <value>File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.</value>
+  </data>
+  <data name="dictInvalidFileType" xml:space="preserve">
+    <value>You can't upload files of this type.</value>
+  </data>
+  <data name="dictMaxFilesExceeded" xml:space="preserve">
+    <value>You can not upload any more files.</value>
+  </data>
+  <data name="dictRemoveFile" xml:space="preserve">
+    <value>Remove file</value>
+  </data>
+  <data name="dictResponseError" xml:space="preserve">
+    <value>Server responded with {{statusCode}} code.</value>
+  </data>
   <data name="PleaseWait" xml:space="preserve">
     <value>Please wait...</value>
   </data>

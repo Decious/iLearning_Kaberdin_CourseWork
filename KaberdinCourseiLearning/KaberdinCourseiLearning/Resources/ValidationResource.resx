@@ -117,43 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="dictCancelUpload" xml:space="preserve">
-    <value>Отменить загрузку</value>
+  <data name="EmailInvalid" xml:space="preserve">
+    <value>Email is invalid.</value>
   </data>
-  <data name="dictCancelUploadConfirmation" xml:space="preserve">
-    <value>Вы уверены что хотите отменить загрузку файла?</value>
+  <data name="EmailPrompt" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="dictDefaultMessage" xml:space="preserve">
-    <value>Перетащите сюда файлы для загрузки</value>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Email field is required.</value>
   </data>
-  <data name="dictFallbackMessage" xml:space="preserve">
-    <value>Ваш браузер не поддерживает технологию Drag n drop.</value>
+  <data name="NamePrompt" xml:space="preserve">
+    <value>User name</value>
   </data>
-  <data name="dictFallbackText" xml:space="preserve">
-    <value>Пожалуйста используйте форму ниже для загрузки ваших файлов.</value>
-  </data>
-  <data name="dictFileTooBig" xml:space="preserve">
-    <value>Размер файла слишком большой ({{filesize}}MiB). Максимальный размер: {{maxFilesize}}MiB.</value>
-  </data>
-  <data name="dictInvalidFileType" xml:space="preserve">
-    <value>Запрещено загружать файлы этого типа.</value>
-  </data>
-  <data name="dictMaxFilesExceeded" xml:space="preserve">
-    <value>Вы не можете загружать больше файлов.</value>
-  </data>
-  <data name="dictRemoveFile" xml:space="preserve">
-    <value>Удалить файл.</value>
-  </data>
-  <data name="dictResponseError" xml:space="preserve">
-    <value>Сервер ответил кодом {{statusCode}}.</value>
-  </data>
-  <data name="PleaseWait" xml:space="preserve">
-    <value>Пожалуйста подождите...</value>
-  </data>
-  <data name="Privacy" xml:space="preserve">
-    <value>Приватность</value>
-  </data>
-  <data name="SearchPlaceholder" xml:space="preserve">
-    <value>Искать</value>
+  <data name="NameRequired" xml:space="preserve">
+    <value>Name field is required.</value>
   </data>
 </root>

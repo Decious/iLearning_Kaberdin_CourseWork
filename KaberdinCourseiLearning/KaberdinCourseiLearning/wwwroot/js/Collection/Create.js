@@ -17,6 +17,16 @@ $("#backgroundImageDz").dropzone({
     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
     paramName: "file",
     acceptedFiles: 'image/*',
+    dictDefaultMessage: dropzoneLocale.dictDefaultMessage,
+    dictCancelUpload: dropzoneLocale.dictCancelUpload,
+    dictCancelUploadConfirmation: dropzoneLocale.dictCancelUploadConfirmation,
+    dictFallbackMessage: dropzoneLocale.dictFallbackMessage,
+    dictFallbackText: dropzoneLocale.dictFallbackText,
+    dictFileTooBig: dropzoneLocale.dictFileTooBig,
+    dictInvalidFileType: dropzoneLocale.dictInvalidFileType,
+    dictMaxFilesExceeded: dropzoneLocale.dictMaxFilesExceeded,
+    dictRemoveFile: dropzoneLocale.dictRemoveFile,
+    dictResponseError: dropzoneLocale.dictResponseError,
     init: function () {
         dropzoneObject = this;
     },

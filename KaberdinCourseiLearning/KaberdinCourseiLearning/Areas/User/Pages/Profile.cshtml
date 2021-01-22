@@ -1,5 +1,6 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.User.Pages.ProfileModel
+@inject IViewLocalizer Localizer
 @{
 }
 @using KaberdinCourseiLearning.Pages.Partials.Models;
@@ -12,17 +13,17 @@
     <div class="row">
         <div id="Collections" class="col-md-9 pr-3 pr-md-5">
             <div class="row">
-                <h1>Collections</h1>
+                <h1>@Localizer["Collections"]</h1>
             </div>
             @if (Model.PermittedToChange)
             {
-                <a name="AddCollectionBtn" asp-area="Collection" asp-page="Create" asp-route-name="@Model.PageUser.UserName" class="mb-2 row btn btn-outline-primary"><i class="fa fa-plus-square"></i> Add collection</a>
+                <a name="AddCollectionBtn" asp-area="Collection" asp-page="Create" asp-route-name="@Model.PageUser.UserName" class="mb-2 row btn btn-outline-primary"><i class="fa fa-plus-square"></i> @Localizer["Add collection"]</a>
             }
             <div class="row" id="CollectionsRow">
                 @{
                     if (Model.PageUser.ItemCollections.Count == 0)
                     {
-                        <h2>No collections to show.</h2>
+                        <h2>@Localizer["No collections"]</h2>
                     }
                     else
                     {
@@ -73,7 +74,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Upload your new avatar</h5>
+                        <h5 class="modal-title" id="ModalLabel">@Localizer["Upload your new avatar"]</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -82,7 +83,7 @@
                         <form class="dropzone" id="AvatarDropzone" method="post" asp-page-handler="UploadAvatar"></form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
                     </div>
                 </div>
             </div>

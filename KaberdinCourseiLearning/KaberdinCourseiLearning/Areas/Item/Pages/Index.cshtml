@@ -4,6 +4,7 @@
 @using KaberdinCourseiLearning.Data.Models;
 @inject CustomUserManager UserManager
 @inject SignInManager<CustomUser> SignInManager
+@inject IViewLocalizer Localizer
 @{
 }
 @Html.AntiForgeryToken()
@@ -12,22 +13,21 @@
 <partial name="_PartialItem" model="Model.ItemModel" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Product/PartialItem.js"></script>
-<link href="~/css/Product/Product.css" rel="stylesheet" />
 <link href="~/css/Comment/Comment.css" rel="stylesheet" />
 <div class="card mt-3">
     <div class="card-header">
-        <p class="text-center">Comments</p>
+        <p class="text-center">@Localizer["Comments"]</p>
         @if (SignInManager.IsSignedIn(User))
         {
             <div class="row m-2">
-                <input id="commentInput" placeholder="Write your comment." class="col-10 col-sm-11 h-auto bg-dark text-light form-control form-control-plaintext" />
+                <input id="commentInput" placeholder="@Localizer["Write your comment."]" class="col-10 col-sm-11 h-auto bg-dark text-light form-control form-control-plaintext" />
                 <button id="commentSend" class="col-2 col-sm-1 btn btn-primary"><i class="fa fa-paper-plane"></i></button>
             </div>
         }
     </div>
-    <div class="card-body pl-0 pr-0" id="CommentBox">
+    <div class="card-body Blk-Trslcnt-Bg pl-0 pr-0" id="CommentBox">
 
-        <div class="card comment" id="ClonableComment">
+        <div class="card m-2 comment" id="ClonableComment">
             <div class="card-header text p-0 row m-0">
                 <div class="col-2 col-sm-1 p-0"><img src="#" class="Avatar img-thumbnail" /></div>
                 <div class="col-5 col-sm-7 UserName"></div>
@@ -37,9 +37,9 @@
             </div>
         </div>
 
-        @foreach (var comment in Model.Product.Comments.OrderByDescending(c=>c.CreationTime))
+        @foreach (var comment in Model.Product.Comments.OrderByDescending(c => c.CreationTime))
         {
-            <div class="card comment" id="@comment.CommentID">
+            <div class="card m-2 comment" id="@comment.CommentID">
                 <div class="card-header text p-0 row m-0">
                     <div class="col-2 col-sm-1 p-0"><img src="@comment.User.AvatarUrl" class="Avatar img-thumbnail" /></div>
                     @{
@@ -47,7 +47,7 @@
                         var rolesHtml = "";
                         foreach (var role in roles)
                         {
-                            rolesHtml += $"<span class='badge badge-dark'>{role}</span>";
+                            rolesHtml += $"<span class='badge badge-dark'>{Localizer[role].Value}</span>";
                         }
                     }
                     <div class="col-5 col-sm-7 UserName">@comment.User.UserName @Html.Raw(rolesHtml)</div>

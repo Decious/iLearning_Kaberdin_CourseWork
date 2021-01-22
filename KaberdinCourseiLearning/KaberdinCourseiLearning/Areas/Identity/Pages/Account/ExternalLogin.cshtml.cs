@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using KaberdinCourseiLearning.Data.Models;
+using Microsoft.Extensions.Localization;
+using KaberdinCourseiLearning.Resources;
 
 namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
 {
@@ -16,15 +18,18 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
         private readonly SignInManager<CustomUser> signInManager;
         private readonly UserManager<CustomUser> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
+        private readonly IStringLocalizer<ExternalLoginModel> localizer;
 
         public ExternalLoginModel(
             SignInManager<CustomUser> signInManager,
             UserManager<CustomUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            IStringLocalizer<ExternalLoginModel> localizer)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.logger = logger;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -39,11 +44,12 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessageResourceType =typeof(ValidationResource),ErrorMessageResourceName = "EmailRequired")]
+            [EmailAddress(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = "EmailInvalid")]
+            [Display(ResourceType = typeof(ValidationResource), Prompt = "EmailPrompt")]
             public string Email { get; set; }
-            [Required]
-            [Display(Prompt ="User name")]
+            [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = "NameRequired")]
+            [Display(ResourceType = typeof(ValidationResource),Prompt ="NamePrompt")]
             public string Name { get; set; }
         }
 
@@ -65,13 +71,13 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
             {
-                ErrorMessage = $"Error from external provider: {remoteError}";
+                ErrorMessage = localizer["Error from external provider: ", remoteError];
                 return RedirectToPage("./Login", new {ReturnUrl = returnUrl });
             }
             var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                ErrorMessage = "Error loading external login information.";
+                ErrorMessage = localizer["Error loading external login information."];
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
@@ -110,7 +116,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
             var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                ErrorMessage = "Error loading external login information during confirmation.";
+                ErrorMessage = localizer["Error loading external login information during confirmation."];
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 

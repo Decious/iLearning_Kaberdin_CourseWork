@@ -1,8 +1,9 @@
 ﻿@using KaberdinCourseiLearning.Data.Models;
 @inject SignInManager<CustomUser> SignInManager
+@inject IViewLocalizer Localizer
 
 <ul class="nav nav-pills flex-column" id="Plan">
-    <li class="btn btn-primary" id="PlanCollection">Collection</li>
-    <li class="btn" id="PlanItems">Items</li>
-    <li class="btn" id="PlanPublish">Publish</li>
+    <li class="btn btn-primary" id="PlanCollection">@Localizer["Collection"]</li>
+    <li class="btn" id="PlanItems">@Localizer["Items"]</li>
+    <li class="btn" id="PlanPublish">@Localizer["Publish"]</li>
 </ul>

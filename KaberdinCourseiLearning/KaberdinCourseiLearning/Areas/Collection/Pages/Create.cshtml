@@ -1,27 +1,28 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.Collection.Pages.CreateModel
+@inject IViewLocalizer Localizer
 @{
 }
 @Html.AntiForgeryToken()
 <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
 @if (Model.isEdit)
 {
-    <h2>@Model.Collection.Name update</h2>
+    <h2>@Model.Collection.Name @Localizer["update"]</h2>
 }
 else
 {
-    <h2>Collection creation</h2>
+    <h2>@Localizer["Collection creation"]</h2>
 }
 
 
 <div>
     @if (Model.isEdit)
     {
-        <h2>Edit your collection</h2>
+        <h2>@Localizer["Edit your collection"]</h2>
     }
     else
     {
-        <h4>Create your collection</h4>
+        <h4>@Localizer["Create your collection"]</h4>
     }
     <hr />
     <div class="row">
@@ -41,11 +42,11 @@ else
                 <div class="row" name="PlanItem">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="Name">Name</label>
-                            <input id="Name" class="form-control" value="@Model.Collection.Name" />
+                            <label for="Name">@Localizer["Name"]</label>
+                            <input id="Name" class="form-control" value="@Model.Collection.Name" placeholder="@Localizer["Name"]" />
                         </div>
                         <div class="form-group">
-                            <label for="Theme">Theme</label>
+                            <label for="Theme">@Localizer["Theme"]</label>
                             <select id="Theme" class="form-control">
                                 @foreach (var theme in Model.Themes)
                                 {
@@ -61,11 +62,11 @@ else
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="Description">Description</label>
-                            <textarea id="Description" class="form-control" style="resize:none;">@Model.Collection.Description</textarea>
+                            <label for="Description">@Localizer["Description"]</label>
+                            <textarea id="Description" class="form-control" style="resize:none;" placeholder="@Localizer["Description"]">@Model.Collection.Description</textarea>
                         </div>
                         <div class="form-group">
-                            <label>Background Image</label>
+                            <label>@Localizer["Background Image"]</label>
                             <div id="backgroundImageDz" class="dropzone">
                             </div>
                         </div>
@@ -73,22 +74,22 @@ else
                 </div>
                 <div class="row d-none" name="PlanItem">
                     <div class="col-md-6">
-                        <h4>Add fields to items in this collection.</h4>
-                        <h5 class="col-5 p-0 d-inline-block text-center font-weight-bold">Name</h5>
-                        <h5 class="col-6 p-0 d-inline-block text-center font-weight-bold">Type</h5>
+                        <h4>@Localizer["Add fields to items in this collection."]</h4>
+                        <h5 class="col-5 p-0 d-inline-block text-center font-weight-bold">@Localizer["Name"]</h5>
+                        <h5 class="col-6 p-0 d-inline-block text-center font-weight-bold">@Localizer["Type"]</h5>
                         <div id="Items">
 
                             <div class="form-group d-none" name="Item" id="clonableItem">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6">
-                                            <input name="PlaceholderName" class="form-control" />
+                                            <input name="PlaceholderName" class="form-control" placeholder="@Localizer["Name"]"/>
                                         </div>
                                         <div class="col-5">
                                             <select name="PlaceholderType" class="form-control">
                                                 @foreach (var type in Model.Types)
                                                 {
-                                                    <option value="@type.TypeID">@type.TypeName</option>
+                                                    <option value="@type.TypeID">@Localizer[type.TypeName]</option>
                                                 }
                                             </select>
                                         </div>
@@ -102,7 +103,7 @@ else
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-6">
-                                                <input name="ColumnName" class="form-control" value="@item.ColumnName" />
+                                                <input name="ColumnName" class="form-control" value="@item.ColumnName" placeholder="@Localizer["Name"]"/>
                                             </div>
                                             <div class="col-5">
                                                 <select name="ColumnType" class="form-control">
@@ -110,11 +111,11 @@ else
                                                     {
                                                         if (type.TypeID == item.TypeID)
                                                         {
-                                                            <option selected value="@type.TypeID">@type.TypeName</option>
+                                                            <option selected value="@type.TypeID">@Localizer[type.TypeName]</option>
                                                         }
                                                         else
                                                         {
-                                                            <option value="@type.TypeID">@type.TypeName</option>
+                                                            <option value="@type.TypeID">@Localizer[type.TypeName]</option>
                                                         }
                                                     }
                                                 </select>
@@ -125,19 +126,19 @@ else
                                 </div>
                             }
                         </div>
-                        <button id="ItemAdd" class="btn btn-primary m-2"><i class="fa fa-plus-square"></i> Add item field</button>
+                        <button id="ItemAdd" class="btn btn-primary mb-2"><i class="fa fa-plus-square"></i> @Localizer["Add item field"]</button>
                     </div>
                 </div>
                 <div class="row d-none" name="PlanItem">
                     <div class="col-md-6">
-                        <h4>Publish your changes!</h4>
+                        <h4>@Localizer["Publish your changes!"]</h4>
                         <ul id="PublishInfo">
                         </ul>
                     </div>
                 </div>
-                <button id="Previous" onclick="return onPrev()" class="btn btn-primary disabled">Previous</button>
-                <button id="Next" onclick="return onNext()" class="btn btn-primary">Next</button>
-                <button id="SubmitBtn" class="btn btn-primary d-none">Publish!</button>
+                <button id="Previous" onclick="return onPrev()" class="btn btn-primary disabled">@Localizer["Previous"]</button>
+                <button id="Next" onclick="return onNext()" class="btn btn-primary">@Localizer["Next"]</button>
+                <button id="SubmitBtn" class="btn btn-primary d-none">@Localizer["Publish!"]</button>
             </div>
         </div>
     </div>

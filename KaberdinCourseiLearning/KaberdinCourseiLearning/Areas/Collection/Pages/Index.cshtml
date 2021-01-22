@@ -1,7 +1,7 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.Collection.Pages.IndexModel;
 @using KaberdinCourseiLearning.Pages.Partials.Models;
-@using KaberdinCourseiLearning.Managers;
+@inject IViewLocalizer Localizer
 @{
     var collectionModel = new CollectionModel() { Collection = Model.Collection, PermittedToChange = Model.PermittedToChange };
 }
@@ -13,16 +13,16 @@
 <div id="products">
     @if (Model.PermittedToChange)
     {
-        <a class="btn btn-outline-primary m-2" asp-area="Item" asp-page="Create" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fa fa-plus-square"></i> Add product</a>
+        <a class="btn btn-outline-primary m-2" asp-area="Item" asp-page="Create" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fa fa-plus-square"></i> @Localizer["Add product"]</a>
     }
-    <input class="search d-inline-block form-control" style="width:12rem;" placeholder="Search" />
+    <input class="search d-inline-block form-control" style="width:12rem;" placeholder="@Localizer["Search"]" />
     <table class="table table-sm table-responsive-sm table-hover table-borderless table-active">
         <thead>
             <tr class="text-center">
                 <th class="sort hoverable" data-sort="ID" scope="col">ID</th>
-                <th class="sort hoverable" data-sort="Name" scope="col">Name</th>
-                <th class="sort hoverable" data-sort="Tags" scope="col">Tags</th>
-                @foreach (var column in Model.Collection.Columns.OrderBy(c=>c.ColumnID))
+                <th class="sort hoverable" data-sort="Name" scope="col">@Localizer["Name"]</th>
+                <th class="sort hoverable" data-sort="Tags" scope="col">@Localizer["Tags"]</th>
+                @foreach (var column in Model.Collection.Columns.OrderBy(c => c.ColumnID))
                 {
                     <th class="sort hoverable" data-sort="@column.ColumnName" name="ColumnName" scope="col">@column.ColumnName</th>
                 }
