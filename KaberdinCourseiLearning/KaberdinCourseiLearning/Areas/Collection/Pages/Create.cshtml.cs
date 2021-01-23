@@ -54,6 +54,7 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
                 Collection = await context.ProductCollections
                     .Where(c => c.CollectionID == id)
                     .Include(c => c.Columns)
+                    .Include(c=>c.User)
                     .FirstOrDefaultAsync();
                 PageUser = Collection?.User;
                 isEdit = true;
