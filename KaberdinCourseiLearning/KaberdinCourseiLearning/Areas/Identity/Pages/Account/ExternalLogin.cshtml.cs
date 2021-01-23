@@ -44,12 +44,12 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required(ErrorMessageResourceType =typeof(ValidationResource),ErrorMessageResourceName = "EmailRequired")]
-            [EmailAddress(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = "EmailInvalid")]
-            [Display(ResourceType = typeof(ValidationResource), Prompt = "EmailPrompt")]
+            [Required(ErrorMessageResourceType =typeof(ValidationResource),ErrorMessageResourceName = nameof(ValidationResource.EmailRequired))]
+            [EmailAddress(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.EmailInvalid))]
+            [Display(ResourceType = typeof(ValidationResource), Prompt = nameof(ValidationResource.EmailPrompt),Name = nameof(ValidationResource.EmailPrompt))]
             public string Email { get; set; }
-            [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = "NameRequired")]
-            [Display(ResourceType = typeof(ValidationResource),Prompt ="NamePrompt")]
+            [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.NameRequired))]
+            [Display(ResourceType = typeof(ValidationResource),Prompt = nameof(ValidationResource.NamePrompt),Name = nameof(ValidationResource.NamePrompt))]
             public string Name { get; set; }
         }
 

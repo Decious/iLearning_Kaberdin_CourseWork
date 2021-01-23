@@ -184,6 +184,6 @@
     <value>Блокировка пользователя отключена.</value>
   </data>
   <data name="UserNotInRole" xml:space="preserve">
-    <value>Пользователь должен иметь роль: {0}</value>
+    <value>Пользователь должен иметь роль: {0}.</value>
   </data>
 </root>

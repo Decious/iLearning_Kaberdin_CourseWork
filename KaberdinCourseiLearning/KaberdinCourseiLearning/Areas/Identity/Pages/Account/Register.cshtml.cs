@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data.Models;
+using KaberdinCourseiLearning.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,24 +35,24 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
-            [Display(Name = "Username")]
+            [Required(ErrorMessageResourceType =typeof(ValidationResource),ErrorMessageResourceName =nameof(ValidationResource.NameRequired))]
+            [StringLength(50, ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.The_must_be_at_least_and_at_max_characters_long_), MinimumLength = 4)]
+            [Display(ResourceType =typeof(ValidationResource),Name =nameof(ValidationResource.NamePrompt), Prompt = nameof(ValidationResource.NamePrompt))]
             public string UserName { get; set; }
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.EmailRequired))]
+            [EmailAddress(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.EmailInvalid))]
+            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.EmailPrompt), Prompt = nameof(ValidationResource.EmailPrompt))]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.PasswordRequired))]
+            [StringLength(100,ErrorMessageResourceType =typeof(ValidationResource),ErrorMessageResourceName =nameof(ValidationResource.The_must_be_at_least_and_at_max_characters_long_), MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.Password), Prompt = nameof(ValidationResource.Password))]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.PasswordConfirm), Prompt = nameof(ValidationResource.PasswordConfirm))]
+            [Compare("Password", ErrorMessageResourceType = typeof(ValidationResource),ErrorMessageResourceName =nameof(ValidationResource.PasswordConfirmFailed))]
             public string ConfirmPassword { get; set; }
         }
 

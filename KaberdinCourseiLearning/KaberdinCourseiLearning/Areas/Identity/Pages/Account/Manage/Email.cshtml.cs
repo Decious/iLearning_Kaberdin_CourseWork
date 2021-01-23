@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using KaberdinCourseiLearning.Data.Models;
+using KaberdinCourseiLearning.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
 {
@@ -20,15 +22,18 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<CustomUser> userManager;
         private readonly SignInManager<CustomUser> signInManager;
         private readonly IEmailSender emailSender;
+        private readonly IStringLocalizer<EmailModel> localizer;
 
         public EmailModel(
             UserManager<CustomUser> userManager,
             SignInManager<CustomUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<EmailModel> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
+            this.localizer = localizer;
         }
 
         public string Username { get; set; }
@@ -45,9 +50,9 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "New email")]
+            [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.EmailRequired))]
+            [EmailAddress(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.EmailInvalid))]
+            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.NewEmailPrompt), Prompt = nameof(ValidationResource.NewEmailPrompt))]
             public string NewEmail { get; set; }
         }
 
@@ -69,7 +74,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                return NotFound(localizer["Unable to load user with ID.", userManager.GetUserId(User)]);
             }
 
             await LoadAsync(user);
@@ -81,7 +86,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                return NotFound(localizer["Unable to load user with ID.", userManager.GetUserId(User)]);
             }
 
             if (!ModelState.IsValid)
@@ -102,14 +107,14 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    localizer["EmailSubject"],
+                    localizer["EmailMessage", HtmlEncoder.Default.Encode(callbackUrl)]);
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = localizer["Confirmation link to change email sent. Please check your email."];
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = localizer["Your email is unchanged."];
             return RedirectToPage();
         }
 
@@ -118,7 +123,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                return NotFound(localizer["Unable to load user with ID.", userManager.GetUserId(User)]);
             }
 
             if (!ModelState.IsValid)
@@ -138,10 +143,10 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                localizer["EmailSubject"],
+                localizer["EmailMessage", HtmlEncoder.Default.Encode(callbackUrl)]);
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = localizer["Verification email sent. Please check your email."];
             return RedirectToPage();
         }
     }

@@ -117,52 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailInvalid" xml:space="preserve">
-    <value>Поле адреса почты содержит ошибки.</value>
+  <data name="Register" xml:space="preserve">
+    <value>Зарегистрироваться</value>
   </data>
-  <data name="EmailPrompt" xml:space="preserve">
-    <value>Почтовый адрес</value>
+  <data name="Use another service to register." xml:space="preserve">
+    <value>Использовать внешний сервис для регистрации.</value>
   </data>
-  <data name="EmailRequired" xml:space="preserve">
-    <value>Поле адреса почты обязателен для заполнения.</value>
+  <data name="Log in using account" xml:space="preserve">
+    <value>Вход используя аккаунт {0}</value>
   </data>
-  <data name="NamePrompt" xml:space="preserve">
-    <value>Логин</value>
-  </data>
-  <data name="NameRequired" xml:space="preserve">
-    <value>Поле логин обязателен для заполнения.</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Пароль</value>
-  </data>
-  <data name="PasswordConfirm" xml:space="preserve">
-    <value>Повторите пароль.</value>
-  </data>
-  <data name="PasswordConfirmFailed" xml:space="preserve">
-    <value>Пароли не совпадают.</value>
-  </data>
-  <data name="PasswordRequired" xml:space="preserve">
-    <value>Поле пароль обязателен для заполнения.</value>
-  </data>
-  <data name="Remember me?" xml:space="preserve">
-    <value>Запомнить?</value>
-  </data>
-  <data name="The must be at least and at max characters long." xml:space="preserve">
-    <value>Значение поля {0} должно быть как минимум {2} или как максимум {1} символов в длину.</value>
-  </data>
-  <data name="CurrentPassword" xml:space="preserve">
-    <value>Текущий пароль</value>
-  </data>
-  <data name="NewEmailPrompt" xml:space="preserve">
-    <value>Новая почта</value>
-  </data>
-  <data name="NewPassword" xml:space="preserve">
-    <value>Новый пароль</value>
-  </data>
-  <data name="PhoneInvalid" xml:space="preserve">
-    <value>Номер телефона введен неверно.</value>
-  </data>
-  <data name="PhonePrompt" xml:space="preserve">
-    <value>Номер телефона</value>
+  <data name="Create a new account." xml:space="preserve">
+    <value>Создайте новый аккаунт.</value>
   </data>
 </root>

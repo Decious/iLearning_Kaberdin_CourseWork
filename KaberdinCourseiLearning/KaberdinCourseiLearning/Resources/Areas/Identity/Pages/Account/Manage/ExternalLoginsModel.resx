@@ -117,52 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailInvalid" xml:space="preserve">
-    <value>Поле адреса почты содержит ошибки.</value>
+  <data name="The external login was added." xml:space="preserve">
+    <value>The external login was added.</value>
   </data>
-  <data name="EmailPrompt" xml:space="preserve">
-    <value>Почтовый адрес</value>
+  <data name="The external login was not added. External logins can only be associated with one account." xml:space="preserve">
+    <value>The external login was not added. External logins can only be associated with one account.</value>
   </data>
-  <data name="EmailRequired" xml:space="preserve">
-    <value>Поле адреса почты обязателен для заполнения.</value>
+  <data name="The external login was not removed." xml:space="preserve">
+    <value>The external login was not removed.</value>
   </data>
-  <data name="NamePrompt" xml:space="preserve">
-    <value>Логин</value>
+  <data name="The external login was removed." xml:space="preserve">
+    <value>The external login was removed.</value>
   </data>
-  <data name="NameRequired" xml:space="preserve">
-    <value>Поле логин обязателен для заполнения.</value>
+  <data name="Unable to load user with ID." xml:space="preserve">
+    <value>Unable to load user with ID.</value>
   </data>
-  <data name="Password" xml:space="preserve">
-    <value>Пароль</value>
-  </data>
-  <data name="PasswordConfirm" xml:space="preserve">
-    <value>Повторите пароль.</value>
-  </data>
-  <data name="PasswordConfirmFailed" xml:space="preserve">
-    <value>Пароли не совпадают.</value>
-  </data>
-  <data name="PasswordRequired" xml:space="preserve">
-    <value>Поле пароль обязателен для заполнения.</value>
-  </data>
-  <data name="Remember me?" xml:space="preserve">
-    <value>Запомнить?</value>
-  </data>
-  <data name="The must be at least and at max characters long." xml:space="preserve">
-    <value>Значение поля {0} должно быть как минимум {2} или как максимум {1} символов в длину.</value>
-  </data>
-  <data name="CurrentPassword" xml:space="preserve">
-    <value>Текущий пароль</value>
-  </data>
-  <data name="NewEmailPrompt" xml:space="preserve">
-    <value>Новая почта</value>
-  </data>
-  <data name="NewPassword" xml:space="preserve">
-    <value>Новый пароль</value>
-  </data>
-  <data name="PhoneInvalid" xml:space="preserve">
-    <value>Номер телефона введен неверно.</value>
-  </data>
-  <data name="PhonePrompt" xml:space="preserve">
-    <value>Номер телефона</value>
+  <data name="Unexpected error occurred loading external login info for user with ID." xml:space="preserve">
+    <value>Unexpected error occurred loading external login info for user with ID '{0}'.</value>
   </data>
 </root>

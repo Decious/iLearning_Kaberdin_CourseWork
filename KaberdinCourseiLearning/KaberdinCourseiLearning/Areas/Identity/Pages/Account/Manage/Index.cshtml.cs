@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using KaberdinCourseiLearning.Data.Models;
+using KaberdinCourseiLearning.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
 {
@@ -11,13 +13,16 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<CustomUser> userManager;
         private readonly SignInManager<CustomUser> signInManager;
+        private readonly IStringLocalizer<IndexModel> localizer;
 
         public IndexModel(
             UserManager<CustomUser> userManager,
-            SignInManager<CustomUser> signInManager)
+            SignInManager<CustomUser> signInManager,
+            IStringLocalizer<IndexModel> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.localizer = localizer;
         }
         [TempData]
         public string StatusMessage { get; set; }
@@ -27,10 +32,12 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Display(Name ="Username")]
+            [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.NameRequired))]
+            [StringLength(50, ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.The_must_be_at_least_and_at_max_characters_long_), MinimumLength = 4)]
+            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.NamePrompt), Prompt = nameof(ValidationResource.NamePrompt))]
             public string Username { get; set; }
-            [Phone]
-            [Display(Name = "Phone number")]
+            [Phone(ErrorMessageResourceType = typeof(ValidationResource),ErrorMessageResourceName = nameof(ValidationResource.PhoneInvalid))]
+            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.PhonePrompt), Prompt = nameof(ValidationResource.PhonePrompt))]
             public string PhoneNumber { get; set; }
         }
 
@@ -51,7 +58,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                return NotFound(localizer["Unable to load user with ID.", userManager.GetUserId(User)]);
             }
 
             await LoadAsync(user);
@@ -63,7 +70,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                return NotFound(localizer["Unable to load user with ID.", userManager.GetUserId(User)]);
             }
 
             if (!ModelState.IsValid)
@@ -78,7 +85,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = localizer["Unexpected error when trying to set phone number."];
                     return RedirectToPage();
                 }
             }
@@ -88,13 +95,13 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
                 var setUserName = await userManager.SetUserNameAsync(user, Input.Username);
                 if (!setUserName.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set Username.";
+                    StatusMessage = localizer["Unexpected error when trying to set Username."];
                     return RedirectToPage();
                 }
             }
 
             await signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = localizer["Your profile has been updated"];
             return RedirectToPage();
         }
     }

@@ -61,6 +61,15 @@ namespace KaberdinCourseiLearning.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current password.
+        /// </summary>
+        public static string CurrentPassword {
+            get {
+                return ResourceManager.GetString("CurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email is invalid..
         /// </summary>
         public static string EmailInvalid {
@@ -102,6 +111,96 @@ namespace KaberdinCourseiLearning.Resources {
         public static string NameRequired {
             get {
                 return ResourceManager.GetString("NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New email.
+        /// </summary>
+        public static string NewEmailPrompt {
+            get {
+                return ResourceManager.GetString("NewEmailPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New password.
+        /// </summary>
+        public static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm your password..
+        /// </summary>
+        public static string PasswordConfirm {
+            get {
+                return ResourceManager.GetString("PasswordConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password and confirmation password do not match..
+        /// </summary>
+        public static string PasswordConfirmFailed {
+            get {
+                return ResourceManager.GetString("PasswordConfirmFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password field is required..
+        /// </summary>
+        public static string PasswordRequired {
+            get {
+                return ResourceManager.GetString("PasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number is invalid..
+        /// </summary>
+        public static string PhoneInvalid {
+            get {
+                return ResourceManager.GetString("PhoneInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number.
+        /// </summary>
+        public static string PhonePrompt {
+            get {
+                return ResourceManager.GetString("PhonePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember me?.
+        /// </summary>
+        public static string Remember_me_ {
+            get {
+                return ResourceManager.GetString("Remember me?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} must be at least {2} and at max {1} characters long..
+        /// </summary>
+        public static string The_must_be_at_least_and_at_max_characters_long_ {
+            get {
+                return ResourceManager.GetString("The must be at least and at max characters long.", resourceCulture);
             }
         }
     }

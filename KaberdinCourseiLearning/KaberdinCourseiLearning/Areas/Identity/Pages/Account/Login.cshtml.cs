@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using KaberdinCourseiLearning.Data.Models;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.Localization;
+using KaberdinCourseiLearning.Resources;
 
 namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
 {
@@ -22,14 +25,17 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
         private readonly UserManager<CustomUser> userManager;
         private readonly SignInManager<CustomUser> signInManager;
         private readonly ILogger<LoginModel> logger;
+        private readonly IStringLocalizer<LoginModel> localizer;
 
         public LoginModel(SignInManager<CustomUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<CustomUser> userManager)
+            UserManager<CustomUser> userManager,
+            IStringLocalizer<LoginModel> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -45,14 +51,15 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [Display(Name ="Username")]
+            [Display(ResourceType =typeof(ValidationResource),Prompt = nameof(ValidationResource.NamePrompt), Name = nameof(ValidationResource.NamePrompt))]
             public string UserName { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(ResourceType = typeof(ValidationResource), Prompt = nameof(ValidationResource.Password), Name = nameof(ValidationResource.Password))]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.Remember_me_))]
             public bool RememberMe { get; set; }
         }
 
@@ -96,7 +103,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, localizer["Invalid login attempt."]);
                     return Page();
                 }
             }

@@ -9,25 +9,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
+
 namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
 {
-    public class ChangePasswordModel : PageModel
+    public class SetPasswordModel : PageModel
     {
         private readonly UserManager<CustomUser> userManager;
         private readonly SignInManager<CustomUser> signInManager;
-        private readonly ILogger<ChangePasswordModel> logger;
-        private readonly IStringLocalizer<ChangePasswordModel> localizer;
+        private readonly IStringLocalizer<SetPasswordModel> localizer;
 
-        public ChangePasswordModel(
+        public SetPasswordModel(
             UserManager<CustomUser> userManager,
             SignInManager<CustomUser> signInManager,
-            ILogger<ChangePasswordModel> logger,
-            IStringLocalizer<ChangePasswordModel> localizer)
+            IStringLocalizer<SetPasswordModel> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.logger = logger;
             this.localizer = localizer;
         }
 
@@ -39,11 +36,6 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(ResourceType = typeof(ValidationResource), Name = nameof(ValidationResource.Password), Prompt = nameof(ValidationResource.CurrentPassword))]
-            public string OldPassword { get; set; }
-
             [Required(ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.PasswordRequired))]
             [StringLength(100, ErrorMessageResourceType = typeof(ValidationResource), ErrorMessageResourceName = nameof(ValidationResource.The_must_be_at_least_and_at_max_characters_long_), MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -65,9 +57,10 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
             }
 
             var hasPassword = await userManager.HasPasswordAsync(user);
-            if (!hasPassword)
+
+            if (hasPassword)
             {
-                return RedirectToPage("./SetPassword");
+                return RedirectToPage("./ChangePassword");
             }
 
             return Page();
@@ -86,10 +79,10 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
                 return NotFound(localizer["Unable to load user with ID.", userManager.GetUserId(User)]);
             }
 
-            var changePasswordResult = await userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
-            if (!changePasswordResult.Succeeded)
+            var addPasswordResult = await userManager.AddPasswordAsync(user, Input.NewPassword);
+            if (!addPasswordResult.Succeeded)
             {
-                foreach (var error in changePasswordResult.Errors)
+                foreach (var error in addPasswordResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -97,8 +90,7 @@ namespace KaberdinCourseiLearning.Areas.Identity.Pages.Account.Manage
             }
 
             await signInManager.RefreshSignInAsync(user);
-            logger.LogInformation("User changed their password successfully.");
-            StatusMessage = localizer["Your password has been changed."];
+            StatusMessage = localizer["Your password has been set."];
 
             return RedirectToPage();
         }
