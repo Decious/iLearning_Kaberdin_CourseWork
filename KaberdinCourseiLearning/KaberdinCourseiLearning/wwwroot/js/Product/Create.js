@@ -53,18 +53,18 @@ function getColumnValues() {
 
 function sendCreateRequest() {
     let data = { name: name, tags: tags, columnValues: columnValues, collectionID: +collectionID };
-    sendRequest(data, "CreateProduct");
+    sendRequest(data, "Create");
 }
 function sendEditRequest() {
     let data = { name: name, tags: tags, columnValues: columnValues, productID: +productID };
-    sendRequest(data, "EditProduct");
+    sendRequest(data, "Edit");
 }
 function sendRequest(data, handler) {
     let json = JSON.stringify(data);
     $.ajax({
         method: "post",
         contentType: "application/json",
-        url: "/Item/Create?handler=" + handler,
+        url: "/Item/Manage/" + handler,
         data: json,
         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
         success: function (data, status, jqXHR) {

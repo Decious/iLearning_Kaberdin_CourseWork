@@ -2,6 +2,7 @@
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Data.ProductRequests;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,12 @@ namespace KaberdinCourseiLearning.Managers
     public class ProductManager
     {
         private ApplicationDbContext context;
-        public ProductManager(ApplicationDbContext context)
+        private IStringLocalizer<ProductManager> localizer;
+
+        public ProductManager(ApplicationDbContext context,IStringLocalizer<ProductManager> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         public async Task<Product> GetProductAsync(int productID) => await context.Products.FindAsync(productID);
@@ -27,12 +31,12 @@ namespace KaberdinCourseiLearning.Managers
         public async Task<ServerResponse> EditProductAsync(ProductEditRequest request)
         {
             var product = context.Products.Find(request.ProductID);
-            if (product == null) return new ServerResponse(false, "Item does not exist.");
+            if (product == null) return new ServerResponse(false, localizer["Item does not exist."]);
             await UpdateColumnValuesAsync(request.ColumnValues);
             await ChangeProductTagsAsync(request.Tags, product);
             product.Name = request.Name;
             await context.SaveChangesAsync();
-            return new ServerResponse(true, "Item successfully updated!", "/Item?id=" + product.ProductID);
+            return new ServerResponse(true, localizer["Item successfully updated!"], "/Item?id=" + product.ProductID);
         }
         private async Task UpdateColumnValuesAsync(IEnumerable<ProductColumnValue> columnValues)
         {
@@ -57,7 +61,7 @@ namespace KaberdinCourseiLearning.Managers
             await context.SaveChangesAsync();
             await AddColumnValuesAsync(request.ColumnValues, newProduct.ProductID);
             await ChangeProductTagsAsync(request.Tags, newProduct);
-            return new ServerResponse(true, "Successfully created product.", "/Item?id=" + newProduct.ProductID);
+            return new ServerResponse(true, localizer["Successfully created product."], "/Item?id=" + newProduct.ProductID);
         }
         private async Task AddColumnValuesAsync(IEnumerable<ProductColumnValue> columnValues,int productID)
         {

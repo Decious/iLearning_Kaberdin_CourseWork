@@ -15,13 +15,11 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
     [Authorize(PolicyNames.POLICY_AUTHENTICATED)]
     public class CreateModel : PageModel
     {
-        private ProductManager productManager;
         private CustomUserManager userManager;
         private ApplicationDbContext context;
 
-        public CreateModel(ApplicationDbContext context,ProductManager productManager,CustomUserManager userManager)
+        public CreateModel(ApplicationDbContext context,CustomUserManager userManager)
         {
-            this.productManager = productManager;
             this.userManager = userManager;
             this.context = context;
         }
@@ -88,28 +86,6 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
                 tagValues.Add(obj.TagValue);
             }
             Tags = string.Join(",", tagValues);
-        }
-        public async Task<IActionResult> OnPostCreateProduct([FromBody] ProductCreateRequest request)
-        {
-            if (request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
-            Collection = await context.ProductCollections.Where(c => c.CollectionID == request.CollectionID).Include(c => c.User).FirstOrDefaultAsync();
-            if (Collection == null) return new JsonResult(new ServerResponse(false, "Collection no longer exists."));
-            if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to create products for this collection.", "/Collection?collectionID=" + request.CollectionID));
-            
-            var response = await productManager.CreateProductAsync(request);
-            return new JsonResult(response);
-        }
-        public async Task<IActionResult> OnPostEditProduct([FromBody] ProductEditRequest request)
-        {
-            if (request == null) return new JsonResult(new ServerResponse(false, "Request invalid."));
-            Product = await context.Products.FindAsync(request.ProductID);
-            if (Product == null) return new JsonResult(new ServerResponse(false, "Item no longer exists."));
-            Collection = await context.ProductCollections.Where(c => c.CollectionID == Product.CollectionID).Include(c => c.User).FirstOrDefaultAsync();
-            if (Collection == null) return new JsonResult(new ServerResponse(false, "Collection no longer exists."));
-            if (!await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName)) return new JsonResult(new ServerResponse(false, "You dont have permission to edit this product.", "/Item?id=" + request.ProductID));
-            
-            var response = await productManager.EditProductAsync(request);
-            return new JsonResult(response);
         }
     }
 }

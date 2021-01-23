@@ -19,7 +19,7 @@ likeBtn.on('click', function () {
     var id = $(this).closest("[name='Item']").attr('id');
     $.ajax({
         method: "post",
-        url: "/Item?handler=LikeProduct",
+        url: "/Item/Manage/Like",
         data: { id: +id },
         global: false,
         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }
@@ -52,7 +52,7 @@ $("#DeleteBtn").on('click', function () {
     var id = $(this).closest("[name='Item']").attr('id');
     $.ajax({
         method: "post",
-        url: "/Item?handler=DeleteProduct",
+        url: "/Item/Manage/Delete",
         data: { id: +id },
         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
         success: function (data, status, jqXHR) {

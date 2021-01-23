@@ -16,13 +16,11 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
     public class IndexModel : PageModel
     {
         private ApplicationDbContext context;
-        private ProductManager productManager;
         private CustomUserManager userManager;
 
-        public IndexModel(ApplicationDbContext context,ProductManager productManager,CustomUserManager userManager)
+        public IndexModel(ApplicationDbContext context,CustomUserManager userManager)
         {
             this.context = context;
-            this.productManager = productManager;
             this.userManager = userManager;
         }
         public Product Product { get; set; }
@@ -53,39 +51,6 @@ namespace KaberdinCourseiLearning.Areas.Item.Pages
                 isLiked = liked
             };
             return Page();
-        }
-        public async Task<JsonResult> OnPostDeleteProduct(int id)
-        {
-            Product = await context.Products
-                .Where(p => p.ProductID == id)
-                .Include(p => p.Collection)
-                .ThenInclude(c => c.User)
-                .FirstOrDefaultAsync();
-            if (Product == null) return new JsonResult(new ServerResponse(false,"Product doesnt exist","/"));
-            PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Product.Collection.User.UserName);
-            if (PermittedToChange)
-            {
-                var coll_ID = Product.CollectionID;
-                await productManager.DeleteProductAsync(id);
-                return new JsonResult(new ServerResponse(true,"Product successfully deleted.","/Collection?id="+ coll_ID));
-            }
-            return new JsonResult(ServerResponse.MakeForbidden());
-        }
-        public async Task<JsonResult> OnPostLikeProduct(int id)
-        {
-            Product = await context.Products.FindAsync(id);
-            GuestUser = await userManager.GetUserAsync(User);
-            if(Product != null && GuestUser != null)
-            {
-                var like = await context.Likes.Where(l => l.ProductID == id && l.UserID == GuestUser.Id).FirstOrDefaultAsync();
-                if (like == null)
-                    context.Likes.Add(new Like() { ProductID = id, UserID = GuestUser.Id });
-                else
-                    context.Likes.Remove(like);
-                await context.SaveChangesAsync();
-                return new JsonResult(ServerResponse.MakeSuccess());
-            }
-            return new JsonResult(ServerResponse.MakeForbidden());
         }
     }
 }
