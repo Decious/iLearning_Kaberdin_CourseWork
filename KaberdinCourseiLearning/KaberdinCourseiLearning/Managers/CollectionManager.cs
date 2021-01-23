@@ -2,6 +2,7 @@
 using KaberdinCourseiLearning.Data.CollectionRequests;
 using KaberdinCourseiLearning.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,23 +11,26 @@ namespace KaberdinCourseiLearning.Managers
     public class CollectionManager
     {
         private ApplicationDbContext context;
-        public CollectionManager(ApplicationDbContext context)
+        private IStringLocalizer<CollectionManager> localizer;
+
+        public CollectionManager(ApplicationDbContext context,IStringLocalizer<CollectionManager> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
         public async Task<ServerResponse> EditCollectionAsync(EditCollectionRequest request)
         {
             var collection = await context.ProductCollections
                              .Where(c => c.CollectionID == request.CollectionID)
                              .Include(c => c.Columns).FirstOrDefaultAsync();
-            if (collection == null) return new ServerResponse(false, "No such collection found! Maybe collection got deleted?");
+            if (collection == null) return new ServerResponse(false, localizer["NoCollectionError"]);
             var theme = await context.Themes.FindAsync(request.ThemeID);
-            if (theme == null) return new ServerResponse(false, "No such theme found! Maybe theme got deleted?");
+            if (theme == null) return new ServerResponse(false, localizer["NoThemeError"]);
             DeleteColumns(request.DeletedColumns);
             UpdateCollection(collection, request, theme);
             UpdateColumns(collection, request);
             await context.SaveChangesAsync();
-            return new ServerResponse(true, "Collection successfully updated!", "/Collection?id=" + collection.CollectionID);
+            return new ServerResponse(true, localizer["UpdateSuccess"], "/Collection?id=" + collection.CollectionID);
         }
         private void DeleteColumns(int[] columnIDs)
         {
@@ -63,11 +67,11 @@ namespace KaberdinCourseiLearning.Managers
         public async Task<ServerResponse> CreateCollectionAsync(CreateCollectionRequest request)
         {
             var theme = await context.Themes.FindAsync(request.ThemeID);
-            if (theme == null) return new ServerResponse(false, "No such theme found! Maybe theme got deleted?");
+            if (theme == null) return new ServerResponse(false, localizer["NoThemeError"]);
             var user = await context.Users.Where(u => u.UserName == request.PageUserName).FirstOrDefaultAsync();
-            if (user == null) return new ServerResponse(false, "No such user found! Maybe user got deleted?");
+            if (user == null) return new ServerResponse(false, localizer["NoUserError"]);
             var id = await SaveCollection(request,theme,user.Id);
-            return new ServerResponse(true, "Successfully created collection", "/Collection?id=" + id);
+            return new ServerResponse(true, localizer["CreateSuccess"], "/Collection?id=" + id);
         }
         private async Task<int> SaveCollection(CreateCollectionRequest request, ProductCollectionTheme theme,string userID)
         {

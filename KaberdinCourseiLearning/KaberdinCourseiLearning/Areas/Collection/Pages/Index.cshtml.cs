@@ -42,20 +42,5 @@ namespace KaberdinCourseiLearning.Areas.Collection.Pages
             PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName);
             return true;
         }
-        public async Task<IActionResult> OnPostDeleteCollection(int collectionID)
-        {
-            Collection = await context.ProductCollections
-                .Where(c => c.CollectionID == collectionID)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync();
-            PermittedToChange = await userManager.IsUserOwnerOrAdminAsync(User, Collection.User.UserName);
-            if (PermittedToChange && Collection != null)
-            {
-                context.ProductCollections.Remove(Collection);
-                await context.SaveChangesAsync();
-                return new JsonResult(ServerResponse.MakeSuccess());
-            }
-            return new JsonResult(ServerResponse.MakeForbidden());
-        }
     }
 }

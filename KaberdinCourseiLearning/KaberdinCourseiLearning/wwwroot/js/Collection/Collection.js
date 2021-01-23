@@ -14,7 +14,7 @@ function ViewCollection(div) {
 }
 function Delete() {
     let collectionID = $(this).closest("[name='Collection']").attr("id");
-    sendRequest("DeleteCollection", { collectionID: collectionID })
+    sendRequest("Delete", { collectionID: collectionID })
 }
 function Edit() {
     let collectionID = $(this).closest("[name='Collection']").attr("id");
@@ -33,7 +33,7 @@ function onToggleDetail(btn) {
 function sendRequest(handler, data) {
     $.ajax({
         type: "POST",
-        url: '/Collection?handler='+handler,
+        url: '/Collection/Manage/'+handler,
         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
         data: data
     }).done(function () {

@@ -13,7 +13,7 @@ $("#backgroundImageDz").dropzone({
     ParallelUploads: 100,
     maxFiles: 1,
     maxFilesize: 8,
-    url: location.origin + "/Collection/Create?handler=UpdateImage",
+    url: location.origin + "/Collection/Manage/UpdateImage",
     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
     paramName: "file",
     acceptedFiles: 'image/*',
@@ -78,19 +78,19 @@ function getColumns(collectionID=0) {
 function sendCreateRequest(username) {
     columns = getColumns();
     let data = { name: name, description: description, theme: +theme, columns: columns, pageUserName: username };
-    sendRequest(data, "CreateCollection");
+    sendRequest(data, "Create");
 }
 function sendEditRequest() {
     columns = getColumns(collectionID);
     let data = { name: name, description: description, theme: +theme, columns: columns, collectionID: +collectionID, deletedColumns: deletedColumns };
-    sendRequest(data, "EditCollection");
+    sendRequest(data, "Edit");
 }
 function sendRequest(data,handler) {
     let json = JSON.stringify(data);
     $.ajax({
         method: "post",
         contentType: "application/json",
-        url: "/Collection/Create?handler="+handler,
+        url: "/Collection/Manage/"+handler,
         data: json,
         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
         success: function (data, status, jqXHR) {

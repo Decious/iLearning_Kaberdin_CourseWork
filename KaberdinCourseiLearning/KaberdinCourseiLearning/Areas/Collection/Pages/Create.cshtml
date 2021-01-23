@@ -43,14 +43,14 @@ else
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Name">@Localizer["Name"]</label>
-                            <input id="Name" class="form-control" value="@Model.Collection.Name" placeholder="@Localizer["Name"]" />
+                            <input id="Name" class="form-control" value="@Model.Collection?.Name" placeholder="@Localizer["Name"]" />
                         </div>
                         <div class="form-group">
                             <label for="Theme">@Localizer["Theme"]</label>
                             <select id="Theme" class="form-control">
                                 @foreach (var theme in Model.Themes)
                                 {
-                                    if (Model.Collection.Theme == theme.Theme)
+                                    if (Model.Collection?.Theme == theme.Theme)
                                     {
                                         <option selected value="@theme.ThemeID">@theme.Theme</option>
                                     }
@@ -63,7 +63,7 @@ else
                         </div>
                         <div class="form-group">
                             <label for="Description">@Localizer["Description"]</label>
-                            <textarea id="Description" class="form-control" style="resize:none;" placeholder="@Localizer["Description"]">@Model.Collection.Description</textarea>
+                            <textarea id="Description" class="form-control" style="resize:none;" placeholder="@Localizer["Description"]">@Model.Collection?.Description</textarea>
                         </div>
                         <div class="form-group">
                             <label>@Localizer["Background Image"]</label>
@@ -83,7 +83,7 @@ else
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6">
-                                            <input name="PlaceholderName" class="form-control" placeholder="@Localizer["Name"]"/>
+                                            <input name="PlaceholderName" class="form-control" placeholder="@Localizer["Name"]" />
                                         </div>
                                         <div class="col-5">
                                             <select name="PlaceholderType" class="form-control">
@@ -97,33 +97,38 @@ else
                                     </div>
                                 </div>
                             </div>
-                            @foreach (var item in Model.Collection.Columns)
-                            {
-                                <div class="form-group" name="Item" id="@item.ColumnID">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <input name="ColumnName" class="form-control" value="@item.ColumnName" placeholder="@Localizer["Name"]"/>
+                            @{
+                                if (Model.isEdit)
+                                {
+                                    foreach (var item in Model.Collection.Columns)
+                                    {
+                                        <div class="form-group" name="Item" id="@item.ColumnID">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <input name="ColumnName" class="form-control" value="@item.ColumnName" placeholder="@Localizer["Name"]" />
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <select name="ColumnType" class="form-control">
+                                                            @foreach (var type in Model.Types)
+                                                            {
+                                                                if (type.TypeID == item.TypeID)
+                                                                {
+                                                                    <option selected value="@type.TypeID">@Localizer[type.TypeName]</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@type.TypeID">@Localizer[type.TypeName]</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <button class="btn col-1 p-0" name="deleteColumnBtn"><i class="fa fa-trash"></i></button>
+                                                </div>
                                             </div>
-                                            <div class="col-5">
-                                                <select name="ColumnType" class="form-control">
-                                                    @foreach (var type in Model.Types)
-                                                    {
-                                                        if (type.TypeID == item.TypeID)
-                                                        {
-                                                            <option selected value="@type.TypeID">@Localizer[type.TypeName]</option>
-                                                        }
-                                                        else
-                                                        {
-                                                            <option value="@type.TypeID">@Localizer[type.TypeName]</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                            <button class="btn col-1 p-0" name="deleteColumnBtn"><i class="fa fa-trash"></i></button>
                                         </div>
-                                    </div>
-                                </div>
+                                    }
+                                }
                             }
                         </div>
                         <button id="ItemAdd" class="btn btn-primary mb-2"><i class="fa fa-plus-square"></i> @Localizer["Add item field"]</button>
