@@ -1,6 +1,7 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.Collection.Pages.CreateModel
 @inject IViewLocalizer Localizer
+@inject SharedThemeLocalizer ThemeLocalizer
 @{
 }
 @Html.AntiForgeryToken()
@@ -52,11 +53,11 @@ else
                                 {
                                     if (Model.Collection?.Theme == theme.Theme)
                                     {
-                                        <option selected value="@theme.ThemeID">@theme.Theme</option>
+                                        <option selected value="@theme.ThemeID">@ThemeLocalizer[theme.Theme]</option>
                                     }
                                     else
                                     {
-                                        <option value="@theme.ThemeID">@theme.Theme</option>
+                                        <option value="@theme.ThemeID">@ThemeLocalizer[theme.Theme]</option>
                                     }
                                 }
                             </select>

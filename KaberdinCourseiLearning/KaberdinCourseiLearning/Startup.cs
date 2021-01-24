@@ -15,6 +15,7 @@ using KaberdinCourseiLearning.Hubs;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Razor;
 using KaberdinCourseiLearning.Areas.Identity;
+using KaberdinCourseiLearning.Resources;
 
 namespace KaberdinCourseiLearning
 {
@@ -67,6 +68,7 @@ namespace KaberdinCourseiLearning
             });
             services.AddCors();
             services.AddSignalR();
+            services.AddSingleton<SharedThemeLocalizer>();
             services.AddScoped<ImageManager>();
             services.AddScoped<CollectionManager>();
             services.AddScoped<ProductManager>();
