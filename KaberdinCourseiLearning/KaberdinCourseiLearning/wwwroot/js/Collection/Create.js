@@ -80,12 +80,17 @@ function getColumns(collectionID=0) {
     let columnTypes = $("[name='ColumnType']");
     let columnNames = $("[name='ColumnName']");
     columnTypes.each(function (i, e) {
+        let item = $(e).closest("[name='Item']");
         let columnName = columnNames.get(i);
         columnName = $(columnName).val();
-        let columnID = $(e).closest("[name='Item']").attr('id');
+        let columnID = item.attr('id');
         if (columnID == undefined) columnID = 0;
         let typeID = $(e).val();
-        let column = { ColumnID: +columnID, CollectionID: +collectionID, Collection: null, TypeID: +typeID, Type:null, ColumnName: columnName };
+        var allowedValues = [];
+        item.find("[name='AllowedValue']").each(function (i, e) {
+            allowedValues.push($(this).val());
+        })
+        let column = { ColumnID: +columnID, CollectionID: +collectionID, Collection: null, TypeID: +typeID, Type: null, ColumnName: columnName, AllowedValues: allowedValues.join(',') };
         columnArr.push(column);
     })
     return columnArr;

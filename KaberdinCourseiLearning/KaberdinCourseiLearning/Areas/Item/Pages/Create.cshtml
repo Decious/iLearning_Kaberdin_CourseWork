@@ -44,6 +44,21 @@
                         initial = $" value='{value}' checked='{value}' ";
                         if (column.TypeID == 5) inner = value;
                     }
+                    if(column.TypeID == 6)
+                    {
+                        var initialValue = "";
+                        if (Model.isEdit) initialValue = Model.ColumnValues[column.ColumnID];
+                        foreach(var allowedValue in column.AllowedValues.Split(","))
+                        {
+                            if (allowedValue == initialValue)
+                            {
+                                inner += $"<option selected>{allowedValue}</option>";
+                            } else
+                            {
+                                inner += $"<option>{allowedValue}</option>";
+                            }
+                        }
+                    }
                     <div class="form-group row">
                         <label class="col-md-2" for="@column.ColumnName">@column.ColumnName</label>
                         @Html.Raw(CollectionManager.GetColumnTypeHtml(column.TypeID, $"name='columnValue' {initial} id={column.ColumnID} class='form-control col-md-10'", inner))
