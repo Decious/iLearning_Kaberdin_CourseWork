@@ -40,15 +40,16 @@
                     string inner = "";
                     if (Model.isEdit)
                     {
-                        var value = Model.ColumnValues[column.ColumnID];
+                        var value = "";
+                        Model.ColumnValues.TryGetValue(column.ColumnID, out value);
                         initial = $" value='{value}' checked='{value}' ";
                         if (column.TypeID == 5) inner = value;
                     }
                     if(column.TypeID == 6)
                     {
                         var initialValue = "";
-                        if (Model.isEdit) initialValue = Model.ColumnValues[column.ColumnID];
-                        foreach(var allowedValue in column.AllowedValues.Split(","))
+                        if (Model.isEdit) Model.ColumnValues.TryGetValue(column.ColumnID, out initialValue);
+                        foreach (var allowedValue in column.AllowedValues.Split(","))
                         {
                             if (allowedValue == initialValue)
                             {

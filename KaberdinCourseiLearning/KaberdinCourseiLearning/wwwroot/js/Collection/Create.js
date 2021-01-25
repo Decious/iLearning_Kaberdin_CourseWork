@@ -1,4 +1,4 @@
-﻿var url, name, description, theme, columns, collectionID, deletedColumns=[], dropzoneObject;
+﻿var url, name, description, theme, columns, collectionID, dropzoneObject;
 Dropzone.autoDiscover = false;
 $("#backgroundImageDz").dropzone({
     autoProcessQueue: false,
@@ -102,7 +102,7 @@ function sendCreateRequest(username) {
 }
 function sendEditRequest() {
     columns = getColumns(collectionID);
-    let data = { name: name, description: description, theme: +theme, columns: columns, collectionID: +collectionID, deletedColumns: deletedColumns };
+    let data = { name: name, description: description, theme: +theme, columns: columns, collectionID: +collectionID };
     sendRequest(data, "Edit");
 }
 function sendRequest(data,handler) {
@@ -127,8 +127,6 @@ function sendRequest(data,handler) {
 function deleteColumn(event) {
     let element = $(this);
     let column = element.closest("[name='Item']");
-    let id = column.attr('id');
-    if (id != undefined) deletedColumns.push(id);
     column.hide(300, function () {
         column.remove();
     });

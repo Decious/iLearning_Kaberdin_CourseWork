@@ -108,6 +108,28 @@ else
                                                     </div>
                                                     <button class="btn col-1 p-0" name="deleteColumnBtn"><i class="fa fa-trash"></i></button>
                                                 </div>
+                                                @{ 
+                                                    var style = "display:none";
+                                                    if (item.TypeID == 6) style = "";
+                                                    var allowedValues = item.AllowedValues.Split(",");
+                                                } 
+                                                <div name="AllowedValues" style="@style">
+                                                    @for(int i = 0; i < allowedValues.Length; i++)
+                                                    {
+                                                        <div class="row mt-2" name="AllowedValueContainer">
+                                                            <div class="col-6">
+                                                                <label class="text-right">@Localizer["Option"] #@(i+1)</label>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <input class="form-control" name="AllowedValue" placeholder="@Localizer["Option"]" value="@allowedValues[i]" />
+                                                            </div>
+                                                            <button class="btn col-1 p-0" name="deleteOptionBtn"><i class="fa fa-trash"></i></button>
+                                                        </div>
+                                                    }
+                                                    <div name="AddOptionContainer" class="d-flex justify-content-center">
+                                                        <button class="mt-2 btn btn-primary" name="AddOptionBtn"><i class="fa fa-plus-square"></i> @Localizer["Add option"]</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     }

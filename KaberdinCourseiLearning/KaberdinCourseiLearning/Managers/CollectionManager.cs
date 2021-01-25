@@ -3,6 +3,7 @@ using KaberdinCourseiLearning.Data.CollectionRequests;
 using KaberdinCourseiLearning.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,19 +27,16 @@ namespace KaberdinCourseiLearning.Managers
             if (collection == null) return new ServerResponse(false, localizer["NoCollectionError"]);
             var theme = await context.Themes.FindAsync(request.ThemeID);
             if (theme == null) return new ServerResponse(false, localizer["NoThemeError"]);
-            DeleteColumns(request.DeletedColumns);
             UpdateCollection(collection, request, theme);
             UpdateColumns(collection, request);
+            var newColumns = GetNewColumns(collection);
             await context.SaveChangesAsync();
-            return new ServerResponse(true, localizer["UpdateSuccess"], "/Collection?id=" + collection.CollectionID);
-        }
-        private void DeleteColumns(int[] columnIDs)
-        {
-            foreach (var deletedColumnID in columnIDs)
+            if (newColumns.Count() > 0)
             {
-                var column = context.ProductCollectionColumns.Find(deletedColumnID);
-                context.ProductCollectionColumns.Remove(column);
+                SetDefaultColumnValues(collection, newColumns);
+                await context.SaveChangesAsync();
             }
+            return new ServerResponse(true, localizer["UpdateSuccess"], "/Collection?id=" + collection.CollectionID);
         }
         private void UpdateCollection(ProductCollection collection,EditCollectionRequest request, ProductCollectionTheme theme)
         {
@@ -55,12 +53,45 @@ namespace KaberdinCourseiLearning.Managers
                     var tracked = context.ProductCollectionColumns.Find(column.ColumnID);
                     tracked.ColumnName = column.ColumnName;
                     tracked.TypeID = column.TypeID;
+                    tracked.AllowedValues = column.AllowedValues;
                     context.ProductCollectionColumns.Update(tracked);
                 }
                 else
                 {
                     column.CollectionID = collection.CollectionID;
                     context.ProductCollectionColumns.Add(column);
+                }
+            }
+            DeleteColumns(collection);
+        }
+        private void DeleteColumns(ProductCollection collection)
+        {
+            foreach (var column in collection.Columns)
+            {
+                if (context.Entry(column).State == EntityState.Unchanged)
+                    context.ProductCollectionColumns.Remove(column);
+            }
+        }
+        private IEnumerable<ProductCollectionColumn> GetNewColumns(ProductCollection collection)
+        {
+            var addedColumns = new List<ProductCollectionColumn>();
+            foreach (var column in collection.Columns)
+            {
+                if (context.Entry(column).State == EntityState.Added)
+                {
+                    addedColumns.Add(column);
+                }
+            }
+            return addedColumns;
+        }
+        private void SetDefaultColumnValues(ProductCollection collection, IEnumerable<ProductCollectionColumn> addedColumns)
+        {
+            var affectedProducts = context.Products.Where(p => p.CollectionID == collection.CollectionID).Include(p => p.ColumnValues).ToArray();
+            foreach(var product in affectedProducts)
+            {
+                foreach(var newColumn in addedColumns)
+                {
+                    product.ColumnValues.Add(new ProductColumnValue { ColumnID = newColumn.ColumnID, ProductID = product.ProductID, Value = "" });
                 }
             }
         }

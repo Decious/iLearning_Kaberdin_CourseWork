@@ -6,7 +6,5 @@ namespace KaberdinCourseiLearning.Data.CollectionRequests
     {
         [JsonPropertyName("collectionID")]
         public int CollectionID { get; set; }
-        [JsonPropertyName("deletedColumns")]
-        public int[] DeletedColumns { get; set; }
     }
 }
