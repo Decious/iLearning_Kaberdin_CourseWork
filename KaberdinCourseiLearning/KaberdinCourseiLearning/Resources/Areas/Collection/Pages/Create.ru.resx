@@ -123,6 +123,9 @@
   <data name="Add item field" xml:space="preserve">
     <value>Добавить поле к товарам</value>
   </data>
+  <data name="Add option" xml:space="preserve">
+    <value>Добавить выбор</value>
+  </data>
   <data name="Background Image" xml:space="preserve">
     <value>Задний фон</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="Number" xml:space="preserve">
     <value>Число</value>
   </data>
+  <data name="Option" xml:space="preserve">
+    <value>Выбор</value>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Назад</value>
   </data>
@@ -161,6 +167,12 @@
   </data>
   <data name="Publish!" xml:space="preserve">
     <value>Опубликовать!</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Выбор из списка</value>
+  </data>
+  <data name="SelectWithNoOptionsError" xml:space="preserve">
+    <value>Список должен содержать хотя-бы один выбор.</value>
   </data>
   <data name="Text area" xml:space="preserve">
     <value>Многострочное текстовое поле</value>

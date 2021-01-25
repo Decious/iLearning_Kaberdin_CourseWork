@@ -47,7 +47,10 @@ namespace KaberdinCourseiLearning
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddUserManager<CustomUserManager>();
             services.AddControllers();
-            services.AddRazorPages().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+            services.AddRazorPages()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization()
+                .AddRazorRuntimeCompilation();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddAuthorization(options =>
             {

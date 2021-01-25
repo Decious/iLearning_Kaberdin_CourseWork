@@ -123,6 +123,9 @@
   <data name="Add item field" xml:space="preserve">
     <value>Add item field</value>
   </data>
+  <data name="Add option" xml:space="preserve">
+    <value>Add option</value>
+  </data>
   <data name="Background Image" xml:space="preserve">
     <value>Background Image</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="Number" xml:space="preserve">
     <value>Number</value>
   </data>
+  <data name="Option" xml:space="preserve">
+    <value>Option</value>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
   </data>
@@ -161,6 +167,12 @@
   </data>
   <data name="Publish!" xml:space="preserve">
     <value>Publish!</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="SelectWithNoOptionsError" xml:space="preserve">
+    <value>Select must have atleast one option.</value>
   </data>
   <data name="Text area" xml:space="preserve">
     <value>Text area</value>

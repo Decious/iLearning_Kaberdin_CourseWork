@@ -1,11 +1,4 @@
-﻿var url;
-var name;
-var description;
-var theme;
-var columns;
-var collectionID;
-var deletedColumns = [];
-var dropzoneObject;
+﻿var url, name, description, theme, columns, collectionID, deletedColumns=[], dropzoneObject;
 Dropzone.autoDiscover = false;
 $("#backgroundImageDz").dropzone({
     autoProcessQueue: false,
@@ -37,28 +30,50 @@ $("#backgroundImageDz").dropzone({
         formData.append("collectionID", collectionID)
     }
 })
-$("#ItemAdd").on('click', addItemFieldInput);
-$("#SubmitBtn").on('click', prepareRequest);
-$("[name='deleteColumnBtn']").on('click', deleteColumn);
+initHandlers();
+function initHandlers() {
+    $("#ItemAdd").on('click', addItemFieldInput);
+    $("#SubmitBtn").on('click', prepareRequest);
+    $("[name='deleteColumnBtn']").on('click', deleteColumn);
+    $("[name='deleteOptionBtn']").on('click', deleteOption);
+    $("[name='AddOptionBtn']").on('click', addOption);
+    $("[name='ColumnType']").on('change', typeChange);
+}
 function addItemFieldInput() {
     let items = $("#Items");
     let clonable = $("#clonableItem");
     let clone = clonable.clone();
-    clone.removeClass("d-none");
+    removePlaceHolders(clone);
+    connectEventHandlers(clone);
+    items.append(clone);
+    clone.show(300);
+}
+function removePlaceHolders(clone) {
     clone.removeAttr("id");
     clone.find("[name='PlaceholderName']").attr('name', 'ColumnName');
+    clone.find("[name='PlaceholderAllowedValue']").attr('name', 'AllowedValue');
     clone.find("[name='PlaceholderType']").attr('name', 'ColumnType');
-    clone.find("[name='PlaceholderDeleteBtn']").attr('name', 'deleteColumnBtn').on('click',deleteColumn);
-    items.append(clone);
+    clone.find("[name='PlaceholderDeleteBtn']").attr('name', 'deleteColumnBtn');
+    clone.find("[name='PlaceholderOptionDeleteBtn']").attr('name', 'deleteOptionBtn');
+    clone.find("[name='PlaceholderAddOptionBtn']").attr('name', 'AddOptionBtn');
+}
+function connectEventHandlers(clone) {
+    clone.find("[name='ColumnType']").on('change', typeChange);
+    clone.find("[name='deleteColumnBtn']").on('click', deleteColumn);
+    clone.find("[name='deleteOptionBtn']").on('click', deleteOption);
+    clone.find("[name='AddOptionBtn']").on('click', addOption);
 }
 function prepareRequest() {
+    initBasicData();
     let username = $("#PageUserName");
+    if (username.length != 0) sendCreateRequest(username.val());
+    if (collectionID != undefined) sendEditRequest();
+}
+function initBasicData() {
     collectionID = $("#CollectionID").val();
     name = $("#Name").val();
     description = $("#Description").val();
     theme = $("#Theme").val();
-    if (username.length != 0) sendCreateRequest(username.val());
-    if (collectionID != undefined) sendEditRequest();
 }
 function getColumns(collectionID=0) {
     let columnArr = [];
@@ -109,6 +124,62 @@ function deleteColumn(event) {
     let column = element.closest("[name='Item']");
     let id = column.attr('id');
     if (id != undefined) deletedColumns.push(id);
-    column.remove();
+    column.hide(300, function () {
+        column.remove();
+    });
 }
-
+function deleteOption(event) {
+    let element = $(this);
+    let option = element.closest("[name='AllowedValueContainer']");
+    let options = option.siblings();
+    let optionsCount = options.length;
+    options.each(function (i, e) {
+        if ($(this).is(":animated")) optionsCount--;
+    })
+    if (optionsCount > 1) {
+        option.hide(300, function () {
+            option.remove();
+            reloadNumeration(options);
+        });
+    } else {
+        $("#NoOptionsError").show(300);
+        setTimeout(function () { $("#NoOptionsError").hide(300) }, 3000);
+    }
+}
+function reloadNumeration(options) {
+    options.each(function (i, e) {
+        let label = $(this).find("label");
+        let html = label.html();
+        let count = html.length;
+        html = html.slice(0, (count-1)); //Remove number on the end of the string.
+        label.html(html + (i+1));
+    })
+}
+function addOption(event) {
+    let optionsContainer = $(this).closest("[name='AllowedValues']");
+    let clonable = $("#clonableOption");
+    let clone = clonable.clone();
+    removeOptionPlaceholders(clone);
+    clone.find("[name='deleteOptionBtn']").on('click', deleteOption);
+    let label = clone.find("label");
+    let localizedOption = label.html();
+    label.html(localizedOption + " #" + optionsContainer.children().length);
+    clone.attr('name',"AllowedValueContainer");
+    clone.insertBefore($(this).parent());
+    clone.show(300);
+}
+function removeOptionPlaceholders(clone) {
+    clone.removeAttr("id");
+    clone.find("[name='PlaceholderAllowedValue']").attr('name', 'AllowedValue');
+    clone.find("[name='PlaceholderOptionDeleteBtn']").attr('name', 'deleteOptionBtn');
+}
+function typeChange() {
+    let options = $(this).children();
+    let selectedOption = options.filter(':selected');
+    let container = $(this).parent().parent().siblings("[name='AllowedValues']");
+    if (selectedOption.val() == 6) {
+        container.show(300);
+    } else {
+        container.hide(300);
+    }
+}

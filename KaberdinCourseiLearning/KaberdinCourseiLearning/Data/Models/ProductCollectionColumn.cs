@@ -18,5 +18,6 @@ namespace KaberdinCourseiLearning.Data.Models
         public int TypeID { get; set; }
         public ColumnType Type { get; set; }
         public string ColumnName { get; set; }
+        public string AllowedValues { get; set; }
     }
 }
