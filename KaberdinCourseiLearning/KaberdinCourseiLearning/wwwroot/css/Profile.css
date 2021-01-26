@@ -1,10 +1,15 @@
-﻿#ProfilePicture > img {
+﻿.ProfilePicture {
     width: 205px;
     height:205px;
 }
-#ProfileDescription{
-    position:relative;
-    height:140px;
+#AvatarDropzone {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color:transparent;
+}
+#ProfileDescription {
+    position: relative;
+    height: 140px;
 }
 #ProfileDescription > button {
     display: none;

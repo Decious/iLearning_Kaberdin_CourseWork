@@ -1,1 +1,1 @@
-﻿#ProfilePicture>img{width:205px;}#ProfileDescription{position:relative;height:140px;}#ProfileDescription>button{display:none;top:0;right:0;}#DescriptionContent{max-height:115px;}
+﻿.ProfilePicture{width:205px;height:205px;}#AvatarDropzone{background-size:cover;background-repeat:no-repeat;background-color:transparent;}#ProfileDescription{position:relative;height:140px;}#ProfileDescription>button{display:none;top:0;right:0;}#DescriptionContent{max-height:115px;}

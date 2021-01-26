@@ -40,55 +40,25 @@
             <div class="row">
                 <div class="card m-auto" name="ProfileCard">
                     <h4 id="UserName" class="m-auto">@Model.PageUser.UserName</h4>
-                    <div id="ProfilePicture">
-                        <img src="@Model.PageUser.AvatarUrl" class="img-thumbnail" alt="...">
+                    <div>
                         @if (Model.PermittedToChange)
                         {
-                            <button type="button" id="AvatarChange" class="btn bg-transparent position-absolute" style="display:none;" data-toggle="modal" data-target="#AvatarModal">
-                                <i class="far fa-edit"></i>
-                            </button>
+                            <form class="m-auto ProfilePicture img-thumbnail dropzone" style="background-image: url(@Model.PageUser.AvatarUrl);" id="AvatarDropzone" method="post" asp-page-handler="UploadAvatar"></form>
+                        }
+                        else
+                        {
+                            <img src="@Model.PageUser.AvatarUrl" id="AvatarPicture" class="ProfilePicture img-thumbnail" alt="...">
                         }
                     </div>
                     <div class="card-footer" id="ProfileDescription">
                         <div class="card-text overflow-hidden h-100" id="DescriptionContent">
                             <p class="text-break text-wrap text-truncate">@Model.PageUser.HomePage.Description</p>
                         </div>
-                        @if (Model.PermittedToChange)
-                        {
-                            <button type="button" id="DescChange" class="btn bg-transparent position-absolute">
-                                <i class="far fa-edit"></i>
-                            </button>
-                            <button type="button" id="DescAccept" class="btn bg-transparent position-absolute">
-                                <i class="far fa-check-square"></i>
-                            </button>
-                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    @if (Model.PermittedToChange)
-    {
-        <div class="modal fade" id="AvatarModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">@Localizer["Upload your new avatar"]</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="dropzone" id="AvatarDropzone" method="post" asp-page-handler="UploadAvatar"></form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Close"]</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
 </div>
 @section Scripts{
     <script src="~/lib/dropzone/min/dropzone.min.js"></script>

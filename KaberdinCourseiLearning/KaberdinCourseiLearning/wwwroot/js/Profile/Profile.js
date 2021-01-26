@@ -1,69 +1,29 @@
-﻿if (isPermitted()) {
-    var buttonEdit = $("#DescChange");
-    var buttonAccept = $("#DescAccept");
-    var description = $("#DescriptionContent");
-    var invoker = $("#ProfileDescription");
-    init();
-}
-function isPermitted() {
-    return ($("#AvatarChange").length > 0);
-}
+﻿var description = $("#DescriptionContent");
+var invoker = $("#ProfileDescription");
+init();
+
 function init() {
-    prepareAvatar();
-    prepareDescription();
     prepareDropzone();
-}
-function prepareAvatar() {
-    prepareMouseEvents($("#ProfilePicture"), $("#AvatarChange"));
-}
-function prepareMouseEvents(invokerElement, subject) {
-    invokerElement.mouseenter(function () {
-        subject.show(0.5);
-    })
-    invokerElement.mouseleave(function () {
-    subject.hide(0.5);
-    })
-}
-function prepareDescription() {
-    prepareMouseEvents(invoker, buttonEdit);
-    prepareDescOnEdit();
-    prepareEditAccept();
-}
-function prepareDescOnEdit() {
-    buttonEdit.on('click', function () {
-        setDescAsTextArea();
-        unBindMouseEvents(invoker);
-        buttonAccept.show();
-        buttonEdit.hide();
-    })
 }
 function setDescAsTextArea() {
     let text = description.children("p").text();
-    description.html("<textarea style='width: 100%; height: 100%; background: transparent;border: none;' >" + text + "</textarea>");
+    description.html("<textarea class='text-primary' style='width: 100%; height: 100%; background: transparent; border:none; resize:none;' >" + text + "</textarea>");
     var textarea = description.children("textarea");
     textarea.focus();
+    $('#DescriptionContent').off('click');
     textarea.on('keypress', function (e) {
         if (e.which == 13) {
     acceptDescription();
         }
     });
 }
-function unBindMouseEvents(element) {
-    element.unbind("mouseenter");
-    element.unbind("mouseleave");
-}
-
-function prepareEditAccept() {
-    buttonAccept.on('click', function () {
-        acceptDescription();
-    })
-}
 function acceptDescription() {
     let newText = description.children("textarea").val();
     sendDescToServer(newText);
     setDescText(newText);
-    prepareMouseEvents(invoker, buttonEdit);
-    buttonAccept.hide();
+    $('#DescriptionContent').on('click', function () {
+        setDescAsTextArea();
+    });
 }
 function sendDescToServer(newText) {
     $.ajax({
@@ -94,8 +54,10 @@ function prepareDropzone() {
         dictRemoveFile: dropzoneLocale.dictRemoveFile,
         dictResponseError: dropzoneLocale.dictResponseError,
         init: function () {
+            $("[class='dz-button']").hide().css({'background-color':'rgba(255,255,255,.7)'});
             this.on("success", function(file,response) {
-                $("#ProfilePicture").children("img").attr('src', response.url);
+                $("#AvatarPicture").attr('src', response.url);
+                $("#AvatarDropzone").css('background-image', "url("+response.url+")");
                 this.removeAllFiles(true);
             });
             this.on("sending", function (file, xhr, formData) {
@@ -104,3 +66,37 @@ function prepareDropzone() {
         }
     }
 }
+$('#AvatarDropzone').on('dragenter', function () {
+    $(this).addClass('border', 'border-primary');
+        $("[class='dz-button']").show();
+});
+
+$('#AvatarDropzone').on('dragleave', function () {
+    $(this)
+        .removeClass('border', 'border-primary');
+        $("[class='dz-button']").hide();
+});
+$('#AvatarDropzone').on('mouseenter', function () {
+    $(this)
+        .addClass('border', 'border-primary');
+        $("[class='dz-button']").show();
+});
+
+$('#AvatarDropzone').on('mouseleave', function () {
+    $(this)
+        .removeClass('border', 'border-primary');
+        $("[class='dz-button']").hide();
+});
+
+$('#DescriptionContent').on('mouseenter', function () {
+    $(this)
+        .addClass('border', 'border-primary');
+});
+
+$('#DescriptionContent').on('mouseleave', function () {
+    $(this)
+        .removeClass('border', 'border-primary');
+});
+$('#DescriptionContent').on('click', function () {
+    setDescAsTextArea();
+});
