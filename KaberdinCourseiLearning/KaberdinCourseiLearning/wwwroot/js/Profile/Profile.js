@@ -94,7 +94,10 @@ function prepareDropzone() {
         dictRemoveFile: dropzoneLocale.dictRemoveFile,
         dictResponseError: dropzoneLocale.dictResponseError,
         init: function () {
-            this.on("success", function () { location.reload() });
+            this.on("success", function(file,response) {
+                $("#ProfilePicture").children("img").attr('src', response.url);
+                this.removeAllFiles(true);
+            });
             this.on("sending", function (file, xhr, formData) {
                 formData.append("name", $("#UserName").text());
             });

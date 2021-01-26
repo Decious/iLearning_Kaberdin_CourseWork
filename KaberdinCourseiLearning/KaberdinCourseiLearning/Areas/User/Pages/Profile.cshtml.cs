@@ -61,8 +61,8 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         {
             if (await isLoadedAndPermittedToChange(name))
             {
-                _ = await imageManager.UploadAvatar(file, PageUser.Id);
-                return new JsonResult(new ServerResponse(true, localizer["Avatar was uploaded successfully"]));
+                var url = await imageManager.UploadAvatar(file, PageUser.Id);
+                return new JsonResult(new ServerResponse(true, localizer["Avatar was uploaded successfully"],url));
             }
             return new JsonResult(new ServerResponse(false, localizer["AvatarPermError"]));
         }

@@ -1,5 +1,6 @@
 ﻿#ProfilePicture > img {
     width: 205px;
+    height:205px;
 }
 #ProfileDescription{
     position:relative;
