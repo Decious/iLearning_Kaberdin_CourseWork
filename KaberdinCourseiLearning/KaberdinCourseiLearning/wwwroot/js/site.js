@@ -38,5 +38,15 @@ $("#navbarBtn").on('click', function () {
 })
 $("[name='SearchBtn']").on('click', function () {
     let searchVal = $(this).closest("[name='searchbarGroup']").children("input").val();
-    location.href = location.origin + "/Find?q=" + encodeURIComponent(searchVal);
+    search(searchVal);
 })
+
+$("input[class*='searchingbar']").on('keypress', function (e) {
+    if (e.which == 13) {
+        let searchVal = $(this).val();
+        search(searchVal);
+    }
+})
+function search(searchVal) {
+    location.href = location.origin + "/Find?q=" + encodeURIComponent(searchVal);
+}
