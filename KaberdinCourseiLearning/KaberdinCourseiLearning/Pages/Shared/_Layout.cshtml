@@ -11,21 +11,6 @@
     <script src="~/js/ThemeLoader.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/lib/font-awesome/css/fontawesome.css" rel="stylesheet" />
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script>
-        var dropzoneLocale = {
-            dictDefaultMessage: "@Localizer["dictDefaultMessage"]",
-            dictFallbackMessage: "@Localizer["dictFallbackMessage"]",
-            dictFallbackText: "@Localizer["dictFallbackText"]",
-            dictFileTooBig: "@Localizer["dictFileTooBig"]",
-            dictInvalidFileType: "@Localizer["dictInvalidFileType"]",
-            dictResponseError: "@Localizer["dictResponseError"]",
-            dictCancelUpload: "@Localizer["dictCancelUpload"]",
-            dictCancelUploadConfirmation: "@Localizer["dictCancelUploadConfirmation"]",
-            dictRemoveFile: "@Localizer["dictRemoveFile"]",
-            dictMaxFilesExceeded: "@Localizer["dictMaxFilesExceeded"]"
-        };
-    </script>
 </head>
 <body>
     <header>
@@ -88,11 +73,24 @@
             &copy; 2020 - KaberdinCourseiLearning - <a asp-area="" asp-page="/">@Localizer["Privacy"]</a>
         </div>
     </footer>
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/font-awesome/js/all.js"></script>
-
+    <script>
+        var dropzoneLocale = {
+            dictDefaultMessage: "@Localizer["dictDefaultMessage"]",
+            dictFallbackMessage: "@Localizer["dictFallbackMessage"]",
+            dictFallbackText: "@Localizer["dictFallbackText"]",
+            dictFileTooBig: "@Localizer["dictFileTooBig"]",
+            dictInvalidFileType: "@Localizer["dictInvalidFileType"]",
+            dictResponseError: "@Localizer["dictResponseError"]",
+            dictCancelUpload: "@Localizer["dictCancelUpload"]",
+            dictCancelUploadConfirmation: "@Localizer["dictCancelUploadConfirmation"]",
+            dictRemoveFile: "@Localizer["dictRemoveFile"]",
+            dictMaxFilesExceeded: "@Localizer["dictMaxFilesExceeded"]"
+        };
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

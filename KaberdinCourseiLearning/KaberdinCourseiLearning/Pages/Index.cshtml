@@ -2,7 +2,7 @@
 @model IndexModel
 @inject IViewLocalizer Localizer
 @{
-ViewData["Title"]="Home page" ;
+    ViewData["Title"] = "Home page";
 }
 <link href="~/css/MainPage.css" rel="stylesheet" />
 <div class="container">
@@ -77,8 +77,10 @@ ViewData["Title"]="Home page" ;
         </div>
     </div>
 </div>
-<script>
-    $(".carousel-inner").each(function (i, e) {
-        $(this).children().first().addClass("active");
-    })
-</script>
+@section Scripts{
+    <script>
+        $(".carousel-inner").each(function (i, e) {
+            $(this).children().first().addClass("active");
+        })
+    </script>
+}

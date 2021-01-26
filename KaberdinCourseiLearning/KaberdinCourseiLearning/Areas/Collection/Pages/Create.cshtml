@@ -108,13 +108,13 @@ else
                                                     </div>
                                                     <button class="btn col-1 p-0" name="deleteColumnBtn"><i class="fa fa-trash"></i></button>
                                                 </div>
-                                                @{ 
+                                                @{
                                                     var style = "display:none";
                                                     if (item.TypeID == 6) style = "";
                                                     var allowedValues = item.AllowedValues.Split(",");
-                                                } 
+                                                }
                                                 <div name="AllowedValues" style="@style">
-                                                    @for(int i = 0; i < allowedValues.Length; i++)
+                                                    @for (int i = 0; i < allowedValues.Length; i++)
                                                     {
                                                         <div class="row mt-2" name="AllowedValueContainer">
                                                             <div class="col-6">
@@ -153,10 +153,11 @@ else
         </div>
     </div>
 </div>
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/dropzone/min/dropzone.min.js"></script>
-<script src="~/js/Collection/CreatePlanNavigation.js"></script>
-<script src="~/js/Collection/Create.js"></script>
+@section Scripts {
+    <script src="~/lib/dropzone/min/dropzone.min.js"></script>
+    <script src="~/js/Collection/CreatePlanNavigation.js"></script>
+    <script src="~/js/Collection/Create.js"></script>
+}
 
 <!-- Clonables -->
 <div class="form-group" style="display:none" name="Item" id="clonableItem">
