@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace KaberdinCourseiLearning.Areas.User.Pages
 {
@@ -15,13 +16,19 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
         private CustomUserManager userManager;
         private ApplicationDbContext context;
         private ImageManager imageManager;
+        private IStringLocalizer<ProfileModel> localizer;
+
         public bool PermittedToChange { get; set; }
         public CustomUser PageUser { get; set; }
-        public ProfileModel(CustomUserManager userManager, ApplicationDbContext context, ImageManager imageManager)
+        public ProfileModel(CustomUserManager userManager,
+            ApplicationDbContext context,
+            ImageManager imageManager,
+            IStringLocalizer<ProfileModel> localizer)
         {
             this.userManager = userManager;
             this.context = context;
             this.imageManager = imageManager;
+            this.localizer = localizer;
         }
         public async Task<IActionResult> OnGetAsync(string name)
         {
@@ -55,9 +62,9 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
             if (await isLoadedAndPermittedToChange(name))
             {
                 _ = await imageManager.UploadAvatar(file, PageUser.Id);
-                return new JsonResult(new ServerResponse(true, "Avatar was uploaded successfully"));
+                return new JsonResult(new ServerResponse(true, localizer["Avatar was uploaded successfully"]));
             }
-            return new JsonResult(ServerResponse.MakeForbidden());
+            return new JsonResult(new ServerResponse(false, localizer["AvatarPermError"]));
         }
         private async Task<bool> isLoadedAndPermittedToChange(string pageUserName)
         {
@@ -71,9 +78,9 @@ namespace KaberdinCourseiLearning.Areas.User.Pages
                 PageUser.HomePage.Description = newText;
                 context.UserPages.Update(PageUser.HomePage);
                 await context.SaveChangesAsync();
-                return new JsonResult(new ServerResponse(true, "Description changed successfully"));
+                return new JsonResult(new ServerResponse(true, localizer["Description changed successfully"]));
             }
-            return new JsonResult(ServerResponse.MakeForbidden());
+            return new JsonResult(new ServerResponse(false, localizer["DescriptionPermError"]));
         }
     }
 }
