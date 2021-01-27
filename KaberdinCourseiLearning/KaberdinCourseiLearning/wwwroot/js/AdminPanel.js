@@ -1,4 +1,10 @@
-﻿var toggle = true;
+﻿var names = ['Name', 'Email', 'Role','Status'];
+var options = {
+    valueNames: names
+};
+var usersList = new List('users', options);
+
+var toggle = true;
 var alert = $("#AlertMessage");
 function roleChanged(e) {
     let changedUserId = $(e).attr("id");

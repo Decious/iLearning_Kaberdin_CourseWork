@@ -15,84 +15,92 @@
 </style>
 @Html.AntiForgeryToken()
 <form name="formTable" method="post">
-    <div class="container-fluid d-flex justify-content-center">
+    <div class="container-fluid flex-column d-flex justify-content-center">
         <div class="container">
             <div style="margin-bottom:16px" class="row justify-content-around">
-                <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Block">
+                <button class="btn btn-outline-primary col col-md-3" onclick="return prepareAction(this.value)" value="Block">
                     <i style="margin-right:5px" class="fa fa-ban"></i>@Localizer["Block"]
                 </button>
-                <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Unblock">
+                <button class="btn btn-outline-primary col col-md-3" onclick="return prepareAction(this.value)" value="Unblock">
                     <i style="margin-right:5px" class="fa fa-user-check"></i>@Localizer["Unblock"]
                 </button>
-                <button class="btn btn-outline-primary col-3" onclick="return prepareAction(this.value)" value="Delete">
+                <button class="btn btn-outline-primary col col-md-3" onclick="return prepareAction(this.value)" value="Delete">
                     <i style="margin-right:5px" class="fa fa-user-slash"></i>@Localizer["Delete"]
                 </button>
             </div>
         </div>
     </div>
-    <table class="table table-sm table-hover">
-        <thead>
-            <tr class="text-center">
-                <th scope="col" class="col-1"><button class="btn-primary font-weight-bold rounded" OnClick="return toggleClick()">@Localizer["Toggle"]</button></th>
-                <th scope="col">@Localizer["Name"]</th>
-                <th scope="col">@Localizer["Email"]</th>
-                <th scope="col" class="col-3">@Localizer["Role"]</th>
-                <th scope="col">@Localizer["Status"]</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in Model.Users)
-            {
-                var Style = Html.Raw("");
-                if (user.Id == Model.CurrentUser.Id)
-                {
-                    Style = Html.Raw("font-weight-bold");
-                }
-                var userRoles = await UserManager.GetRolesAsync(user);
-                <tr class="@Style text-center">
-                    <td class="align-middle text-center"><input type="checkbox" name="Selected" value="@user.Id" /></td>
-                    <td><a class="nav-link" asp-area="User" asp-page="/Profile" asp-route-name="@user.UserName">@user.UserName</a></td>
-                    <td>@user.Email</td>
-                    <td>
-                        <select class="form-control" name="SelectedRole" id="@user.Id" onchange="return roleChanged(this)">
-                            @foreach (var role in Model.Roles)
-                            {
-                                if (userRoles.Contains(role.Name))
-                                {
-                                    <option selected>@Localizer[role.Name]</option>
-                                }
-                                else
-                                {
-                                    <option>@Localizer[role.Name]</option>
-                                }
-                            }
-                            @{
-                                if (userRoles.Count == 0)
-                                {
-                                    <option selected>@Localizer["User"]</option>
-                                }
-                                else
-                                {
-                                    <option>@Localizer["User"]</option>
-                                }
-                            }
-                        </select>
-                    </td>
-                    @if (user.LockoutEnd > DateTime.Now)
-                    {
-                        <td>@Localizer["Banned"]</td>
-                    }
-                    else
-                    {
-                        <td>@Localizer["Active"]</td>
-                    }
+    <div id="users">
+        <div class="container">
+            <input class="form-control mb-2 search w-auto" placeholder="Search" />
+        </div>
+        <table class="table table-responsive table-sm table-hover">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col" class="col-1"><button class="btn-primary font-weight-bold rounded" OnClick="return toggleClick()">@Localizer["Toggle"]</button></th>
+                    <th scope="col" class="sort hoverable" data-sort="Name">@Localizer["Name"]</th>
+                    <th scope="col" class="sort hoverable" data-sort="Email">@Localizer["Email"]</th>
+                    <th scope="col" class="col-3 sort hoverable" data-sort="Role">@Localizer["Role"]</th>
+                    <th scope="col" class="sort hoverable" data-sort="Status">@Localizer["Status"]</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="list">
+                @foreach (var user in Model.Users)
+                {
+                    var Style = Html.Raw("");
+                    if (user.Id == Model.CurrentUser.Id)
+                    {
+                        Style = Html.Raw("font-weight-bold");
+                    }
+                    var userRoles = await UserManager.GetRolesAsync(user);
+                    <tr class="@Style text-center">
+                        <td class="align-middle text-center"><input type="checkbox" name="Selected" value="@user.Id" /></td>
+                        <td class="Name"><a class="nav-link" asp-area="User" asp-page="/Profile" asp-route-name="@user.UserName">@user.UserName</a></td>
+                        <td class="Email">@user.Email</td>
+                        <td>
+                            <select class="form-control Role" name="SelectedRole" id="@user.Id" onchange="return roleChanged(this)">
+                                @foreach (var role in Model.Roles)
+                                {
+                                    if (userRoles.Contains(role.Name))
+                                    {
+                                        <option selected>@Localizer[role.Name]</option>
+                                    }
+                                    else
+                                    {
+                                        <option>@Localizer[role.Name]</option>
+                                    }
+                                }
+                                @{
+                                    if (userRoles.Count == 0)
+                                    {
+                                        <option selected>@Localizer["User"]</option>
+                                    }
+                                    else
+                                    {
+                                        <option>@Localizer["User"]</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        @if (user.LockoutEnd > DateTime.Now)
+                        {
+                            <td class="Status">@Localizer["Banned"]</td>
+                        }
+                        else
+                        {
+                            <td class="Status">@Localizer["Active"]</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </form>
 <script>var locale = {Banned:"@Localizer["Banned"]",Active:"@Localizer["Active"]"}</script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/js/AdminPanel.js"></script>
+@section Scripts{
+    <script src="~/lib/list.js/list.js"></script>
+    <script src="~/js/AdminPanel.js"></script>
+}
+
 
 
