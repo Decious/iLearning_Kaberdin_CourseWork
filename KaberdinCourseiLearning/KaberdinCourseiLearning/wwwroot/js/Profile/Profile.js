@@ -34,7 +34,8 @@ function sendDescToServer(newText) {
     });
 }
 function setDescText(newText) {
-    description.html("<p class='text-break text-wrap text-truncate' >" + newText + "</p>");
+    description.html("<p class='text-break text-wrap text-truncate markdown' >" + newText + "</p>");
+    updateMarkdownText(description.children("p"));
 }
 function prepareDropzone() {
     Dropzone.options.AvatarDropzone = {

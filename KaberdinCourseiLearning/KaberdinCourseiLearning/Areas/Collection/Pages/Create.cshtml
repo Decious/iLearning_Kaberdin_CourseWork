@@ -111,7 +111,7 @@ else
                                                 @{
                                                     var style = "display:none";
                                                     if (item.TypeID == 6) style = "";
-                                                    var allowedValues = item.AllowedValues.Split(",");
+                                                    var allowedValues = item.AllowedValues == null? new string[0] :item.AllowedValues.Split(",");
                                                 }
                                                 <div name="AllowedValues" style="@style">
                                                     @for (int i = 0; i < allowedValues.Length; i++)

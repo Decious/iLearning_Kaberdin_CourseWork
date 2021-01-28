@@ -4,6 +4,7 @@
 // Write your Javascript code.
 var waitIcon = $("#PleaseWait");
 var alert = $("#AlertMessage");
+var markdown = window.markdownit();
 $(document).bind("ajaxSend", function () {
     waitIcon.show();
 }).bind("ajaxComplete", function () {
@@ -40,7 +41,6 @@ $("[name='SearchBtn']").on('click', function () {
     let searchVal = $(this).closest("[name='searchbarGroup']").children("input").val();
     search(searchVal);
 })
-
 $("input[class*='searchingbar']").on('keypress', function (e) {
     if (e.which == 13) {
         let searchVal = $(this).val();
@@ -49,4 +49,18 @@ $("input[class*='searchingbar']").on('keypress', function (e) {
 })
 function search(searchVal) {
     location.href = location.origin + "/Find?q=" + encodeURIComponent(searchVal);
+}
+let markdownable = $("[class*='markdown']");
+markdownable.each(function (i, e) {
+    e = $(e);
+    updateMarkdownText(e);
+})
+markdownable.on('change', updateMarkdownText);
+function updateMarkdownText(element) {
+    if (element == undefined) {
+        element = $(this);
+    }
+    let markdownText = element.html();
+    let markdownHTML = markdown.render(markdownText);
+    element.html(markdownHTML);
 }

@@ -31,14 +31,19 @@
     </div>
     <div class="row flex-grow-1 Blk-Trslcnt-Bg overflow-hidden text-light text-break" name="FieldsDiv">
         <div class="col container" style="display:none" id="Fields">
-                @foreach (var ColumnValue in item.ColumnValues)
+                @foreach (var columnValue in item.ColumnValues)
                 {
-                    var name = ColumnValue.Column.ColumnName;
-                    var value = ColumnValue.Value;
+                    var name = columnValue.Column.ColumnName;
+                    var value = columnValue.Value;
                     <div class="row"> 
-                        <div class="col-md-2"><span class="badge badge-dark">@name</span></div>
+                        <div class="col-md-2 d-flex flex-wrap align-items-center"><span class="badge badge-dark">@name</span></div>
                         @{ 
-                            var html = Html.Raw("<strong>"+value+"</strong>");
+                            var css = "";
+                            if (columnValue.Column.TypeID == 4 || columnValue.Column.TypeID == 5)
+                            {
+                                css = "markdown";
+                            }
+                            var html = Html.Raw($"<strong class='{css}'>{value}</strong>");
                             switch (value)
                             {
                                 case "true":

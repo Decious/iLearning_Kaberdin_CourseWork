@@ -38,6 +38,7 @@
                     @foreach (var columnValue in product.ColumnValues.OrderBy(c => c.ColumnID))
                     {
                         var html = Html.Raw(columnValue.Value);
+                        var css = "";
                         switch (columnValue.Value)
                         {
                             case "true":
@@ -47,7 +48,11 @@
                                 html = Html.Raw("<i class='fa fa-times'></i>");
                                 break;
                         }
-                        <td class="@columnValue.Column.ColumnName">@html</td>
+                        if(columnValue.Column.TypeID == 4 || columnValue.Column.TypeID == 5)
+                        {
+                            css = "markdown";
+                        }
+                        <td class="@columnValue.Column.ColumnName @css">@html</td>
                     }
                 </tr>
             }

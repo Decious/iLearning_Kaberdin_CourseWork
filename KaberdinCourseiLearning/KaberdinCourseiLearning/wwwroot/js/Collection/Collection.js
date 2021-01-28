@@ -1,13 +1,5 @@
-﻿let descriptions = $("[name='Description']");
-let markdown = window.markdownit();
-$("[name='colDelete']").on('click', Delete);
+﻿$("[name='colDelete']").on('click', Delete);
 $("[name='colEdit']").on('click', Edit);
-descriptions.each(function (i, e) {
-    e = $(e);
-    let markdownText = e.html();
-    let markdownHTML = markdown.render(markdownText);
-    e.html(markdownHTML);
-});
 function ViewCollection(div) {
     let collectionID = $(div).closest("[name='Collection']").attr("id");
     location.href = location.origin + "/Collection?id=" + collectionID;

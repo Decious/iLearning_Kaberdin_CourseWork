@@ -1,12 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <Target Name="ToolRestore" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet tool restore" StandardOutputImportance="high" />
-  </Target>
 
-  <Target Name="PreBuild" AfterTargets="ToolRestore">
-    <Exec Command="dotnet tool run webcompiler -r wwwroot" StandardOutputImportance="high" />
-  </Target>
     
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
