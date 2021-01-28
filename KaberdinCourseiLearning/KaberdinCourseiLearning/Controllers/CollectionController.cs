@@ -1,13 +1,19 @@
-﻿using KaberdinCourseiLearning.Data;
+﻿using CsvHelper;
+using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.CollectionRequests;
+using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace KaberdinCourseiLearning.Controllers
@@ -77,6 +83,53 @@ namespace KaberdinCourseiLearning.Controllers
                 return new JsonResult(new ServerResponse(true,localizer["DefaultSuccess"]));
             }
             return new JsonResult(new ServerResponse(false,localizer["DefaultForbidden"]));
+        }
+        public async Task<IActionResult> Export([FromQuery]int collectionID)
+        {
+            var collection = await context.ProductCollections
+                .Where(c => c.CollectionID == collectionID)
+                .Include(c=>c.Columns)
+                .Include(c=>c.Products).ThenInclude(p=>p.ColumnValues)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync();
+            if (collection == null)
+            {
+                var response = new ServerResponse(false, localizer["NoCollectionError"]);
+                return new JsonResult(response);
+            }
+            var rcf = HttpContext.Features.Get<IRequestCultureFeature>();
+            var file = GetCSV(collection, rcf.RequestCulture.Culture);
+            return File(file, "text/plain", collection.Name);
+        }
+        private byte[] GetCSV(ProductCollection collection,CultureInfo culture)
+        {
+            using (var memory = new MemoryStream())
+            {
+                using (var writer = new StreamWriter(memory, Encoding.UTF8))
+                {
+                    using (var csv = new CsvWriter(writer, culture))
+                    {
+                        csv.WriteField(localizer["Name"]);
+                        csv.WriteField(localizer["Tags"]);
+                        foreach (var column in collection.Columns.OrderBy(c => c.ColumnID))
+                        {
+                            csv.WriteField(column.ColumnName);
+                        }
+                        csv.NextRecord();
+                        foreach(var product in collection.Products)
+                        {
+                            csv.WriteField(product.Name);
+                            csv.WriteField(product.Tags);
+                            foreach (var value in product.ColumnValues.OrderBy(cv => cv.ColumnID))
+                            {
+                                csv.WriteField(value.Value);
+                            }
+                            csv.NextRecord();
+                        }
+                    }
+                }
+                return memory.ToArray();
+            }
         }
     }
 }

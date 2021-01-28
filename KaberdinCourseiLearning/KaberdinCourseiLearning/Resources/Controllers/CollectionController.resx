@@ -123,9 +123,11 @@
   <data name="DefaultSuccess" xml:space="preserve">
     <value>Action completed successfully.</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NoCollectionError" xml:space="preserve">
     <value>Collection no longer exists.</value>
-    
   </data>
   <data name="NoCreatePermission" xml:space="preserve">
     <value>You dont have permission to create collections for this account.</value>
@@ -135,5 +137,8 @@
   </data>
   <data name="Request invalid." xml:space="preserve">
     <value>Request invalid.</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
   </data>
 </root>

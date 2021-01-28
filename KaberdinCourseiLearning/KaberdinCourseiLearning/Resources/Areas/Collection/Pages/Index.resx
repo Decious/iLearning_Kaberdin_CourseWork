@@ -120,6 +120,9 @@
   <data name="Add product" xml:space="preserve">
     <value>Add product</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export to CSV</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>

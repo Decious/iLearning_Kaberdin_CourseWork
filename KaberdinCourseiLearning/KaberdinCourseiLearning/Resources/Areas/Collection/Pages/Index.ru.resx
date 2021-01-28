@@ -120,6 +120,9 @@
   <data name="Add product" xml:space="preserve">
     <value>Добавить товар</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Экспортировать в CSV</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Название</value>
   </data>
