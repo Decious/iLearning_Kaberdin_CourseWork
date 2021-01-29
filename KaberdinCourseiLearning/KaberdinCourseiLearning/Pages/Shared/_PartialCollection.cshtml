@@ -7,10 +7,10 @@
 }
 <div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="@collection.CollectionID">
     <div class="row bg-darkblue" name="CollectionAuthor">
-        <div class="col-2 m-h-100" name="CollectionAuthorAvatar">
+        <div class="col-3 col-sm-2 m-h-100" name="CollectionAuthorAvatar">
             <img src="@collection.User.AvatarUrl" class="img-thumbnail m-h-100" alt="...">
         </div>
-        <div class="col-9" name="CollectionAuthorName">
+        <div class="col-8 col-sm-9" name="CollectionAuthorName">
             <a name="CollectionAuthor" asp-area="User" asp-page="/Profile" asp-route-name="@collection.User.UserName" class="text-break font-weight-bold text-light text-left">@collection.User.UserName</a>
         </div>
     </div>
