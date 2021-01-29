@@ -1,15 +1,14 @@
 ﻿div[name="ProfileCard"] {
     width: 18rem;
 }
-div[name="DescriptionDiv"] {
-    cursor:pointer;
+.ViewableCollection {
+    cursor: pointer;
 }
 
 div[name="Collection"] {
     margin-bottom: 15px;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 240px;
 }
 
 div[name="CollectionControls"] {
@@ -21,9 +20,6 @@ div[name="CollectionAuthor"] {
     max-height: 40px;
 }
 
-div[name="Description"] * {
-    color: inherit !important;
-}
 .m-h-100 {
     max-height: 100%;
 }

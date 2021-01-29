@@ -14,7 +14,7 @@
             <a name="CollectionAuthor" asp-area="User" asp-page="/Profile" asp-route-name="@collection.User.UserName" class="text-break font-weight-bold text-light text-left">@collection.User.UserName</a>
         </div>
     </div>
-    <div class="row Blk-Trslcnt-Bg" name="HeaderData">
+    <div class="row Blk-Trslcnt-Bg ViewableCollection" name="HeaderData">
         <div class="col-6">
             <p name="CollectionName" class="font-weight-bold text-light">@collection.Name</p>
         </div>
@@ -22,11 +22,11 @@
             <p name="CollectionTheme" class="font-weight-bold text-light text-right"><span class="badge badge-dark badge-pill">@ThemeLocalizer[collection.Theme]</span></p>
         </div>
     </div>
-    <div class="row Blk-Trslcnt-Bg flex-grow-1 overflow-hidden text-light text-break" name="DescriptionDiv" onclick="ViewCollection(this)">
-        <p class="col markdown" name="Description">@collection.Description</p>
+    <div class="row Blk-Trslcnt-Bg flex-grow-1 collapse text-light text-break ViewableCollection" name="DescriptionDiv">
+        <p class="markdown" name="Description">@collection.Description</p>
     </div>
-    <div class="row Blk-Trslcnt-Bg" name="CollectionControls">
-        <button class="btn btn-light align-bottom-center position-absolute" name="ShowDetail" onclick="onToggleDetail(this)"><i class="fa fa-arrow-down"></i></button>
+    <div class="row Blk-Trslcnt-Bg ViewableCollection" name="CollectionControls">
+        <button class="btn btn-light align-bottom-center position-absolute" name="ShowDetail"><i class="fas fa-angle-down"></i></button>
         @if (Model.PermittedToChange)
         {
             <div class="position-absolute align-bottom-right" name="buttonGroup">

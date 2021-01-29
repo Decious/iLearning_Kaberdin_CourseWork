@@ -1,8 +1,25 @@
 ﻿$("[name='colDelete']").on('click', Delete);
 $("[name='colEdit']").on('click', Edit);
-function ViewCollection(div) {
-    let collectionID = $(div).closest("[name='Collection']").attr("id");
-    location.href = location.origin + "/Collection?id=" + collectionID;
+$("[name='DescriptionDiv']").each(function (i, e) {
+    let btn = $(e).parent().find("[name='ShowDetail']");
+    $(e).on("hide.bs.collapse", function () {
+        $(btn).html('<i class="fas fa-angle-down"></i>');
+    });
+    $(e).on("show.bs.collapse", function () {
+        $(btn).html('<i class="fas fa-angle-up"></i>');
+    });
+});
+$("[name='ShowDetail']").each(function (i, e) {
+    $(e).click(toggleDetail);
+})
+$("[class*='ViewableCollection']").each(function (i, e) {
+    $(e).click(viewCollection);
+})
+function viewCollection(event) {
+    if ($(event.target).is("div")) {
+        let collectionID = $(event.target).closest("[name='Collection']").attr("id");
+        location.href = location.origin + "/Collection?id=" + collectionID;
+    }
 }
 function Delete() {
     let collectionID = $(this).closest("[name='Collection']").attr("id");
@@ -12,15 +29,10 @@ function Edit() {
     let collectionID = $(this).closest("[name='Collection']").attr("id");
     location.href = location.origin + "/Collection/Create?id=" + collectionID;
 }
-function onToggleDetail(btn) {
-    let collection = $(btn).closest("[name='Collection']");
-    if (collection.hasClass('expand-collection')) {
-        collection.removeClass('expand-collection');
-        $(btn).html("<i class='fa fa-arrow-down'></i>");
-    } else {
-        collection.addClass('expand-collection');
-        $(btn).html("<i class='fa fa-arrow-up'></i>");
-    }
+function toggleDetail(event) {
+    let collection = $(event.target).closest("[name='Collection']");
+    let description = collection.find("[name='DescriptionDiv']");
+    description.collapse("toggle");
 }
 function sendRequest(handler, data) {
     $.ajax({
