@@ -8,6 +8,7 @@ var commentValue;
 $("#commentSend").on('click', function () {
     commentValue = $("#commentInput").val();
     sendComment();
+    $("#commentInput").val('');
 })
 function sendComment() {
     connection.invoke("sendComment", commentValue, productID);
