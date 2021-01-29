@@ -9,6 +9,9 @@
         background-size:cover;
         background-repeat:no-repeat;
     }
+    .fieldsContainer p{
+        margin:auto;
+    }
 </style>
 <div class="PartialItem container position-relative d-flex flex-column" name="Item" id="@item.ProductID">
     <div class="row Blk-Trslcnt-Bg" name="ItemAuthor">
@@ -30,7 +33,7 @@
         </div>
     </div>
     <div class="row flex-grow-1 Blk-Trslcnt-Bg overflow-hidden text-light text-break collapse" name="FieldsDiv">
-        <div class="col container" name="ProductFields">
+        <div class="col container fieldsContainer" name="ProductFields">
                 @foreach (var columnValue in item.ColumnValues)
                 {
                     var name = columnValue.Column.ColumnName;
