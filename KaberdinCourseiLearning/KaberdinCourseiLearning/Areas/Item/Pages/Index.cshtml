@@ -11,8 +11,6 @@
 <link href="~/css/Collection/Collection.css" rel="stylesheet" />
 <input hidden id="productID" value="@Model.Product.ProductID" />
 <partial name="_PartialItem" model="Model.ItemModel" />
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/Product/PartialItem.js"></script>
 <link href="~/css/Comment/Comment.css" rel="stylesheet" />
 <div class="card mt-3">
     <div class="card-header">
@@ -65,4 +63,5 @@
 @section Scripts{
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/Product/Comments.js"></script>
+    <script src="~/js/Product/PartialItem.js"></script>
 }

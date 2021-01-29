@@ -51,7 +51,7 @@
                         }
                     </div>
                     <div class="card-footer" id="ProfileDescription">
-                        <div class="card-text overflow-hidden h-100" @if (Model.PermittedToChange) { Html.Raw("id='DescriptionContent'"); }>
+                        <div class="card-text overflow-hidden h-100" @if (Model.PermittedToChange) { @Html.Raw("id='DescriptionContent'"); }>
                             <p class="text-break text-wrap text-truncate markdown">@Model.PageUser.HomePage.Description</p>
                         </div>
                     </div>

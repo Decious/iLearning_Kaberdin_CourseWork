@@ -24,13 +24,13 @@
             <p name="ItemTags" class="font-weight-bold text-light text-right">
             @foreach(var tag in item.Tags.Split(","))
             {
-                <a asp-page="Find" asp-route-q="#@tag"><span class="badge badge-dark badge-pill">@tag</span></a>
+                <a asp-page="Find" asp-route-q="#@tag"><span class="badge badge-dark badge-pill hoverable">@tag</span></a>
             }
             </p>
         </div>
     </div>
     <div class="row flex-grow-1 Blk-Trslcnt-Bg overflow-hidden text-light text-break" name="FieldsDiv">
-        <div class="col container" style="display:none" id="Fields">
+        <div class="col collapse container" name="ProductFields">
                 @foreach (var columnValue in item.ColumnValues)
                 {
                     var name = columnValue.Column.ColumnName;
@@ -79,7 +79,7 @@
                 }
             }
         </div>
-            <button class="btn btn-light align-bottom-center position-absolute" name="ShowDetail"><i class="fa fa-arrow-down"></i></button>
+            <button class="btn btn-light align-bottom-center position-absolute" name="ShowDetail"><i class="fas fa-angle-down"></i></button>
             @if (Model.PermittedToChange)
             {
                 <div class="position-absolute align-bottom-right" name="buttonGroup">
@@ -87,5 +87,5 @@
                     <a class="btn btn-light" id="EditBtn" asp-area="Item" asp-page="Create" asp-route-productID="@item.ProductID"><i class="fa fa-edit"></i></a>
                 </div>
             }
-        </div>
+    </div>
 </div>

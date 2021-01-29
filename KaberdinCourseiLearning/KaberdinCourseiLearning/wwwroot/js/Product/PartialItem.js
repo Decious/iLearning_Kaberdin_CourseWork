@@ -1,16 +1,19 @@
 ﻿var displayed = false;
 var likeBtn = $("#LikeBtn");
 var likeCount = $("#LikeCount");
-$("[name='ShowDetail']").on('click', function () {
-    let Fields = $("#Fields");
-    if (displayed) {
-        Fields.hide(300);
-        $(this).html("<i class='fa fa-arrow-down'></i>");
-    } else {
-        Fields.show(300);
-        $(this).html("<i class='fa fa-arrow-up'></i>");
-    }
-    displayed = !displayed;
+$("[name='ShowDetail']").click(function () {
+    let fieldsDiv = $(this).parent().siblings("[name='FieldsDiv']");
+    let productFields = fieldsDiv.find("[name='ProductFields']");
+    productFields.collapse('toggle');
+});
+$("[name='ProductFields']").each(function (i, e) {
+    let btn = $(e).parent().siblings().find("[name='ShowDetail']");
+    $(e).on("hide.bs.collapse", function () {
+        $(btn).html('<i class="fas fa-angle-down"></i>');
+    });
+    $(e).on("show.bs.collapse", function () {
+        $(btn).html('<i class="fas fa-angle-up"></i>');
+    });
 });
 likeBtn.on('click', function () {
     updateData();

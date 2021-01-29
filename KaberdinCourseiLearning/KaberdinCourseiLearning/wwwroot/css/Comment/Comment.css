@@ -10,7 +10,6 @@
     overflow:scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    height:25rem;
     resize:vertical;
     min-height:7rem;
 }
