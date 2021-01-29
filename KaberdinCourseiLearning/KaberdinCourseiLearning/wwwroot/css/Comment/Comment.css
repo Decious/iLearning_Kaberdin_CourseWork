@@ -6,4 +6,15 @@
     width:40px;
     height:40px;
 }
-/*# sourceMappingURL=wwwroot\css\Comment\Comment.css.map */
+.CommentBoxContent {
+    overflow:scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    height:25rem;
+    resize:vertical;
+    min-height:7rem;
+}
+
+.CommentBoxContent::-webkit-scrollbar {
+    display: none;
+}

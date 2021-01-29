@@ -6,10 +6,17 @@ connection.on("addComment", addComment);
 
 var commentValue;
 $("#commentSend").on('click', function () {
+    sendCommentInputHandler();
+})
+$("#commentInput").on('keypress', function (e) {
+    if (e.which == 13)
+        sendCommentInputHandler();
+})
+function sendCommentInputHandler() {
     commentValue = $("#commentInput").val();
     sendComment();
     $("#commentInput").val('');
-})
+}
 function sendComment() {
     connection.invoke("sendComment", commentValue, productID);
 }
@@ -24,6 +31,6 @@ function addComment(response) {
     clone.find(".Date").html(response.creationDate);
     clone.find(".comment-body").html(response.message);
     clone.attr('id', response.commentID);
-    $("#CommentBox").prepend(clone);
+    $("[class*='CommentBoxContent']").prepend(clone);
     clone.show(300);
 }

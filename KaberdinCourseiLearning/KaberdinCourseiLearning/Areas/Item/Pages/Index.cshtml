@@ -37,27 +37,29 @@
             </div>
         </div>
 
-        @foreach (var comment in Model.Product.Comments.OrderByDescending(c => c.CreationTime))
-        {
-            <div class="card m-2 comment" id="@comment.CommentID">
-                <div class="card-header text p-0 row m-0">
-                    <div class="col-2 col-sm-1 p-0"><img src="@comment.User.AvatarUrl" class="Avatar img-thumbnail" /></div>
-                    @{
-                        var roles = await UserManager.GetRolesAsync(comment.User);
-                        var rolesHtml = "";
-                        foreach (var role in roles)
-                        {
-                            rolesHtml += $"<span class='badge badge-dark'>{Localizer[role].Value}</span>";
+        <div class="CommentBoxContent">
+            @foreach (var comment in Model.Product.Comments.OrderByDescending(c => c.CreationTime))
+            {
+                <div class="card m-2 comment" id="@comment.CommentID">
+                    <div class="card-header text p-0 row m-0">
+                        <div class="col-2 col-sm-1 p-0"><img src="@comment.User.AvatarUrl" class="Avatar img-thumbnail" /></div>
+                        @{
+                            var roles = await UserManager.GetRolesAsync(comment.User);
+                            var rolesHtml = "";
+                            foreach (var role in roles)
+                            {
+                                rolesHtml += $"<span class='badge badge-dark'>{Localizer[role].Value}</span>";
+                            }
                         }
-                    }
-                    <div class="col-5 col-sm-7 UserName">@comment.User.UserName @Html.Raw(rolesHtml)</div>
-                    <div class="col-5 col-sm-4 text-right Date">@comment.CreationTime.ToShortDateString() @comment.CreationTime.ToShortTimeString()</div>
+                        <div class="col-5 col-sm-7 UserName">@comment.User.UserName @Html.Raw(rolesHtml)</div>
+                        <div class="col-5 col-sm-4 text-right Date">@comment.CreationTime.ToShortDateString() @comment.CreationTime.ToShortTimeString()</div>
+                    </div>
+                    <div class="card-body row comment-body">
+                        @comment.Message
+                    </div>
                 </div>
-                <div class="card-body row comment-body">
-                    @comment.Message
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
 @section Scripts{
