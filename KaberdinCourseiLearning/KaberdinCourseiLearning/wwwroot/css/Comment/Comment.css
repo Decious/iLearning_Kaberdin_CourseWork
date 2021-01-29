@@ -12,6 +12,7 @@
     scrollbar-width: none;
     resize:vertical;
     min-height:7rem;
+    max-height:25rem;
 }
 
 .CommentBoxContent::-webkit-scrollbar {

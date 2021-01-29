@@ -22,8 +22,10 @@
             <p name="CollectionTheme" class="font-weight-bold text-light text-right"><span class="badge badge-dark badge-pill">@ThemeLocalizer[collection.Theme]</span></p>
         </div>
     </div>
-    <div class="row Blk-Trslcnt-Bg flex-grow-1 collapse text-light text-break ViewableCollection" name="DescriptionDiv">
-        <p class="markdown" name="Description">@collection.Description</p>
+    <div class="collapse row Blk-Trslcnt-Bg ViewableCollection" name="CollapsableDescriptionDiv">
+        <div class="ml-3 mr-3 text-light text-break" name="DescriptionDiv">
+            <p class="markdown" name="Description">@collection.Description</p>
+        </div>
     </div>
     <div class="row Blk-Trslcnt-Bg ViewableCollection" name="CollectionControls">
         <button class="btn btn-light align-bottom-center position-absolute" name="ShowDetail"><i class="fas fa-angle-down"></i></button>

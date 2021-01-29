@@ -1,6 +1,6 @@
 ﻿$("[name='colDelete']").on('click', Delete);
 $("[name='colEdit']").on('click', Edit);
-$("[name='DescriptionDiv']").each(function (i, e) {
+$("[name='CollapsableDescriptionDiv']").each(function (i, e) {
     let btn = $(e).parent().find("[name='ShowDetail']");
     $(e).on("hide.bs.collapse", function () {
         $(btn).html('<i class="fas fa-angle-down"></i>');
@@ -31,7 +31,7 @@ function Edit() {
 }
 function toggleDetail(event) {
     let collection = $(event.target).closest("[name='Collection']");
-    let description = collection.find("[name='DescriptionDiv']");
+    let description = collection.find("[name='CollapsableDescriptionDiv']");
     description.collapse("toggle");
 }
 function sendRequest(handler, data) {

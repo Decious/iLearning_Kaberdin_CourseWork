@@ -3,11 +3,10 @@ var likeBtn = $("#LikeBtn");
 var likeCount = $("#LikeCount");
 $("[name='ShowDetail']").click(function () {
     let fieldsDiv = $(this).parent().siblings("[name='FieldsDiv']");
-    let productFields = fieldsDiv.find("[name='ProductFields']");
-    productFields.collapse('toggle');
+    fieldsDiv.collapse('toggle');
 });
-$("[name='ProductFields']").each(function (i, e) {
-    let btn = $(e).parent().siblings().find("[name='ShowDetail']");
+$("[name='FieldsDiv']").each(function (i, e) {
+    let btn = $(e).siblings().find("[name='ShowDetail']");
     $(e).on("hide.bs.collapse", function () {
         $(btn).html('<i class="fas fa-angle-down"></i>');
     });
