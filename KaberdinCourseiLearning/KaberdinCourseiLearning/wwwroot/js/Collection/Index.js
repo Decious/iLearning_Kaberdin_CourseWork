@@ -10,20 +10,26 @@ tagElements.each(function (i, element) {
     e.html(html);
 })
 $("#productsTable").on("click-cell.bs.table", function (field, value, row, $element) {
-    if (value == "operations") {
-        let action = $(row).data("action");
-        let actionHandler = $(row).attr('href');
-        doAction(actionHandler,action,$element.id);
-        return false;
-    }
+    if (value == "operations") return
     let href = $element._data["href"];
     if(href != undefined)
         window.location = window.origin + href;
 })
 $("th").addClass('hoverable');
-function doAction(actionHandler,action,id) {
-    if (action == "Delete") {
-        $("#productsTable").bootstrapTable('remove', { field: 'id', values: [id] })
-    }
+
+function actionHandler(link) {
+    let actionHandler = $(link).attr('href');
+    let id = getParameterByName("id", actionHandler);
+    $("#productsTable").bootstrapTable('remove', { field: 'id', values: [id] });
     sendGenericAjaxRequest(actionHandler);
+    return false;
+}
+
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }

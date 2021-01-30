@@ -73,7 +73,10 @@
                 }
                 @if (Model.PermittedToChange)
                 {
-                    <td class="clean"><a data-action="Delete" onclick="return false" asp-controller="Item" asp-action="Delete" asp-route-id="@product.ProductID"><i class="fa fa-trash"></i></a></td>
+                    <td class="clean">
+                        <a class="text-danger" name="productRowDelete" onclick="return actionHandler(this)" asp-controller="Item" asp-action="Delete" asp-route-id="@product.ProductID"><i class="fa fa-trash"></i></a>
+                        <a class="text-info ml-2" name="productEdit" asp-area="Item" asp-page="Create" asp-route-productID="@product.ProductID"><i class="fa fa-edit"></i></a>
+                    </td>
                 }
             </tr>
             }
