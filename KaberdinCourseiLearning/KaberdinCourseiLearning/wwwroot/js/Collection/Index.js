@@ -1,12 +1,4 @@
-﻿var names = ['ID','Name','Tags'];
-$("[name='ColumnName']").each(function (i, e) {
-    names.push($(e).data('sort'));
-});
-var options = {
-    valueNames: names
-};
-var productList = new List('products', options);
-var tagElements = $("[name='tags']");
+﻿var tagElements = $("[name='tags']");
 tagElements.each(function (i, element) {
     let e = $(element);
     let tags = e.text().split(",");
@@ -17,6 +9,21 @@ tagElements.each(function (i, element) {
     })
     e.html(html);
 })
-$(".product").click(function () {
-    window.location = window.origin+$(this).attr("href");
+$("#productsTable").on("click-cell.bs.table", function (field, value, row, $element) {
+    if (value == "operations") {
+        let action = $(row).data("action");
+        let actionHandler = $(row).attr('href');
+        doAction(actionHandler,action,$element.id);
+        return false;
+    }
+    let href = $element._data["href"];
+    if(href != undefined)
+        window.location = window.origin + href;
 })
+$("th").addClass('hoverable');
+function doAction(actionHandler,action,id) {
+    if (action == "Delete") {
+        $("#productsTable").bootstrapTable('remove', { field: 'id', values: [id] })
+    }
+    sendGenericAjaxRequest(actionHandler);
+}

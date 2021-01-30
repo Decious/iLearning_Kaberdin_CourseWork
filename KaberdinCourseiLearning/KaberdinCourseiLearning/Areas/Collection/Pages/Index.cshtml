@@ -1,6 +1,7 @@
 ﻿@page
 @model KaberdinCourseiLearning.Areas.Collection.Pages.IndexModel;
 @using KaberdinCourseiLearning.Pages.Partials.Models;
+@using System.Threading;
 @inject IViewLocalizer Localizer
 @{
     var collectionModel = new CollectionModel() { Collection = Model.Collection, PermittedToChange = Model.PermittedToChange };
@@ -9,61 +10,79 @@
 <link href="~/css/Collection/Collection.css" rel="stylesheet" />
 <link href="~/css/Collection/Index.css" rel="stylesheet" />
 <link href="~/lib/tagify/tagify.css" rel="stylesheet" />
+<link href="~/lib/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
 <partial name="_PartialCollection" model="collectionModel" />
 <div id="products">
-    @if (Model.PermittedToChange)
-    {
-        <a class="btn btn-outline-primary m-2" asp-area="Item" asp-page="Create" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fa fa-plus-square"></i> @Localizer["Add product"]</a>
-    }
-    <a class="btn btn-outline-primary m-2 text-right" asp-controller="Collection" asp-action="Export" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fas fa-file-download"></i> @Localizer["Export"]</a>
-    <input class="search d-inline-block form-control" style="width:12rem;" placeholder="@Localizer["Search"]" />
-    <table class="table table-sm table-responsive-sm table-hover table-borderless table-active">
+    <div class="d-flex flex-wrap p-2">
+        @if (Model.PermittedToChange)
+        {
+            <a class="btn btn-outline-primary mr-1 mr-sm-2" asp-area="Item" asp-page="Create" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fa fa-plus-square"></i> @Localizer["Add product"]</a>
+        }
+        <a class="btn btn-outline-primary text-right" asp-controller="Collection" asp-action="Export" asp-route-collectionID="@Model.Collection.CollectionID"><i class="fas fa-file-download"></i> @Localizer["Export"]</a>
+        <div class="ml-md-auto mt-md-0 mt-2" id="tableToolbar"></div>
+    </div>
+    <table data-toggle="table"
+           data-pagination="true"
+           data-search="true"
+           data-locale="@Thread.CurrentThread.CurrentCulture.Name"
+           data-buttons-toolbar="#tableToolbar"
+           data-buttons-class="outline-primary"
+           data-show-columns="true"
+           id="productsTable"
+           class="table table-sm table-hover table-borderless table-active">
         <thead>
             <tr class="text-center">
-                <th class="sort hoverable" data-sort="ID" scope="col">ID</th>
-                <th class="sort hoverable" data-sort="Name" scope="col">@Localizer["Name"]</th>
-                <th class="sort hoverable" data-sort="Tags" scope="col">@Localizer["Tags"]</th>
+                <th data-sortable="true" data-field="id" scope="col">ID</th>
+                <th data-sortable="true" data-field="name" scope="col">@Localizer["Name"]</th>
+                <th data-sortable="true" data-field="tags" scope="col">@Localizer["Tags"]</th>
                 @foreach (var column in Model.Collection.Columns.OrderBy(c => c.ColumnID))
                 {
-                    <th class="sort hoverable" data-sort="@column.ColumnName" name="ColumnName" scope="col">@column.ColumnName</th>
+                    <th data-sortable="true" data-field="@column.ColumnName" name="ColumnName" scope="col">@column.ColumnName</th>
+                }
+                @if (Model.PermittedToChange)
+                {
+                    <th data-field="operations" scope="col">@Localizer["Operation"]</th>
                 }
             </tr>
         </thead>
-        <tbody class="list">
+        <tbody>
             @foreach (var product in Model.Collection.Products)
             {
-                <tr name="record" href="/Item?id=@product.ProductID" class="product hoverable text-center position-relative">
-                    <td class="ID">@product.ProductID</td>
-                    <td class="Name">@product.Name</td>
-                    <td class="Tags" name="tags">@product.Tags</td>
-                    @foreach (var columnValue in product.ColumnValues.OrderBy(c => c.ColumnID))
+            <tr data-href="/Item?id=@product.ProductID" class="product hoverable text-center position-relative">
+                <td class="clean">@product.ProductID</td>
+                <td class="clean">@product.Name</td>
+                <td class="clean" name="tags">@product.Tags</td>
+                @foreach (var columnValue in product.ColumnValues.OrderBy(c => c.ColumnID))
+                {
+                    var html = Html.Raw(columnValue.Value);
+                    var css = "";
+                    switch (columnValue.Value)
                     {
-                        var html = Html.Raw(columnValue.Value);
-                        var css = "";
-                        switch (columnValue.Value)
-                        {
-                            case "true":
-                                html = Html.Raw("<i class='fa fa-check'></i>");
-                                break;
-                            case "false":
-                                html = Html.Raw("<i class='fa fa-times'></i>");
-                                break;
-                        }
-                        if (columnValue.Column.TypeID == 4 || columnValue.Column.TypeID == 5)
-                        {
-                            css = "markdown";
-                        }
-                        <td class="@columnValue.Column.ColumnName @css">@html</td>
+                        case "true":
+                            html = Html.Raw("<i class='fa fa-check'></i>");
+                            break;
+                        case "false":
+                            html = Html.Raw("<i class='fa fa-times'></i>");
+                            break;
                     }
-                </tr>
+                    if (columnValue.Column.TypeID == 4 || columnValue.Column.TypeID == 5)
+                    {
+                        css = "markdown";
+                    }
+                    <td class="clean @css">@html</td>
+                }
+                @if (Model.PermittedToChange)
+                {
+                    <td class="clean"><a data-action="Delete" onclick="return false" asp-controller="Item" asp-action="Delete" asp-route-id="@product.ProductID"><i class="fa fa-trash"></i></a></td>
+                }
+            </tr>
             }
         </tbody>
     </table>
 </div>
 @section Scripts{
-    <script src="~/lib/markdown-it/markdown-it.js"></script>
+    <script src="~/lib/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/lib/bootstrap-table/bootstrap-table-locale-all.min.js"></script>
     <script src="~/js/Collection/Collection.js"></script>
-    <script src="~/lib/tagify/jQuery.tagify.min.js"></script>
-    <script src="~/lib/list.js/list.js"></script>
     <script src="~/js/Collection/Index.js"></script>
 }

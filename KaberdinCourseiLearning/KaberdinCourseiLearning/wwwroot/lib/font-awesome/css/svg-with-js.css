@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Font Awesome Free 5.15.1 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
@@ -83,8 +83,7 @@ svg:not(:root).svg-inline--fa {
   width: 1em; }
   .fa-layers svg.svg-inline--fa {
     -webkit-transform-origin: center center;
-            -ms-transform-origin: center center;
-        transform-origin: center center; }
+            transform-origin: center center; }
 
 .fa-layers-text, .fa-layers-counter {
   display: inline-block;
@@ -95,11 +94,9 @@ svg:not(:root).svg-inline--fa {
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
-          -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   -webkit-transform-origin: center center;
-          -ms-transform-origin: center center;
-      transform-origin: center center; }
+          transform-origin: center center; }
 
 .fa-layers-counter {
   background-color: #ff253a;
@@ -114,26 +111,21 @@ svg:not(:root).svg-inline--fa {
   overflow: hidden;
   padding: .25em;
   right: 0;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis;
+  text-overflow: ellipsis;
   top: 0;
   -webkit-transform: scale(0.25);
-          -ms-transform: scale(0.25);
-      transform: scale(0.25);
+          transform: scale(0.25);
   -webkit-transform-origin: top right;
-          -ms-transform-origin: top right;
-      transform-origin: top right; }
+          transform-origin: top right; }
 
 .fa-layers-bottom-right {
   bottom: 0;
   right: 0;
   top: auto;
   -webkit-transform: scale(0.25);
-          -ms-transform: scale(0.25);
-      transform: scale(0.25);
+          transform: scale(0.25);
   -webkit-transform-origin: bottom right;
-          -ms-transform-origin: bottom right;
-      transform-origin: bottom right; }
+          transform-origin: bottom right; }
 
 .fa-layers-bottom-left {
   bottom: 0;
@@ -141,32 +133,26 @@ svg:not(:root).svg-inline--fa {
   right: auto;
   top: auto;
   -webkit-transform: scale(0.25);
-          -ms-transform: scale(0.25);
-      transform: scale(0.25);
+          transform: scale(0.25);
   -webkit-transform-origin: bottom left;
-          -ms-transform-origin: bottom left;
-      transform-origin: bottom left; }
+          transform-origin: bottom left; }
 
 .fa-layers-top-right {
   right: 0;
   top: 0;
   -webkit-transform: scale(0.25);
-          -ms-transform: scale(0.25);
-      transform: scale(0.25);
+          transform: scale(0.25);
   -webkit-transform-origin: top right;
-          -ms-transform-origin: top right;
-      transform-origin: top right; }
+          transform-origin: top right; }
 
 .fa-layers-top-left {
   left: 0;
   right: auto;
   top: 0;
   -webkit-transform: scale(0.25);
-          -ms-transform: scale(0.25);
-      transform: scale(0.25);
+          transform: scale(0.25);
   -webkit-transform-origin: top left;
-          -ms-transform-origin: top left;
-      transform-origin: top left; }
+          transform-origin: top left; }
 
 .fa-lg {
   font-size: 1.33333em;
@@ -279,38 +265,32 @@ svg:not(:root).svg-inline--fa {
 .fa-rotate-90 {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
   -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
-      transform: rotate(90deg); }
+          transform: rotate(90deg); }
 
 .fa-rotate-180 {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
   -webkit-transform: rotate(180deg);
-          -ms-transform: rotate(180deg);
-      transform: rotate(180deg); }
+          transform: rotate(180deg); }
 
 .fa-rotate-270 {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
   -webkit-transform: rotate(270deg);
-          -ms-transform: rotate(270deg);
-      transform: rotate(270deg); }
+          transform: rotate(270deg); }
 
 .fa-flip-horizontal {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
   -webkit-transform: scale(-1, 1);
-          -ms-transform: scale(-1, 1);
-      transform: scale(-1, 1); }
+          transform: scale(-1, 1); }
 
 .fa-flip-vertical {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
   -webkit-transform: scale(1, -1);
-          -ms-transform: scale(1, -1);
-      transform: scale(1, -1); }
+          transform: scale(1, -1); }
 
 .fa-flip-both, .fa-flip-horizontal.fa-flip-vertical {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
   -webkit-transform: scale(-1, -1);
-          -ms-transform: scale(-1, -1);
-      transform: scale(-1, -1); }
+          transform: scale(-1, -1); }
 
 :root .fa-rotate-90,
 :root .fa-rotate-180,
@@ -389,5 +369,3 @@ svg:not(:root).svg-inline--fa {
 
 .fad.fa-inverse {
   color: #fff; }
-
-/*# sourceMappingURL=wwwroot\lib\font-awesome\css\svg-with-js.css.map */

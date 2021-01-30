@@ -26,6 +26,10 @@
     {
       "library": "list.js@2.3.0",
       "destination": "wwwroot/lib/list.js/"
+    },
+    {
+      "library": "bootstrap-table@1.18.2",
+      "destination": "wwwroot/lib/bootstrap-table/"
     }
   ]
 }

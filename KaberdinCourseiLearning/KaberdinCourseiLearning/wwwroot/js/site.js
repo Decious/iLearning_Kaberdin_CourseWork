@@ -64,3 +64,10 @@ function updateMarkdownText(element) {
     let markdownHTML = markdown.render(markdownText);
     element.html(markdownHTML);
 }
+function sendGenericAjaxRequest(handler) {
+    $.ajax({
+        method: "post",
+        url: handler,
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+    });
+}
