@@ -3,7 +3,7 @@
 @{
     var item = Model.Item;
 }
-<div class="PartialItem background-image-cover container position-relative d-flex flex-column" name="Item" id="@item.ProductID">
+<div class="background-image-cover container position-relative d-flex flex-column" style="background-image: url(@item.Collection.BackgroundUrl);" name="Item" id="@item.ProductID">
     <div class="row Blk-Trslcnt-Bg" name="ItemAuthor">
         <div class="col" name="ItemCollectionName" style="max-height:2rem;">
             <a name="Collection" asp-area="Collection" asp-page="/Index" asp-route-id="@item.CollectionID" class="text-break font-weight-bold text-light text-left">@item.Collection.Name</a>
