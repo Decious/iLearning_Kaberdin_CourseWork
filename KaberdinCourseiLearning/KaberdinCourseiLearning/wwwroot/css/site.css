@@ -53,6 +53,15 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.fieldsContainer p {
+    margin: auto;
+}
+.background-image-cover {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
 .hoverable:hover p {
     color:white;
 }
