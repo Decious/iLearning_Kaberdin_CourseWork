@@ -7,8 +7,6 @@
 }
 
 .carousel-item {
-    background-size: cover;
-    background-repeat: no-repeat;
     height: inherit;
 }
 

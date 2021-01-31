@@ -5,7 +5,7 @@
     var css = $"background-image: url({Model.Collection.BackgroundUrl});";
     var collection = Model.Collection;
 }
-<div class="container position-relative d-flex flex-column" style="@css" name="Collection" id="@collection.CollectionID">
+<div class="container background-image-cover position-relative d-flex flex-column" style="@css" name="Collection" id="@collection.CollectionID">
     <div class="row bg-darkblue" name="CollectionAuthor">
         <div class="col-3 col-sm-2 m-h-100" name="CollectionAuthorAvatar">
             <img src="@collection.User.AvatarUrl" class="img-thumbnail m-h-100" alt="...">
