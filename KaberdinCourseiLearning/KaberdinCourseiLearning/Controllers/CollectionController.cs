@@ -2,10 +2,12 @@
 using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.CollectionRequests;
 using KaberdinCourseiLearning.Data.Models;
+using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System;
@@ -42,20 +44,24 @@ namespace KaberdinCourseiLearning.Controllers
         }
         public async Task<IActionResult> Create([FromBody] CreateCollectionRequest request)
         {
-            if (request == null) return new JsonResult(new ServerResponse(false, localizer["Request invalid."]));
-            if (!await userManager.IsUserOwnerOrAdminAsync(User, request.PageUserName)) return new JsonResult(new ServerResponse(false, localizer["NoCreatePermission"], "/User/Profile?name=" + request.PageUserName));
+            if (!ModelState.IsValid)
+                return new JsonResult(new ServerResponse(false, ModelState.GetModelErrors()));
+            if (!await userManager.IsUserOwnerOrAdminAsync(User, request.PageUserName)) 
+                return new JsonResult(new ServerResponse(false, localizer["NoCreatePermission"], "/User/Profile?name=" + request.PageUserName));
             var response = await collectionManager.CreateCollectionAsync(request);
             return new JsonResult(response);
         }
-        public async Task<IActionResult> Edit([FromBody] EditCollectionRequest request)
-        {
-            if (request == null) return new JsonResult(new ServerResponse(false, localizer["Request invalid."]));
+        public async Task<IActionResult> Edit([FromBody] EditCollectionRequest request) {
+            if (!ModelState.IsValid)
+                return new JsonResult(new ServerResponse(false, ModelState.GetModelErrors()));
             var collection = await context.ProductCollections
                 .Where(c => c.CollectionID == request.CollectionID)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync();
-            if (collection == null) return new JsonResult(new ServerResponse(false, localizer["NoCollectionError"]));
-            if (!await userManager.IsUserOwnerOrAdminAsync(User, collection.User.UserName)) return new JsonResult(new ServerResponse(false, localizer["NoEditPermission"], "/Collection?id=" + request.CollectionID));
+            if (collection == null) 
+                return new JsonResult(new ServerResponse(false, localizer["NoCollectionError"]));
+            if (!await userManager.IsUserOwnerOrAdminAsync(User, collection.User.UserName)) 
+                return new JsonResult(new ServerResponse(false, localizer["NoEditPermission"], "/Collection?id=" + request.CollectionID));
             var response = await collectionManager.EditCollectionAsync(request);
             return new JsonResult(response);
         }
@@ -99,7 +105,7 @@ namespace KaberdinCourseiLearning.Controllers
             }
             var rcf = HttpContext.Features.Get<IRequestCultureFeature>();
             var file = GetCSV(collection, rcf.RequestCulture.Culture);
-            return File(file, "text/plain", collection.Name);
+            return File(file, "text/csv", collection.Name+".csv");
         }
         private byte[] GetCSV(ProductCollection collection,CultureInfo culture)
         {

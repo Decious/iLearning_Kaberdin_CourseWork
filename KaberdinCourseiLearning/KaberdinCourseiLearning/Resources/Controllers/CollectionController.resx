@@ -123,6 +123,9 @@
   <data name="DefaultSuccess" xml:space="preserve">
     <value>Action completed successfully.</value>
   </data>
+  <data name="ModelInvalid" xml:space="preserve">
+    <value>One of the column names is either empty or consists of whitespaces.</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>

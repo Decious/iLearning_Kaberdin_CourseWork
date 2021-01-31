@@ -148,7 +148,7 @@
     <value>Запомнить?</value>
   </data>
   <data name="The must be at least and at max characters long." xml:space="preserve">
-    <value>Значение поля {0} должно быть как минимум {2} или как максимум {1} символов в длину.</value>
+    <value>Значение поля {0} должно быть как минимум {2} и как максимум {1} символов в длину.</value>
   </data>
   <data name="CurrentPassword" xml:space="preserve">
     <value>Текущий пароль</value>
@@ -164,5 +164,14 @@
   </data>
   <data name="PhonePrompt" xml:space="preserve">
     <value>Номер телефона</value>
+  </data>
+  <data name="CollectionNameRequired" xml:space="preserve">
+    <value>Коллекция должна иметь название.</value>
+  </data>
+  <data name="ColumnNameRequired" xml:space="preserve">
+    <value>Все колонки должны иметь название.</value>
+  </data>
+  <data name="ProductNameRequired" xml:space="preserve">
+    <value>Товар должен иметь имя.</value>
   </data>
 </root>

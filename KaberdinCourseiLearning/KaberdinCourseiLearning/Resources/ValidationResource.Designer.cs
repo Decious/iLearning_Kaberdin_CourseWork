@@ -61,6 +61,24 @@ namespace KaberdinCourseiLearning.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collection must have a name..
+        /// </summary>
+        public static string CollectionNameRequired {
+            get {
+                return ResourceManager.GetString("CollectionNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All columns must have a name..
+        /// </summary>
+        public static string ColumnNameRequired {
+            get {
+                return ResourceManager.GetString("ColumnNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current password.
         /// </summary>
         public static string CurrentPassword {
@@ -183,6 +201,15 @@ namespace KaberdinCourseiLearning.Resources {
         public static string PhonePrompt {
             get {
                 return ResourceManager.GetString("PhonePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product must have a name..
+        /// </summary>
+        public static string ProductNameRequired {
+            get {
+                return ResourceManager.GetString("ProductNameRequired", resourceCulture);
             }
         }
         

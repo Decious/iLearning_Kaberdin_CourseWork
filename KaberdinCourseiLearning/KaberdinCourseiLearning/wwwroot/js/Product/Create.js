@@ -36,6 +36,7 @@ function getIDs() {
 }
 
 function getColumnValues() {
+    columnValues = [];
     let valueInputs = $("[name='columnValue']");
     valueInputs.each(function (i, e) {
         let value = "";

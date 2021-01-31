@@ -123,6 +123,9 @@
   <data name="DefaultSuccess" xml:space="preserve">
     <value>Действие выполнено успешно.</value>
   </data>
+  <data name="ModelInvalid" xml:space="preserve">
+    <value>Одна из колонок не содержит названия.</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Название</value>
   </data>

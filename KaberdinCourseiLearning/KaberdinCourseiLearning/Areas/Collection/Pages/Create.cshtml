@@ -26,6 +26,9 @@ else
         <h4>@Localizer["Create your collection"]</h4>
     }
     <hr />
+    <div id="FormErrors">
+
+    </div>
     <div class="row">
         <div class="col-md-3">
             <partial name="_CreatePlan" />
@@ -111,7 +114,7 @@ else
                                                 @{
                                                     var style = "display:none";
                                                     if (item.TypeID == 6) style = "";
-                                                    var allowedValues = item.AllowedValues == null? new string[0] :item.AllowedValues.Split(",");
+                                                    var allowedValues = item.AllowedValues == null ? new string[0] : item.AllowedValues.Split(",");
                                                 }
                                                 <div name="AllowedValues" style="@style">
                                                     @for (int i = 0; i < allowedValues.Length; i++)

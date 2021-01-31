@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CollectionNameRequired" xml:space="preserve">
+    <value>Collection must have a name.</value>
+  </data>
+  <data name="ColumnNameRequired" xml:space="preserve">
+    <value>All columns must have a name.</value>
+  </data>
   <data name="CurrentPassword" xml:space="preserve">
     <value>Current password</value>
   </data>
@@ -158,6 +164,9 @@
   </data>
   <data name="PhonePrompt" xml:space="preserve">
     <value>Phone number</value>
+  </data>
+  <data name="ProductNameRequired" xml:space="preserve">
+    <value>Product must have a name.</value>
   </data>
   <data name="Remember me?" xml:space="preserve">
     <value>Remember me?</value>

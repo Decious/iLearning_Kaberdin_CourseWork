@@ -9,19 +9,35 @@ $(document).bind("ajaxSend", function () {
     waitIcon.show();
 }).bind("ajaxComplete", function () {
     waitIcon.hide();
-    alert.show();
-    setTimeout(resetAlertToDefaults, 3000);
 }).bind("ajaxSuccess", function (event, xhr, settings) {
+    resetAlertToDefaults();
     let data = JSON.parse(xhr.responseText);
+    $("#FormErrors").html('');
     if (data.successful)
         alert.addClass("alert-success");
-    else
+    else 
         alert.addClass("alert-danger");
-    alert.text(data.message);
+    var messages = data.message;
+    displayMessages(messages);
 }).bind("ajaxError", function (event, jqxhr, settings, thrownError) {
     alert.addClass("alert-danger");
     alert.text("There was an error with your request...");
 });
+function displayMessages(messages) {
+    if (messages.length == 1) {
+        alert.text(messages[0]);
+        showAlert();
+    }
+    else {
+        messages.forEach(function (v, i, a) {
+            $("#FormErrors").prepend("<p class='text-danger'><strong>" + v + "</strong><p>");
+        })
+    }
+}
+function showAlert() {
+    alert.show();
+    setTimeout(resetAlertToDefaults, 5000);
+}
 function resetAlertToDefaults() {
     alert.hide();
     if (alert.hasClass('alert-danger'))
@@ -29,6 +45,24 @@ function resetAlertToDefaults() {
     if (alert.hasClass('alert-success'))
         alert.removeClass('alert-success');
 }
+function search(searchVal) {
+    location.href = location.origin + "/Find?q=" + encodeURIComponent(searchVal);
+}
+let markdownable = $("[class*='markdown']");
+markdownable.each(function (i, e) {
+    e = $(e);
+    updateMarkdownText(e);
+})
+function updateMarkdownText(element) {
+    if (element == undefined) {
+        element = $(this);
+    }
+    let markdownText = element.html();
+    let markdownHTML = markdown.render(markdownText);
+    element.html(markdownHTML);
+}
+
+markdownable.on('change', updateMarkdownText);
 $("#searchbarBtn").on('click', function () {
     $("#navbar").hide(300);
     $("#header-searchbar").show(300);
@@ -47,23 +81,8 @@ $("input[class*='searchingbar']").on('keypress', function (e) {
         search(searchVal);
     }
 })
-function search(searchVal) {
-    location.href = location.origin + "/Find?q=" + encodeURIComponent(searchVal);
-}
-let markdownable = $("[class*='markdown']");
-markdownable.each(function (i, e) {
-    e = $(e);
-    updateMarkdownText(e);
-})
-markdownable.on('change', updateMarkdownText);
-function updateMarkdownText(element) {
-    if (element == undefined) {
-        element = $(this);
-    }
-    let markdownText = element.html();
-    let markdownHTML = markdown.render(markdownText);
-    element.html(markdownHTML);
-}
+
+
 function sendGenericAjaxRequest(handler) {
     $.ajax({
         method: "post",

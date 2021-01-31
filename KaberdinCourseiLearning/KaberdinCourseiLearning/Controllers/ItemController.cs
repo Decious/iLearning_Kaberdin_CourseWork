@@ -1,6 +1,7 @@
 ﻿using KaberdinCourseiLearning.Data;
 using KaberdinCourseiLearning.Data.Models;
 using KaberdinCourseiLearning.Data.ProductRequests;
+using KaberdinCourseiLearning.Helpers;
 using KaberdinCourseiLearning.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +46,7 @@ namespace KaberdinCourseiLearning.Controllers
                 await productManager.DeleteProductAsync(id);
                 return new JsonResult(new ServerResponse(true, localizer["Product successfully deleted."], "/Collection?id=" + coll_ID));
             }
-            return new JsonResult(ServerResponse.MakeForbidden());
+            return new JsonResult(new ServerResponse(false, localizer["NoPermissionCreateError"]));
         }
         public async Task<JsonResult> Like(int id)
         {
@@ -65,6 +66,8 @@ namespace KaberdinCourseiLearning.Controllers
         }
         public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
         {
+            if (!ModelState.IsValid)
+                return new JsonResult(new ServerResponse(false, ModelState.GetModelErrors()));
             if (request == null) return new JsonResult(new ServerResponse(false, localizer["Request invalid."]));
             var collection = await context.ProductCollections.Where(c => c.CollectionID == request.CollectionID).Include(c => c.User).FirstOrDefaultAsync();
             if (collection == null) return new JsonResult(new ServerResponse(false, localizer["Collection no longer exists."]));
@@ -75,6 +78,8 @@ namespace KaberdinCourseiLearning.Controllers
         }
         public async Task<IActionResult> Edit([FromBody] ProductEditRequest request)
         {
+            if (!ModelState.IsValid)
+                return new JsonResult(new ServerResponse(false, ModelState.GetModelErrors()));
             if (request == null) return new JsonResult(new ServerResponse(false, localizer["Request invalid."]));
             var product = await context.Products.FindAsync(request.ProductID);
             if (product == null) return new JsonResult(new ServerResponse(false, localizer["Item no longer exists."]));
