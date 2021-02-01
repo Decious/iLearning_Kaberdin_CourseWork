@@ -37,7 +37,9 @@
                 <th data-sortable="true" data-field="tags" scope="col">@Localizer["Tags"]</th>
                 @foreach (var column in Model.Collection.Columns.OrderBy(c => c.ColumnID))
                 {
-                    <th data-sortable="true" data-field="@column.ColumnName" name="ColumnName" scope="col">@column.ColumnName</th>
+                    var visibility = "";
+                    if(column.TypeID == 5) visibility="data-visible='false'";
+                    <th data-sortable="true" data-field="@column.ColumnName" name="ColumnName" scope="col" @Html.Raw(visibility)>@column.ColumnName</th>
                 }
                 @if (Model.PermittedToChange)
                 {
