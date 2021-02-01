@@ -8,6 +8,8 @@ $font-size-sm: $font-size-base * .88 !default;
 $h1-font-size: 3rem !default;
 $h2-font-size: 2.5rem !default;
 $h3-font-size: 2rem !default;
+$web-font-path: "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" !default;
+@import url($web-font-path);
 @import "../../lib/bootstrap/scss/bootstrap.scss";
 .underlay {
     background-color: $gray-300;

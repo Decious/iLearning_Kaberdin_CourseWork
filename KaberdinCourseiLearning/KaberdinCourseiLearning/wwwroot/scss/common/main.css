@@ -6,4 +6,6 @@
 
 .Blk-Trslcnt-Bg {
   background: rgba(0, 0, 0, 0.3); }
-/*# sourceMappingURL=wwwroot\scss\common\main.css.map */
+
+.Blk-Trslcnt-Bg-Strong {
+  background: rgba(0, 0, 0, 0.7); }
